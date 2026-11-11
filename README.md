@@ -25,6 +25,7 @@ Un feed verticale in italiano per imparare qualcosa dai libri, una scheda alla v
 - `musica.js`, `cinema.js`, `geografia.js`, `italia.js`: i temi Musica, Cinema, Geografia e Storia d'Italia (solo fatti: niente testi di canzoni né battute dei film)
 - `citazioni-3.js`, `vero-o-falso-3.js`, `da-dire-3.js`: il terzo blocco, con i temi Sport e Tecnologia
 - `miti.js`, `wow.js`, `citazioni-4.js`: miti da sfatare o confermare, fatti sorprendenti, previsioni sbagliate e ultime parole
+- `miti-2.js`, `citazioni-5.js`: secondo blocco di miti e citazioni
 
 Ogni nuovo file di contenuti va aggiunto con un `<script>` in `index.html`, prima di `app.js`.
 
