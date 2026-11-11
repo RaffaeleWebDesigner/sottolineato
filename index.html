@@ -25,6 +25,12 @@
   --t-società: #f3e4da;
   --t-potere: #e4e6e9;
   --t-fantasia: #dff2f6;
+  --t-storia: #eee6d8;
+  --t-scienza: #dbe7f0;
+  --t-natura: #def0dc;
+  --t-parole: #f5e3f0;
+  --mid: #8a5a00;
+  --spunto: rgba(255, 255, 255, .6);
   --font-quote: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-ui: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -35,6 +41,8 @@
     --marker: rgba(255, 206, 26, .3); --ok: #5fcf95; --ko: #ff8a80;
     --t-vita: #241c3a; --t-amore: #361a22; --t-tempo: #122d27; --t-coraggio: #352713; --t-mente: #16233a;
     --t-lavoro: #1f2a16; --t-società: #33221a; --t-potere: #22262c; --t-fantasia: #102c33;
+    --t-storia: #2e2618; --t-scienza: #172530; --t-natura: #15291a; --t-parole: #331a2e;
+    --mid: #f0b44c; --spunto: rgba(0, 0, 0, .25);
     color-scheme: dark;
   }
 }
@@ -44,6 +52,8 @@
   --marker: rgba(255, 206, 26, .3); --ok: #5fcf95; --ko: #ff8a80;
   --t-vita: #241c3a; --t-amore: #361a22; --t-tempo: #122d27; --t-coraggio: #352713; --t-mente: #16233a;
   --t-lavoro: #1f2a16; --t-società: #33221a; --t-potere: #22262c; --t-fantasia: #102c33;
+  --t-storia: #2e2618; --t-scienza: #172530; --t-natura: #15291a; --t-parole: #331a2e;
+  --mid: #f0b44c; --spunto: rgba(0, 0, 0, .25);
   color-scheme: dark;
 }
 
@@ -123,6 +133,14 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .empty strong { color: var(--fg); font-family: var(--font-quote); font-size: 1.4rem; font-weight: 500; }
 .hint { text-align: center; font-size: .72rem; color: var(--muted); padding-block: 0 8px; }
 
+.badge { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid currentColor; border-radius: 6px; padding: 3px 8px; margin-bottom: 8px; }
+.badge.good { color: var(--ok); }
+.badge.mid { color: var(--mid); }
+.badge.bad { color: var(--ko); }
+.spunto { background: var(--spunto); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.spunto-label { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.spunto p { margin: 0; font-family: var(--font-quote); font-style: italic; font-size: 1.12rem; line-height: 1.4; }
+
 @media (prefers-reduced-motion: reduce) {
   .q mark { transition: none; background-size: 100% 38%; }
 }
@@ -143,7 +161,10 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
   <nav class="chips tema" id="chips-tema" aria-label="Temi"></nav>
 </header>
 <main class="feed" id="feed" tabindex="-1" aria-label="Schede"></main>
-<div class="hint">Scorri verso l'alto per la prossima · Frecce ↑ ↓ da tastiera</div>
+<div class="hint">Cose intelligenti, una alla volta · Scorri verso l'alto</div>
 
 <script src="contenuti.js"></script>
+<script src="citazioni-storiche.js"></script>
+<script src="vero-o-falso.js"></script>
+<script src="da-dire.js"></script>
 <script src="app.js"></script>
