@@ -7,7 +7,7 @@
     storica: "Citazione storica", mondo: "Vero o falso?", brillante: "Da dire agli amici",
   };
   const FILTRI_TIPO = [
-    ["tutto", "Tutto"], ["libri", "Dai libri"], ["storica", "Citazioni storiche"],
+    ["tutto", "Tutto"], ["libri", "Libri e opere"], ["storica", "Citazioni storiche"],
     ["mondo", "Vero o falso"], ["brillante", "Da dire agli amici"], ["salvate", "Salvate"],
   ];
   const VERDETTI = { vera: ["Detta davvero", "good"], attribuita: ["Attribuita", "mid"], mai: ["Mai detta così", "bad"] };
@@ -228,6 +228,6 @@
     if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); feed.scrollBy({ top: -feed.clientHeight, behavior: "smooth" }); }
   });
 
-  document.getElementById("totale").textContent = `${TUTTI.length} schede: libri, storia, scienza e curiosità`;
+  document.getElementById("totale").textContent = `${TUTTI.length} schede: libri, storia, scienza, musica, cinema e curiosità`;
   renderChips(); renderFeed(); renderStats();
 })();

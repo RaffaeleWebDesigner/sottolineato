@@ -5,7 +5,7 @@
 //       "sapevi" → una curiosità sul libro o sul suo autore
 // hl: la parte da evidenziare (deve comparire esattamente nel testo principale).
 
-window.TEMI = ["Mente", "Scienza", "Storia", "Spazio", "Natura", "Corpo", "Cibo", "Parole", "Arte", "Economia", "Vita", "Amore", "Tempo", "Coraggio", "Lavoro", "Società", "Potere", "Fantasia"];
+window.TEMI = ["Mente", "Scienza", "Storia", "Italia", "Musica", "Cinema", "Geografia", "Spazio", "Natura", "Corpo", "Cibo", "Parole", "Arte", "Economia", "Vita", "Amore", "Tempo", "Coraggio", "Lavoro", "Società", "Potere", "Fantasia"];
 
 window.CONTENUTI = [
   // ——— FRASI (pubblico dominio) ———
