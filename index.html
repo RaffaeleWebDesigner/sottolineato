@@ -1,0 +1,149 @@
+<title>Sottolineato</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: app a schermo intero, feed verticale a scatto. Ogni scheda è una pagina colorata dal suo tema; frasi, idee, parole e curiosità hanno ciascuna la propria tipografia, con la parte chiave sottolineata a evidenziatore. */
+:root {
+  --bg: #eef1f4;
+  --fg: #17202b;
+  --muted: #56616e;
+  --line: rgba(23, 32, 43, .14);
+  --chip: #ffffff;
+  --chip-on: #17202b;
+  --chip-on-fg: #ffffff;
+  --marker: rgba(255, 206, 26, .55);
+  --ok: #1f7a4d;
+  --ko: #b3261e;
+  --t-vita: #e9e2f8;
+  --t-amore: #f9e1e6;
+  --t-tempo: #dcefe7;
+  --t-coraggio: #fbebd2;
+  --t-mente: #dfe9fa;
+  --t-lavoro: #e6ecd9;
+  --t-società: #f3e4da;
+  --t-potere: #e4e6e9;
+  --t-fantasia: #dff2f6;
+  --font-quote: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-ui: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1217; --fg: #eef1f5; --muted: #9aa5b3; --line: rgba(238, 241, 245, .14);
+    --chip: #1a2029; --chip-on: #eef1f5; --chip-on-fg: #0e1217;
+    --marker: rgba(255, 206, 26, .3); --ok: #5fcf95; --ko: #ff8a80;
+    --t-vita: #241c3a; --t-amore: #361a22; --t-tempo: #122d27; --t-coraggio: #352713; --t-mente: #16233a;
+    --t-lavoro: #1f2a16; --t-società: #33221a; --t-potere: #22262c; --t-fantasia: #102c33;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1217; --fg: #eef1f5; --muted: #9aa5b3; --line: rgba(238, 241, 245, .14);
+  --chip: #1a2029; --chip-on: #eef1f5; --chip-on-fg: #0e1217;
+  --marker: rgba(255, 206, 26, .3); --ok: #5fcf95; --ko: #ff8a80;
+  --t-vita: #241c3a; --t-amore: #361a22; --t-tempo: #122d27; --t-coraggio: #352713; --t-mente: #16233a;
+  --t-lavoro: #1f2a16; --t-società: #33221a; --t-potere: #22262c; --t-fantasia: #102c33;
+  color-scheme: dark;
+}
+
+html { height: 100%; box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+body {
+  height: 100%; margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--font-ui); font-size: 15px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; overflow: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+.top { display: flex; flex-direction: column; gap: 8px; padding-block: 12px 4px; max-width: 640px; width: 100%; margin-inline: auto; }
+.brandrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { font-family: var(--font-quote); font-size: 1.55rem; font-weight: 500; letter-spacing: -.01em; margin: 0; line-height: 1.1; }
+.brand span { background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%); padding-inline: 2px; }
+.sub { font-size: .75rem; color: var(--muted); margin: 2px 0 0; }
+.side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.stats { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mix { border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 4px 10px; font-size: .78rem; font-weight: 600; }
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 6px 12px; font-size: .82rem; font-weight: 500; }
+.chips.tema .chip { padding: 4px 10px; font-size: .76rem; background: transparent; }
+.chip[aria-pressed="true"], .chips.tema .chip[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); }
+
+.feed { flex: 1; min-height: 0; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; max-width: 640px; width: 100%; margin-inline: auto; }
+.feed::-webkit-scrollbar { display: none; }
+.slide { height: 100%; scroll-snap-align: start; scroll-snap-stop: always; padding-block: 6px 10px; }
+.card {
+  height: 100%; border-radius: 22px; background: var(--tint, var(--chip));
+  display: flex; flex-direction: column; padding: clamp(20px, 5vw, 36px); gap: 16px; overflow: hidden;
+}
+.card-head { display: flex; justify-content: space-between; align-items: center; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.kind { color: var(--fg); }
+.count { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 20px; overflow-y: auto; }
+
+.q { margin: 0; font-family: var(--font-quote); font-size: clamp(1.55rem, 5.6vw, 2.35rem); line-height: 1.28; font-weight: 400; text-wrap: balance; }
+.q.long { font-size: clamp(1.25rem, 4.4vw, 1.8rem); }
+.q.idea { font-family: var(--font-ui); font-weight: 600; letter-spacing: -.015em; line-height: 1.2; font-size: clamp(1.5rem, 5.4vw, 2.2rem); }
+.q.parola { font-family: var(--font-quote); font-style: italic; font-weight: 500; font-size: clamp(2.4rem, 11vw, 4.2rem); line-height: 1.05; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.q.sapevi { font-family: var(--font-ui); font-weight: 500; line-height: 1.3; font-size: clamp(1.3rem, 4.8vw, 1.85rem); }
+.q mark {
+  color: inherit; background: linear-gradient(var(--marker), var(--marker)) no-repeat 0 82% / 0% 38%;
+  transition: background-size .9s cubic-bezier(.3, .7, .2, 1) .15s; padding-inline: 1px;
+}
+.q.parola mark { background-position: 0 88%; }
+.seen .q mark { background-size: 100% 38%; }
+.def { margin: -6px 0 0; font-size: 1.1rem; line-height: 1.45; max-width: 46ch; }
+.src { margin: 0; font-size: .95rem; line-height: 1.45; }
+.src b { font-weight: 600; }
+.src i { font-family: var(--font-quote); font-size: 1.08em; }
+.src small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+.note { margin: 0; color: var(--muted); line-height: 1.5; max-width: 60ch; }
+.reveal { transition: filter .3s, opacity .3s; }
+.quizzing .reveal { filter: blur(7px); opacity: .45; user-select: none; }
+
+.quiz { display: flex; flex-direction: column; gap: 8px; }
+.quiz p { margin: 0; font-weight: 600; font-size: .9rem; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opt { border: 1px solid var(--line); background: var(--chip); border-radius: 12px; padding: 9px 14px; font-weight: 500; text-align: left; }
+.opt.right { border-color: var(--ok); color: var(--ok); }
+.opt.wrong { border-color: var(--ko); color: var(--ko); }
+.verdict { font-size: .88rem; min-height: 1.3em; }
+
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.act { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 8px 14px; font-size: .86rem; font-weight: 500; }
+.act svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.act[aria-pressed="true"] svg { fill: currentColor; }
+.act[aria-pressed="true"] { background: var(--chip); }
+
+.empty { display: grid; place-content: center; text-align: center; gap: 8px; color: var(--muted); }
+.empty strong { color: var(--fg); font-family: var(--font-quote); font-size: 1.4rem; font-weight: 500; }
+.hint { text-align: center; font-size: .72rem; color: var(--muted); padding-block: 0 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .q mark { transition: none; background-size: 100% 38%; }
+}
+</style>
+
+<header class="top">
+  <div class="brandrow">
+    <div>
+      <h1 class="brand"><span>Sottolineato</span></h1>
+      <p class="sub" id="totale"></p>
+    </div>
+    <div class="side">
+      <div class="stats" id="stats" aria-live="polite"></div>
+      <button class="mix" id="mix" type="button">Rimescola</button>
+    </div>
+  </div>
+  <nav class="chips" id="chips-tipo" aria-label="Tipo di scheda"></nav>
+  <nav class="chips tema" id="chips-tema" aria-label="Temi"></nav>
+</header>
+<main class="feed" id="feed" tabindex="-1" aria-label="Schede"></main>
+<div class="hint">Scorri verso l'alto per la prossima · Frecce ↑ ↓ da tastiera</div>
+
+<script src="contenuti.js"></script>
+<script src="app.js"></script>
