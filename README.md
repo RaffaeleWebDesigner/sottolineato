@@ -12,6 +12,7 @@ Un feed verticale in italiano per imparare qualcosa dai libri, una scheda alla v
 | Dietro il libro (`sapevi`) | Una curiosità sul libro o sull'autore | Solo fatti verificabili. |
 | Citazione storica (`storica`) | Una frase famosa, con il verdetto: detta davvero, attribuita o mai detta così | Campo `verdetto`: `vera`, `attribuita`, `mai`. Il quiz chiede se è autentica. |
 | Vero o falso (`mondo`) | Curiosità sul mondo e falsi miti | Campo `vero`: `true` o `false`. Il quiz chiede di indovinare. |
+| Mito o realtà? (`mito`) | Una credenza diffusa, confermata o sfatata | Campo `vero`: `true` = confermato, `false` = mito sfatato. |
 | Da dire agli amici (`brillante`) | Paradossi, effetti, leggi | Campi `def` (cos'è in una riga) e `spunto` (la frase pronta da dire). |
 
 ## File
@@ -23,6 +24,7 @@ Un feed verticale in italiano per imparare qualcosa dai libri, una scheda alla v
 - `libri-2.js`, `storia-2.js`, `vero-o-falso-2.js`, `da-dire-2.js`: il secondo blocco di schede
 - `musica.js`, `cinema.js`, `geografia.js`, `italia.js`: i temi Musica, Cinema, Geografia e Storia d'Italia (solo fatti: niente testi di canzoni né battute dei film)
 - `citazioni-3.js`, `vero-o-falso-3.js`, `da-dire-3.js`: il terzo blocco, con i temi Sport e Tecnologia
+- `miti.js`, `wow.js`, `citazioni-4.js`: miti da sfatare o confermare, fatti sorprendenti, previsioni sbagliate e ultime parole
 
 Ogni nuovo file di contenuti va aggiunto con un `<script>` in `index.html`, prima di `app.js`.
 

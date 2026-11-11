@@ -4,11 +4,11 @@
   const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
   const TIPI = {
     frase: "Frase", idea: "L'idea", parola: "Parola", sapevi: "Dietro il libro",
-    storica: "Citazione storica", mondo: "Vero o falso?", brillante: "Da dire agli amici",
+    storica: "Citazione storica", mondo: "Vero o falso?", mito: "Mito o realtà?", brillante: "Da dire agli amici",
   };
   const FILTRI_TIPO = [
     ["tutto", "Tutto"], ["libri", "Libri e opere"], ["storica", "Citazioni storiche"],
-    ["mondo", "Vero o falso"], ["brillante", "Da dire agli amici"], ["salvate", "Salvate"],
+    ["mondo", "Vero o falso"], ["mito", "Miti"], ["brillante", "Da dire agli amici"], ["salvate", "Salvate"],
   ];
   const VERDETTI = { vera: ["Detta davvero", "good"], attribuita: ["Attribuita", "mid"], mai: ["Mai detta così", "bad"] };
   const OPERE_LIBRI = [...new Set(TUTTI.filter(x => LIBRI.has(x.tipo)).map(x => x.opera))];
@@ -55,7 +55,7 @@
 
   function mainNode(f) {
     const cls = {
-      frase: "q", storica: "q", idea: "q idea", brillante: "q idea", parola: "q parola", sapevi: "q sapevi", mondo: "q sapevi",
+      frase: "q", storica: "q", idea: "q idea", brillante: "q idea", parola: "q parola", sapevi: "q sapevi", mondo: "q sapevi", mito: "q sapevi",
     }[f.tipo];
     const q = el(f.tipo === "frase" || f.tipo === "storica" ? "blockquote" : "p", cls);
     if (f.tipo !== "parola" && f.testo.length > 110) q.classList.add("long");
@@ -144,15 +144,17 @@
       }));
       c.classList.add("quizzing");
       copyText = `«${f.testo}» — ${f.autore}. Verdetto: ${vt.toLowerCase()}. ${f.nota}`;
-    } else if (f.tipo === "mondo") {
-      const giusta = f.vero ? "Vero" : "Falso";
-      const res = el("div", "reveal"); res.append(badge(giusta, f.vero ? "good" : "bad"), el("p", "note", f.nota));
+    } else if (f.tipo === "mondo" || f.tipo === "mito") {
+      const mito = f.tipo === "mito";
+      const giusta = mito ? (f.vero ? "È vero" : "È un mito") : (f.vero ? "Vero" : "Falso");
+      const etichetta = mito ? (f.vero ? "Confermato" : "Mito sfatato") : giusta;
+      const res = el("div", "reveal"); res.append(badge(etichetta, f.vero ? "good" : "bad"), el("p", "note", f.nota));
       body.appendChild(res);
-      body.appendChild(makeQuiz(c, "Che ne dici?", ["Vero", "Falso"], giusta, {
-        onRight: () => impara(f.id), rightText: "Esatto.", wrongText: `No, è ${giusta.toLowerCase()}.`,
+      body.appendChild(makeQuiz(c, mito ? "Mito o realtà?" : "Che ne dici?", mito ? ["È vero", "È un mito"] : ["Vero", "Falso"], giusta, {
+        onRight: () => impara(f.id), rightText: "Esatto.", wrongText: mito ? (f.vero ? "No, è vero." : "No, è un mito.") : `No, è ${giusta.toLowerCase()}.`,
       }));
       c.classList.add("quizzing");
-      copyText = `${f.testo} ${giusta}. ${f.nota}`;
+      copyText = `${f.testo} ${etichetta}. ${f.nota}`;
     } else if (f.tipo === "brillante") {
       body.appendChild(el("p", "def", f.def));
       const sp = el("div", "spunto");
