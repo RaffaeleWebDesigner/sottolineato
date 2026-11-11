@@ -20,6 +20,9 @@ Un feed verticale in italiano per imparare qualcosa dai libri, una scheda alla v
 - `app.js`: feed, filtri, quiz, salvataggi
 - `contenuti.js`: temi e schede sui libri
 - `citazioni-storiche.js`, `vero-o-falso.js`, `da-dire.js`: le altre sezioni
+- `libri-2.js`, `storia-2.js`, `vero-o-falso-2.js`, `da-dire-2.js`: il secondo blocco di schede
+
+Ogni nuovo file di contenuti va aggiunto con un `<script>` in `index.html`, prima di `app.js`.
 
 ## Aggiungere una scheda
 
