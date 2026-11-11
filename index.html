@@ -1,5 +1,21 @@
-<title>Sottolineato</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sottolineato · Cose intelligenti, una alla volta</title>
+<meta name="description" content="Un feed in italiano da scorrere come un social, ma per imparare: frasi dai libri, citazioni storiche vere o false, curiosità su scienza, storia, musica e cinema, e idee da tirare fuori con gli amici.">
+<meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1217" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Sottolineato · Cose intelligenti, una alla volta">
+<meta property="og:description" content="Frasi dai libri, citazioni storiche vere o false, curiosità e idee brillanti. Una scheda alla volta, in italiano.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://raffaelewebdesigner.github.io/sottolineato/">
+<meta property="og:image" content="https://raffaelewebdesigner.github.io/sottolineato/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://raffaelewebdesigner.github.io/sottolineato/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
@@ -70,7 +86,9 @@
   color-scheme: dark;
 }
 
-html { height: 100%; box-sizing: border-box; }
+html { height: 100%; box-sizing: border-box; color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); -webkit-text-size-adjust: 100%; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
 *, *::before, *::after { box-sizing: inherit; }
 body {
   height: 100%; margin: 0; background: var(--bg); color: var(--fg);
@@ -158,7 +176,8 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
   .q mark { transition: none; background-size: 100% 38%; }
 }
 </style>
-
+</head>
+<body>
 <header class="top">
   <div class="brandrow">
     <div>
@@ -189,3 +208,5 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 <script src="geografia.js"></script>
 <script src="italia.js"></script>
 <script src="app.js"></script>
+</body>
+</html>

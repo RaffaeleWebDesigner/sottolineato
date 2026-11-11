@@ -32,3 +32,13 @@ Aggiungi un oggetto in `contenuti.js` con `id` unico, `tipo`, `tema` (uno di `TE
 ## Avvio in locale
 
 Basta aprire `index.html` nel browser. Frasi salvate e frasi imparate restano solo in quel browser.
+
+## Pubblicazione
+
+È un sito statico: non serve nessuna compilazione. Con GitHub Pages:
+
+1. Crea il repository `sottolineato` e carica questi file nella radice.
+2. Su GitHub: Settings → Pages → Deploy from a branch → `main`, cartella `/ (root)`.
+3. Dopo un minuto il sito è su `https://raffaelewebdesigner.github.io/sottolineato/`.
+
+Se il sito finisce a un indirizzo diverso, aggiorna `og:url`, `og:image` e `canonical` in `index.html`.
