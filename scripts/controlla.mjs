@@ -66,6 +66,22 @@ for (const t of temi) {
 }
 for (const c of idCategorie) if (!temiPerCategoria.has(c)) avviso(`Categoria «${c}» senza temi`);
 
+// fonte: una o più voci separate da « | ». Ogni voce è un URL http(s) valido oppure un riferimento
+// bibliografico (autore, titolo, editore o rivista, anno: almeno una virgola e un anno di 3-4 cifre).
+function problemiFonte(fonte) {
+  if (typeof fonte !== "string" || !fonte.trim()) return ["fonte vuota o non è una stringa"];
+  const problemi = [];
+  for (const voce of fonte.split(" | ").map(v => v.trim())) {
+    if (/^https?:\/\//i.test(voce)) {
+      let u; try { u = new URL(voce); } catch { u = null; }
+      if (!u || !u.hostname.includes(".") || /\s/.test(voce)) problemi.push(`fonte: URL non valido «${voce}»`);
+    } else if (!(voce.includes(",") && /\b\d{3,4}\b/.test(voce) && voce.length >= 15)) {
+      problemi.push(`fonte: «${voce}» non è un URL né un riferimento bibliografico (autore, titolo, editore, anno)`);
+    }
+  }
+  return problemi;
+}
+
 // ——— Schede (file base) ———
 const schede = new Map(); // id → scheda base
 for (const tipo of TIPI) {
@@ -96,6 +112,8 @@ for (const tipo of TIPI) {
     if (s.stato !== "verificata" && "verificata_il" in s) errore(dove, "verificata_il presente ma stato non è verificata");
     if (!dataValida(s.aggiunta)) errore(dove, "aggiunta mancante o non è una data AAAA-MM-GG");
     else if (s.aggiunta > DATA_CONVERSIONE && CON_FONTE.has(tipo) && !s.fonte) errore(dove, `scheda nuova di tipo ${tipo} senza fonte`);
+    if (s.stato === "verificata" && !s.fonte) errore(dove, "stato verificata senza fonte");
+    if ("fonte" in s) for (const p of problemiFonte(s.fonte)) errore(dove, p);
   }
 }
 

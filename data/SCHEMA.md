@@ -57,7 +57,7 @@ data/
 | `trad` | booleano | no | Solo `frase`: `true` se la traduzione è nostra. |
 | `stato` | `bozza` \| `da_verificare` \| `verificata` | sempre | `bozza` non viene mostrata. `da_verificare` è mostrata ma non ancora controllata. |
 | `verificata_il` | data `AAAA-MM-GG` | se `stato` è `verificata` | Vietata negli altri stati. |
-| `fonte` | stringa | `mondo`, `mito`, `storica` aggiunte dopo il 2026-11-12 | Link o riferimento bibliografico che conferma il fatto. Facoltativa per le schede precedenti. |
+| `fonte` | stringa | se `stato` è `verificata`; sempre per `mondo`, `mito`, `storica` aggiunte dopo il 2026-11-12 | Una o più voci separate da ` \| `. Ogni voce è un URL completo (`https://…`) di una pagina aperta davvero, oppure un riferimento bibliografico (autore, titolo, editore o rivista, anno). Fonti accettate: `data/GUIDA.md`. |
 | `aggiunta` | data `AAAA-MM-GG` | sempre | Data di inserimento. |
 | `immagine` | stringa | no | Previsto per il futuro, per ora sempre assente. |
 
