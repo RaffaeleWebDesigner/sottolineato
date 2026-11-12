@@ -19,7 +19,7 @@
         schede.push({ ...b, ...testi[b.id], tema: nomeTema.get(b.temi[0]), temaId: b.temi[0] });
       }
     }
-    return { schede, temi: temi.map(t => nomeTema.get(t.id)), temaId: new Map(temi.map(t => [nomeTema.get(t.id), t.id])) };
+    return { schede, temi: temi.map(t => ({ id: t.id, nome: nomeTema.get(t.id), nomi: t.nome })) };
   }
 
   function messaggio(titolo, testo) {
@@ -39,8 +39,7 @@
     return;
   }
   const TUTTI = dati.schede;
-  const TEMI = dati.temi;
-  const TEMA_ID = dati.temaId;
+  const TEMI = dati.temi; // [{ id, nome, nomi }]
   const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
   const TIPI = {
     frase: "Frase", idea: "L'idea", parola: "Parola", sapevi: "Dietro il libro",
@@ -56,13 +55,38 @@
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+    remove(k) { try { localStorage.removeItem(k); } catch {} },
   };
+
+  // Migrazioni dei dati salvati nel browser, in ordine di versione.
+  // sott-versione ricorda l'ultima eseguita. Le migrazioni future si aggiungono qui, con versione crescente.
+  const MIGRAZIONI = [
+    {
+      versione: 1,
+      // sott-tema: dal nome del tema («Storia») al suo id («storia»). Valori sconosciuti vengono rimossi.
+      esegui() {
+        const v = store.get("sott-tema", null);
+        if (v === null) return;
+        const tema = TEMI.find(t => t.id === v) || TEMI.find(t => Object.values(t.nomi).includes(v));
+        if (tema) store.set("sott-tema", tema.id); else store.remove("sott-tema");
+      },
+    },
+  ];
+  function migra() {
+    let versione = Number(store.get("sott-versione", 0)) || 0;
+    for (const m of MIGRAZIONI) {
+      if (m.versione <= versione) continue;
+      m.esegui(); versione = m.versione; store.set("sott-versione", versione);
+    }
+  }
+  migra();
+
   let salvate = new Set(store.get("sott-salvate", []));
   let imparate = new Set(store.get("sott-imparate", []));
   let filtroTipo = store.get("sott-tipo", "tutto");
   if (!FILTRI_TIPO.some(([k]) => k === filtroTipo)) filtroTipo = "tutto";
-  let filtroTema = store.get("sott-tema", null);
-  if (filtroTema && !TEMI.includes(filtroTema)) filtroTema = null;
+  let filtroTema = store.get("sott-tema", null); // id del tema
+  if (filtroTema && !TEMI.some(t => t.id === filtroTema)) filtroTema = null;
   let seme = daySeed();
 
   const chipsTipo = document.getElementById("chips-tipo");
@@ -128,7 +152,7 @@
     chipsTipo.replaceChildren(...FILTRI_TIPO.map(([k, label]) =>
       chip(label, filtroTipo === k, () => { filtroTipo = k; store.set("sott-tipo", k); renderChips(); renderFeed(); }, "tipo-" + k)));
     chipsTema.replaceChildren(...TEMI.map(t =>
-      chip(t, filtroTema === t, () => { filtroTema = filtroTema === t ? null : t; store.set("sott-tema", filtroTema); renderChips(); renderFeed(); }, "tema-" + TEMA_ID.get(t))));
+      chip(t.nome, filtroTema === t.id, () => { filtroTema = filtroTema === t.id ? null : t.id; store.set("sott-tema", filtroTema); renderChips(); renderFeed(); }, "tema-" + t.id)));
   }
 
   // Domanda a scelta multipla dentro la scheda. Mentre è aperta, gli elementi .reveal restano sfocati.
@@ -246,7 +270,7 @@
     if (filtroTipo === "salvate") lista = lista.filter(f => salvate.has(f.id));
     else if (filtroTipo === "libri") lista = lista.filter(f => LIBRI.has(f.tipo));
     else if (filtroTipo !== "tutto") lista = lista.filter(f => f.tipo === filtroTipo);
-    if (filtroTema) lista = lista.filter(f => f.tema === filtroTema);
+    if (filtroTema) lista = lista.filter(f => f.temi.includes(filtroTema)); // qualsiasi posizione in temi
     lista = mixVario(lista, seme);
 
     feed.replaceChildren(); feed.scrollTop = 0;

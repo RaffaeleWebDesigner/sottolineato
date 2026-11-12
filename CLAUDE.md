@@ -23,7 +23,16 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
 
 Nessuna compilazione, ma serve un server locale (`python3 -m http.server 8000`, poi `http://localhost:8000`): aprendo `index.html` da file i dati non si caricano.
 
-Chiavi di localStorage (non cambiarle né cambiarne il formato senza una migrazione): `sott-salvate` e `sott-imparate` (liste di id), `sott-tipo` (filtro per tipo), `sott-tema` (nome italiano del tema selezionato).
+Chiavi di localStorage (non cambiarle né cambiarne il formato senza una migrazione):
+
+- `sott-salvate`, `sott-imparate`: liste di id di schede.
+- `sott-tipo`: filtro per tipo (`tutto`, `libri`, `storica`, `mondo`, `mito`, `brillante`, `salvate`). Valori interni, non dipendono dalla lingua.
+- `sott-tema`: id del tema selezionato (es. `storia`) o `null`. Fino alla versione 0 conteneva il nome italiano («Storia»).
+- `sott-versione`: numero dell'ultima migrazione eseguita. Oggi `1`.
+
+Migrazioni: si aggiungono in un unico punto, la lista `MIGRAZIONI`, con versione crescente. All'avvio si eseguono solo quelle con versione maggiore di `sott-versione`. Versione 1: `sott-tema` passa dal nome del tema al suo id; un valore sconosciuto viene rimosso.
+
+Il filtro per tema trova una scheda se il tema è in qualsiasi posizione del suo array `temi`.
 
 ## Regole sui contenuti
 
