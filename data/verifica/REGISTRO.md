@@ -9,16 +9,16 @@ Chi riprende il lavoro parte da qui: legge il riepilogo e continua dal primo pas
 - **Passo 1, guida di stile**: fatto (`data/GUIDA.md`).
 - **Passo 2, macro-categorie**: approvato il 12 novembre 2026: 6 categorie, premium Mente e vita.
 - **Passo 3, applicare le categorie**: fatto. `data/temi.json` ha `categorie` e un campo `categoria` per ogni tema; `mente-vita` ha `premium: true`, i temi restano `false`.
-- **Passo 4, verifica dei fatti**: blocchi completati 2 su 22. Prossimo blocco: **03 (MONDO 3)**, da `bn-neuroni-velocita`.
+- **Passo 4, verifica dei fatti**: blocchi completati 3 su 22. Prossimo blocco: **04 (MONDO 4)**, da `bq-lampadina-secolo`.
 - **Passo 5, temi deboli**: da fare.
 
 | Verificate | Corrette | In bozza | Da verificare | Totale |
 |---|---|---|---|---|
-| 192 | 94 | 8 | 1801 | 2001 |
+| 278 | 138 | 22 | 1701 | 2001 |
 
 *Corrette* sono le schede verificate dopo una correzione: sono contate anche tra le verificate.
 
-**Ultimo merge su main**: nessuno. Il merge si fa ogni 300 schede verificate: il prossimo dopo il blocco 03.
+**Ultimo merge su main**: nessuno. Il merge si fa ogni 300 schede verificate: il prossimo dopo il blocco 04 (oggi 278 verificate).
 
 **Duplicati segnalati**: nessuno finora.
 
@@ -49,7 +49,7 @@ Il metodo completo è nella richiesta della fase 2, riassunta qui.
 |---|---|---|---|---|---|
 | 01 | MONDO 1 | 100 | `bf-althing` | `bm-mario-idraulico` | **fatto** (12/11/2026) |
 | 02 | MONDO 2 | 100 | `bm-mozart-cane` | `bn-naso-ricordi` | **fatto** (12/11/2026) |
-| 03 | MONDO 3 | 100 | `bn-neuroni-velocita` | `bq-kiwi` | da fare |
+| 03 | MONDO 3 | 100 | `bn-neuroni-velocita` | `bq-kiwi` | **fatto** (12/11/2026) |
 | 04 | MONDO 4 | 100 | `bq-lampadina-secolo` | `bs-geo-hawaii` | da fare |
 | 05 | MONDO 5 | 100 | `bs-geo-islanda` | `bu-neapolis` | da fare |
 | 06 | MONDO 6 | 100 | `bu-orvieto-pozzo` | `it-federico` | da fare |
@@ -401,6 +401,144 @@ Tipi di scheda dentro ogni categoria («libri» comprende frase, idea, parola e 
   - testo: ««Bella ciao» è diventata famosa nel mondo grazie a una serie TV.» → «Una serie TV ha fatto conoscere «Bella ciao» a una nuova generazione in tutto il mondo.»
   - hl: «grazie a una serie TV» → «Una serie TV»
   - nota: «Era già un canto popolare noto, ma la serie spagnola «La casa di carta» l'ha fatta conoscere a una nuova generazione in tutto il mondo.» → «È la spagnola «La casa di carta», del 2017: il protagonista la usa come richiamo alla rivolta. La canzone esisteva già in versioni in quasi tutte le lingue.»
+
+**Duplicati segnalati**
+
+- nessuno
+
+### Blocco 03: MONDO 3 (bn-neuroni-velocita → bq-kiwi) — completato il 2026-11-12
+
+100 schede: 42 confermate, 44 corrette (e poi verificate), 14 in bozza.
+
+**In bozza**
+
+- `bn-pinguini-ginocchia`: Trovati solo siti di domande e risposte o di curiosità; nessun museo o università. Il fatto è noto: da verificare su una fonte accettata.
+- `bn-polli-dinosauri`: Il numero di polli (circa 26-28 miliardi, dati FAO) è riportato solo da siti secondari; FAOSTAT e Our World in Data non si sono aperti. Da verificare su FAOSTAT.
+- `bn-ossa-bambino`: Il confronto con il cemento non è in nessuna pagina aperta; l'unica fonte aperta sul femore (LibreTexts) riprende da Wikipedia che regge «fino a 30 volte il peso di un adulto». Da verificare su una fonte di biomeccanica.
+- `bn-stomaco-acido`: Trovati solo siti divulgativi; la nota parla di acido «molto concentrato», ma il pH dello stomaco è circa 1,5-3,5. Da riscrivere con una fonte medica.
+- `bn-sangue-vasi`: Controversa: i 100.000 km circolano da decenni senza una fonte primaria; secondo le ricerche segnalate (non aperte), uno studio del 2021 stima i capillari in 9.000-19.000 km, meno di mezzo giro della Terra. Probabilmente falsa: da riscrivere come «falso» con la fonte dello studio.
+- `bn-pelle-organo`: Peso della pelle e cellule perse al minuto si trovano solo su siti commerciali o di curiosità; un dermatologo (pagina bloccata) contesta che sia l'organo più grande. Da verificare.
+- `bn-vetro-sabbia`: Le fonti sul vetro (ACS, Corning Museum, Britannica) erano bloccate; Treccani non conferma temperature né folgoriti. Da verificare.
+- `bn-oro-commestibile`: Il parere EFSA del 2016 su E 175 (oro) è su un sito con controllo anti-bot e non si è potuto aprire. Secondo la ricerca, l'EFSA giudica improbabile l'assorbimento ma con dati limitati: da verificare sul parere.
+- `bq-icona-salva`: Affermazione generica: trovati solo blog (Hanselman) e un sondaggio citato da un altro blog in cui il 91% degli studenti riconosceva il floppy. Nessuna fonte accettata: da riscrivere o lasciare fuori.
+- `bq-decaffeinato`: L'episodio dell'acqua di mare compare solo su siti di cucina e come aneddoto («so the story goes»); date discordanti (1903, 1905, 1906). Da verificare.
+- `bq-australia-canguri`: La pagina e il PDF del governo australiano (DCCEEW) non si aprono; la ricerca riporta circa 35 milioni di canguri nel 2023 nelle sole aree di caccia. Da verificare sul documento DCCEEW.
+- `bq-italiano-parole-mondo`: Le indagini trovate misurano cose diverse (sondaggio UE con pizza all'\''8%, conteggio nei dizionari della Crusca con spaghetti primo) e sono citate solo da siti secondari. Da riscrivere con una fonte precisa.
+- `bq-caffe-filtro-finlandia`: I 12 kg a testa dell'ICO sono citati solo da siti secondari; Statista riporta 8,9 kg di caffè tostato (2022). Da verificare sui dati ICO.
+- `bq-formaggio-francia`: Dati discordanti: WorldAtlas (senza anno) dà 27,2 kg per la Francia, siti secondari con dati OCSE 2022 danno circa 22-24 kg. Da verificare sul dato OCSE.
+
+**Corrette** (prima → dopo)
+
+- `bn-polpo-sangue-blu`: 
+  - testo: «Il polpo può cambiare colore in meno di un secondo.» → «Il polpo può cambiare colore in pochi istanti.»
+  - hl: «in meno di un secondo» → «in pochi istanti»
+  - nota: «Sotto la pelle ha migliaia di cellule colorate controllate dai nervi. Le usa per mimetizzarsi e per comunicare.» → «La sua pelle è piena di cromatofori: sacchetti di pigmento circondati da muscoli comandati dai nervi. Li usa per mimetizzarsi e per comunicare.»
+- `bn-seppia-daltonica`: 
+  - nota: «Hanno un solo tipo di cellula per la luce. Come facciano a copiare i colori dello sfondo è ancora un mistero.» → «Hanno un solo tipo di cellula per la luce. Come copino i colori dello sfondo non è chiaro: un'ipotesi è che la forma strana della pupilla li aiuti a distinguerli.»
+- `bn-pesce-palla`: 
+  - nota: «In Giappone il fugu lo preparano solo cuochi con una licenza speciale, che sanno togliere le parti velenose.» → «La tetrodotossina è oltre mille volte più tossica del cianuro, secondo alcuni studi. Si concentra in ovaie, fegato, intestino e pelle, resiste alla cottura e non ha antidoto.»
+- `bn-pesce-pagliaccio`: 
+  - nota: «In ogni gruppo il più grande diventa femmina. Se muore, il maschio dominante cambia sesso e prende il suo posto.» → «Nascono maschi e possono diventare femmine. In ogni gruppo comanda una femmina: se muore, il maschio dominante cambia sesso e prende il suo posto.»
+- `bn-salmoni`: 
+  - nota: «Dopo anni in mare risalgono anche per centinaia di chilometri, riconoscendo l'odore dell'acqua della loro infanzia.» → «Da giovani, prima di andare in mare, memorizzano gli odori del fiume natale. Da adulti seguono quel ricordo per tornarci a deporre le uova.»
+- `bn-zebre-strisce`: 
+  - nota: «Gli esperimenti mostrano che le mosche faticano ad atterrare su superfici a strisce. Forse servono anche a regolare la temperatura.» → «Negli esperimenti di Tim Caro e Martin How le mosche si avvicinavano a zebre e cavalli allo stesso modo, ma sulle strisce non riuscivano ad atterrare bene.»
+- `bn-ornitorinco`: 
+  - nota: «Ha il becco d'anatra, allatta i piccoli e i maschi hanno uno sperone velenoso. I primi scienziati europei pensarono che fosse un falso.» → «Ha il becco d'anatra, allatta i piccoli e i maschi hanno uno sperone velenoso sulle zampe posteriori. I primi naturalisti europei pensarono che fosse un falso.»
+- `bn-pappagalli-nomi`: 
+  - testo: «Alcuni pappagalli imparano centinaia di parole.» → «Il pappagallo cenerino Alex sapeva nominare colori, forme e quantità.»
+  - hl: «centinaia di parole» → «colori, forme e quantità»
+  - nota: «Il pappagallo cenerino Alex, studiato per trent'anni, sapeva riconoscere colori, forme e quantità, e chiedeva cose usando le parole.» → «Irene Pepperberg lo studiò per trent'anni. Conosceva i nomi di circa 50 oggetti, sette colori e cinque forme, e contava fino a otto. Combinandoli, identificava più di 100 cose.»
+- `bn-scarafaggi`: 
+  - testo: «Uno scarafaggio può vivere giorni senza testa.» → «Uno scarafaggio può vivere settimane senza testa.»
+  - hl: «senza testa» → «settimane senza testa»
+  - nota: «Respira da piccoli fori sul corpo e non perde molto sangue. Muore dopo un po' perché non può bere.» → «Respira da piccoli fori sul corpo, senza bisogno del cervello, e il collo si chiude da solo coagulando. Gli basta poco cibo per molto tempo.»
+- `bn-ossigeno-oceani`: 
+  - testo: «Gran parte dell'ossigeno che respiriamo viene dagli oceani.» → «Circa metà dell'ossigeno prodotto sulla Terra viene dagli oceani.»
+  - hl: «dagli oceani» → «metà dell'ossigeno»
+  - nota: «Lo producono alghe e plancton microscopici. Le foreste sono importanti, ma contribuiscono meno di quanto si pensi.» → «Lo produce soprattutto il plancton: alghe e batteri microscopici. Un solo batterio, Prochlorococcus, ne produce fino al 20%. Ma la vita marina ne consuma più o meno altrettanto.»
+- `bn-neuroni-velocita`: 
+  - nota: «Nelle fibre nervose più veloci, rivestite di mielina. Per questo ritiriamo la mano dal fuoco prima ancora di pensarci.» → «Succede nelle fibre nervose rivestite di mielina, che fa da isolante: lì il segnale arriva a 120 metri al secondo, circa 430 km/h. Nelle fibre senza mielina è molto più lento.»
+- `bn-occhi-crescita`: 
+  - nota: «Crescono, ma poco: per questo i neonati sembrano avere occhi enormi rispetto al viso.» → «Crescono soprattutto nei primi anni. Alla nascita l'occhio è lungo in media 16,8 mm, a tre anni 21,8 mm, a quindici anni circa 23,4 mm.»
+- `bn-sangue-freddo`: 
+  - nota: «Circa due milioni e mezzo al secondo, nel midollo osseo. Ognuno vive circa quattro mesi.» → «Circa due milioni al secondo, nel midollo delle ossa grandi. Ognuno vive circa 120 giorni, poi viene eliminato da milza, fegato e midollo.»
+- `bn-sogni-ricordo`: 
+  - nota: «Durante il sonno la memoria che fissa i ricordi lavora poco. Annotarli appena svegli aiuta a ricordarne di più.» → «Al risveglio il cervello impiega circa due minuti a tornare a fissare i ricordi. Nel sonno calano anche acetilcolina e noradrenalina, due sostanze importanti per la memoria.»
+- `bn-ridere`: 
+  - nota: «Secondo alcuni studi fino a trenta volte di più. La risata serve soprattutto a creare legami, più che a reagire alle battute.» → «Lo psicologo Robert Provine ha osservato che in compagnia si ride 30 volte di più. Per lui la risata è soprattutto un segnale sociale, più che una reazione alle battute.»
+- `bn-starnuto-velocita`: 
+  - nota: «Gli studi con telecamere ad alta velocità mostrano una nuvola che viaggia ben oltre il metro che si credeva.» → «Le ricerche di Lydia Bourouiba, al MIT, mostrano che lo starnuto emette una nuvola di gas che trascina le goccioline: arrivano fino a circa 8 metri.»
+- `bn-sole-terra`: 
+  - nota: «Eppure è una stella di media grandezza. Ce ne sono di centinaia di volte più grandi.» → «Secondo i dati della NASA ce ne starebbero circa 1,3 milioni. Eppure, tra le stelle, il Sole è di media grandezza.»
+- `bn-saturno-anelli`: 
+  - testo: «Gli anelli di Saturno sono larghi centinaia di migliaia di km ma spessi spesso meno di un chilometro.» → «Gli anelli di Saturno arrivano a 282.000 km dal pianeta, ma di solito sono spessi una decina di metri.»
+  - hl: «meno di un chilometro» → «una decina di metri»
+  - nota: «Sono fatti di pezzi di ghiaccio e roccia. In proporzione sono più sottili di un foglio di carta.» → «Sono fatti di miliardi di pezzi di ghiaccio e roccia. In proporzione sono molto più sottili di un foglio di carta.»
+- `bn-via-lattea-collisione`: 
+  - testo: «La nostra galassia si scontrerà con Andromeda.» → «Lo scontro tra la nostra galassia e Andromeda, che si dava per certo, potrebbe non avvenire.»
+  - hl: «si scontrerà con Andromeda» → «potrebbe non avvenire»
+  - nota: «Succederà tra circa quattro o cinque miliardi di anni. Le stelle sono così lontane tra loro che quasi nessuna si urterà.» → «Uno studio del 2025 con i dati di Hubble e Gaia dà solo il 2% di probabilità che avvenga entro cinque miliardi di anni. In circa metà delle simulazioni le due galassie si fondono, ma più tardi.»
+- `bn-orme-luna-2`: 
+  - nota: «Tutte americane, tra il 1969 e il 1972. Da allora nessuno ci è più tornato.» → «Tutti uomini e tutti americani, in sei missioni Apollo tra il 1969 e il 1972. Da allora nessuno ci ha più camminato.»
+- `bn-oro-tutto`: 
+  - testo: «Tutto l'oro estratto nella storia starebbe in un cubo di circa 22 metri di lato.» → «Tutto l'oro estratto nella storia starebbe in un cubo di circa 23 metri di lato.»
+  - hl: «circa 22 metri di lato» → «circa 23 metri di lato»
+  - nota: «Sono oltre 200.000 tonnellate. L'oro è così denso che occupa pochissimo spazio.» → «Secondo il World Gold Council sono circa 222.600 tonnellate, due terzi estratte dopo il 1950. Quasi tutto esiste ancora: l'oro non si consuma.»
+- `bn-oro-stelle`: 
+  - nota: «Gli elementi più pesanti del ferro nascono in eventi violentissimi, come la fusione di due stelle di neutroni. L'anello che porti è polvere di stelle.» → «Nel 2017 i telescopi hanno osservato la fusione di due stelle di neutroni: ne uscì oro pari a circa 200 volte la massa della Terra. Fusioni come questa possono spiegare tutto l'oro dell'universo.»
+- `bn-plastica-1907`: 
+  - nota: «Era la bachelite, usata per telefoni, radio e interruttori. Prima esistevano materiali plastici di origine naturale.» → «Era la bachelite, inventata dal chimico belga Leo Baekeland. Per decenni se ne fecero telefoni, radio, gioielli e palle da biliardo.»
+- `bn-suono-acqua`: 
+  - nota: «Per questo le balene comunicano a enormi distanze, e sott'acqua è difficile capire da dove arriva un rumore.» → «In acqua va a circa 1.500 metri al secondo, in aria a circa 340. Nell'oceano la velocità cambia con temperatura e pressione, e questo decide quanto lontano arriva il suono.»
+- `bn-radiografia`: 
+  - nota: «Nel 1895 Wilhelm Röntgen notò che uno schermo si illuminava anche se il suo tubo era coperto. La prima radiografia fu la mano della moglie, con l'anello.» → «Nel 1895 Wilhelm Röntgen aveva coperto il tubo con del cartone, eppure uno schermo lì vicino si illuminava. Una delle prime radiografie fu la mano della moglie, con l'anello.»
+- `bn-teflon`: 
+  - nota: «Nel 1938 un chimico della DuPont trovò una sostanza bianca e scivolosa in una bombola che doveva contenere un gas per frigoriferi.» → «Nel 1938 Roy Plunkett, della DuPont, aprì una bombola che doveva contenere un gas per produrre refrigeranti. Dentro trovò una polvere bianca, scivolosa e resistente al calore.»
+- `bq-hashtag`: 
+  - nota: «Lo propose Chris Messina per raggruppare i messaggi per argomento. All'inizio i fondatori pensavano che fosse troppo da informatici.» → «Lo propose Chris Messina il 23 agosto 2007, per raggruppare i messaggi per argomento. All'inizio Twitter non era convinto che servisse.»
+- `bq-bandiera-rossa`: 
+  - nota: «Lo imponeva una legge del 1865 per i veicoli a motore. Il limite in città era di circa 3 km/h. Fu abolita nel 1896.» → «Lo imponeva una legge del 1865, che fissava il limite in città a due miglia orarie, circa 3 km/h. Nel 1896 una nuova legge esentò le auto leggere e alzò il limite a 14 miglia orarie.»
+- `bq-cintura-volvo`: 
+  - nota: «L'ingegnere Nils Bohlin la inventò nel 1959. Volvo lasciò il brevetto libero perché tutte le case potessero usarla. Ha salvato milioni di vite.» → «L'ingegnere Nils Bohlin la portò sulle Volvo nel 1959. Volvo scelse di non far valere il brevetto, così tutti potevano usarla. Secondo Volvo ha salvato circa un milione di vite.»
+- `bq-carta-igienica-roma`: 
+  - testo: «Gli antichi Romani usavano una spugna su un bastone al posto della carta igienica.» → «Nelle latrine degli antichi Romani c'era una spugna su un bastone, il tersorium.»
+  - hl: «una spugna su un bastone» → «una spugna su un bastone»
+  - nota: «Si chiamava «tersorium» e si sciacquava in acqua e aceto. Spesso era in comune nelle latrine pubbliche.» → «Secondo le fonti antiche la spugna si bagnava in aceto o acqua salata. Gli archeologi però discutono ancora se servisse a pulirsi o a pulire la latrina.»
+- `bq-ghiaccio-india`: 
+  - nota: «Frederic Tudor, il «re del ghiaccio», lo tagliava in blocchi e lo isolava con segatura. Arrivava a destinazione dopo mesi di viaggio.» → «Nel 1833 l'imprenditore di Boston Frederic Tudor spedì 180 tonnellate di ghiaccio fino a Calcutta, un viaggio di 16.000 miglia. Lo isolava con segatura e paglia.»
+- `bq-frisbee`: 
+  - testo: «Il frisbee nasce dalle teglie di una pasticceria.» → «Il nome «frisbee» viene dalle teglie di una pasticceria.»
+  - nota: «Gli studenti di Yale si lanciavano i vassoi vuoti della Frisbie Pie Company. L'azienda di giocattoli ne prese il nome.» → «Gli studenti di Yale si lanciavano le teglie vuote della Frisbie Pie Company. La Wham-O, che vendeva il disco di plastica inventato da Fred Morrison, ne prese il nome.»
+- `bq-acqua-colonia`: 
+  - nota: «Giovanni Maria Farina, emigrato in Germania dalla Valle Vigezzo, la creò a Colonia nel 1709 e la chiamò così in onore della città.» → «La formula fu di Giovanni Paolo Feminis, emigrato in Germania dalla Valle Vigezzo. Un suo lontano parente, Giovanni Maria Farina, la produsse a Colonia dal 1709 e la rese famosa.»
+- `bq-gomma-pane`: 
+  - nota: «Nel 1770 l'inglese Edward Nairne, secondo la storia, prese per sbaglio un pezzo di caucciù invece del pane e scoprì che cancellava meglio.» → «Verso il 1766, racconta la storia, il chimico inglese Joseph Priestley prese per sbaglio un pezzo di caucciù invece del pane e vide che cancellava meglio. Edward Nairne cominciò a venderlo.»
+- `bq-hello`: 
+  - nota: «Prevalse «hello», proposto da Edison. In Italia si dice «pronto», cioè «sono pronto ad ascoltare».» → «Prevalse «hello», proposto dal suo rivale Thomas Edison. In Italia invece si risponde «pronto».»
+- `bq-aspirapolvere`: 
+  - testo: «Il primo aspirapolvere girava per le strade su un carro tirato da cavalli.» → «Uno dei primi aspirapolvere girava per le strade su un carro tirato da cavalli.»
+  - nota: «Il «Puffing Billy» di Hubert Booth, del 1901, era enorme: restava fuori e i tubi entravano dalle finestre.» → «Il «Puffing Billy» di Hubert Booth, del 1901, era così grande che andava portato di casa in casa. Era anche rumoroso: i vicini protestavano e i cavalli si spaventavano.»
+- `bq-caesar-salad`: 
+  - nota: «Cesare Cardini, emigrato dal lago Maggiore, la creò nel suo ristorante di Tijuana negli anni Venti. Non c'entra Giulio Cesare.» → «Secondo il racconto più diffuso, il piemontese Cesare Cardini la improvvisò il 4 luglio 1924 nel suo ristorante di Tijuana, pieno di americani in fuga dal proibizionismo. Non c'entra Giulio Cesare.»
+- `bq-cioccolato-latte`: 
+  - nota: «Daniel Peter ci riuscì usando il latte in polvere del vicino di casa, Henri Nestlé.» → «Daniel Peter, a Vevey, provò prima con il latte in polvere del vicino di casa, Henri Nestlé, ma non funzionò. Ci riuscì con il latte condensato.»
+- `bq-cioccolato-bevanda`: 
+  - testo: «Per secoli il cioccolato si è soltanto bevuto.» → «Per secoli il cioccolato si è soprattutto bevuto.»
+  - hl: «soltanto bevuto» → «soprattutto bevuto»
+  - nota: «Aztechi ed europei lo consumavano come bevanda. La prima tavoletta da mangiare è inglese, del 1847.» → «Aztechi ed europei lo consumavano come bevanda. Nel 1847 l'azienda inglese Fry aggiunse burro di cacao e ottenne le prime tavolette prodotte in serie.»
+- `bq-kiwi`: 
+  - nota: «Viene dalla Cina. I coltivatori neozelandesi lo ribattezzarono negli anni Cinquanta per venderlo meglio all'estero, con il nome del loro uccello simbolo.» → «I primi semi arrivarono in Nuova Zelanda dalla Cina nel 1904. Il 15 giugno 1959 l'azienda Turners and Growers cominciò a chiamarlo kiwifruit, per venderlo meglio negli Stati Uniti.»
+- `bq-finlandia-saune`: 
+  - testo: «In Finlandia ci sono milioni di saune, quasi una ogni due abitanti.» → «In Finlandia ci sono più di tre milioni di saune.»
+  - hl: «milioni di saune» → «più di tre milioni di saune»
+  - nota: «Sono nelle case, negli uffici, perfino nel Parlamento. La sauna finlandese è patrimonio UNESCO.» → «Secondo l'Agenzia finlandese per il patrimonio sono 3,2 milioni, e quasi il 90% dei finlandesi fa la sauna ogni settimana. Dal 2020 è patrimonio immateriale UNESCO.»
+- `bq-islanda-app`: 
+  - nota: «Con circa 380.000 abitanti, quasi tutti discendenti da poche famiglie, il rischio non è teorico. L'app usa un archivio genealogico nazionale.» → «Usa l'archivio Íslendingabók, una specie di albero genealogico di tutto il paese. Avvicinando i telefoni si scopre quanto si è parenti. Lo slogan: «urta l'app prima di urtarvi a letto».»
+- `bq-giappone-treni`: 
+  - nota: «Nel 2017, sulla linea tra Tokyo e Tsukuba. Per i ritardi le compagnie rilasciano certificati da mostrare al lavoro.» → «Il 14 novembre 2017 un treno della Tsukuba Express lasciò la stazione di Minami Nagareyama circa 20 secondi prima dell'orario. La compagnia pubblicò le scuse sul suo sito.»
+- `bq-alaska`: 
+  - nota: «Era il 1867: circa due centesimi per acro. In America molti la chiamarono «la follia di Seward», dal ministro che la volle. Poi ci trovarono l'oro e il petrolio.» → «Era il 1867: circa due centesimi per acro. I critici la chiamarono «la follia di Seward», dal segretario di Stato che trattò l'acquisto.»
 
 **Duplicati segnalati**
 
