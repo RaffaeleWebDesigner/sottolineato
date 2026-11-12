@@ -89,7 +89,7 @@ Valgono per ogni scheda nuova o modificata.
 
 ## Roadmap
 
-1. **Fondamenta tecniche**: schema della scheda, contenuti in JSON per lingua, testi dell'interfaccia in file di traduzione, script di controllo, app.js in moduli, migrazione dei salvataggi.
+1. **Fondamenta tecniche**: schema della scheda, contenuti in JSON per lingua, testi dell'interfaccia in file di traduzione, script di controllo, codice in moduli, migrazione dei salvataggi.
 2. **Contenuti**: guida di stile, verifica dei fatti, riequilibrio dei temi più deboli.
 3. **Esperienza**: feed a schermo intero, onboarding, contatore giornaliero, scheda del giorno, condivisione come immagine.
 4. **App web installabile**: manifest, offline.
@@ -98,4 +98,12 @@ Valgono per ogni scheda nuova o modificata.
 7. **Monetizzazione**: pubblicità con premio e abbonamenti.
 8. **Pre-lancio**, poi **pubblicazione**.
 
-Fase attuale: 1. Fatto: schema della scheda, contenuti in JSON per lingua, script di controllo (branch `fase-1-schema`, in attesa di revisione). Da fare: testi dell'interfaccia in file di traduzione, app.js in moduli, migrazione dei salvataggi.
+Fase attuale: 1, **completata, in attesa di revisione** (branch `fase-1-fine`, non ancora unito a `main`). Fatto:
+- schema della scheda e contenuti in JSON per lingua;
+- script di controllo, anche per le chiavi di traduzione;
+- filtro per id del tema e migrazione dei salvataggi;
+- testi dell'interfaccia in `i18n/it.json`;
+- codice in moduli ES in `js/`;
+- caricamento in due passi e `VERSIONE_DATI`.
+
+Prossima: fase 2.

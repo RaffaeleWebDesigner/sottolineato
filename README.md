@@ -44,13 +44,16 @@ poi apri `http://localhost:8000` nel browser.
 
 Schede salvate e imparate restano solo nel browser di chi le usa.
 
+Il sito carica prima i dati comuni delle schede (bastano per contare, filtrare e ordinare il feed), poi i testi, a partire da quelli della prima scheda in vista.
+
 ## Aggiungere una scheda
 
 1. Scegli il tipo e un `id` nuovo, unico e definitivo (gli id non si cambiano mai: i salvataggi degli utenti dipendono da loro).
 2. In `data/schede/<tipo>.json` aggiungi una riga con i dati comuni: `id`, `tipo`, `temi` (id di `data/temi.json`, il primo è il principale), `stato` (`da_verificare` o `verificata` con `verificata_il`), `aggiunta` (la data di oggi) e i campi del tipo (`vero`, `verdetto`, `autore`…).
 3. Per `mondo`, `mito` e `storica` aggiungi sempre una `fonte`: link o riferimento che conferma il fatto.
 4. In `data/testi/it/<tipo>.json` aggiungi la voce con lo stesso `id`: `testo` (massimo 220 caratteri), `hl` (identico a un pezzo di `testo`), `nota` e, dove serve, `opera`, `def`, `spunto`.
-5. Lancia il controllo e correggi finché non passa:
+5. Aumenta di 1 `VERSIONE_DATI` in `js/dati.js` (vale per ogni modifica a `data/` o `i18n/`).
+6. Lancia il controllo e correggi finché non passa:
 
 ```bash
 node scripts/controlla.mjs
