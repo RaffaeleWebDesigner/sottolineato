@@ -1,17 +1,42 @@
 (async () => {
+  // Lingua dell'interfaccia e dei contenuti: unico punto in cui si decide.
   const LINGUA = "it";
   const TIPI_DATI = ["frase", "idea", "parola", "sapevi", "storica", "mondo", "mito", "brillante"];
   const feed = document.getElementById("feed");
+  document.documentElement.lang = LINGUA;
 
-  // Carica temi, schede (dati comuni) e testi nella lingua scelta, e ricompone ogni scheda
-  // con gli stessi campi usati dal resto del codice: tema è il nome del tema principale.
+  // ——— Traduzioni dell'interfaccia ———
+  const SVILUPPO = ["localhost", "127.0.0.1", ""].includes(location.hostname);
+  let traduzioni = {};
+  const mancanti = new Set();
+  // t(chiave, valori): testo tradotto della chiave (es. gruppo.chiave), con i segnaposto {nome} sostituiti.
+  // Se la chiave manca mostra la chiave stessa e, in sviluppo, avvisa in console.
+  function t(chiave, valori = {}) {
+    const testo = chiave.split(".").reduce((o, k) => (o && typeof o === "object" ? o[k] : undefined), traduzioni);
+    if (typeof testo !== "string") {
+      if (SVILUPPO && !mancanti.has(chiave)) { mancanti.add(chiave); console.warn(`Traduzione mancante: ${chiave}`); }
+      return chiave;
+    }
+    return testo.replace(/\{(\w+)\}/g, (m, k) => (k in valori ? String(valori[k]) : m));
+  }
+  // Riempie gli elementi statici di index.html: data-i18n per il testo, data-i18n-<attributo> per gli attributi.
+  function traduciPagina() {
+    for (const n of document.querySelectorAll("[data-i18n]")) n.textContent = t(n.dataset.i18n);
+    for (const attr of ["aria-label", "title"]) {
+      for (const n of document.querySelectorAll(`[data-i18n-${attr}]`)) n.setAttribute(attr, t(n.getAttribute(`data-i18n-${attr}`)));
+    }
+  }
+
+  // ——— Dati ———
+  const json = p => fetch(p).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
+  // Carica temi, schede (dati comuni) e testi nella lingua scelta, e ricompone ogni scheda:
+  // tema è il nome del tema principale, temi resta la lista completa di id.
   async function caricaDati(lingua) {
-    const json = p => fetch(p).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
     const [temi, ...parti] = await Promise.all([
       json("data/temi.json"),
-      ...TIPI_DATI.map(t => Promise.all([json(`data/schede/${t}.json`), json(`data/testi/${lingua}/${t}.json`)])),
+      ...TIPI_DATI.map(tipo => Promise.all([json(`data/schede/${tipo}.json`), json(`data/testi/${lingua}/${tipo}.json`)])),
     ]);
-    const nomeTema = new Map(temi.map(t => [t.id, t.nome[lingua] || t.nome.it]));
+    const nomeTema = new Map(temi.map(x => [x.id, x.nome[lingua] || x.nome.it]));
     const schede = [];
     for (const [base, testi] of parti) {
       for (const b of base) {
@@ -19,37 +44,36 @@
         schede.push({ ...b, ...testi[b.id], tema: nomeTema.get(b.temi[0]), temaId: b.temi[0] });
       }
     }
-    return { schede, temi: temi.map(t => ({ id: t.id, nome: nomeTema.get(t.id), nomi: t.nome })) };
+    return { schede, temi: temi.map(x => ({ id: x.id, nome: nomeTema.get(x.id), nomi: x.nome })) };
   }
 
-  function messaggio(titolo, testo) {
-    const s = document.createElement("section"); s.className = "slide";
-    const e = document.createElement("div"); e.className = "card empty";
-    const st = document.createElement("strong"); st.textContent = titolo;
-    const sp = document.createElement("span"); sp.textContent = testo;
-    e.append(st, sp); s.appendChild(e); feed.replaceChildren(s);
-  }
-
-  messaggio("Caricamento…", "Sto preparando le schede.");
   let dati;
-  try { dati = await caricaDati(LINGUA); }
-  catch (err) {
+  try {
+    traduzioni = await json(`i18n/${LINGUA}.json`);
+    traduciPagina();
+    dati = await caricaDati(LINGUA);
+  } catch (err) {
     console.error(err);
-    messaggio("Non riesco a caricare le schede", "Se hai aperto il file direttamente dal computer, avvia un server locale: le istruzioni sono nel README.");
+    document.getElementById("stato-caricamento").hidden = true;
+    document.getElementById("stato-errore").hidden = false;
     return;
   }
   const TUTTI = dati.schede;
   const TEMI = dati.temi; // [{ id, nome, nomi }]
   const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
-  const TIPI = {
-    frase: "Frase", idea: "L'idea", parola: "Parola", sapevi: "Dietro il libro",
-    storica: "Citazione storica", mondo: "Vero o falso?", mito: "Mito o realtà?", brillante: "Da dire agli amici",
+  const NOMI_TIPI = {
+    frase: t("tipi.frase"), idea: t("tipi.idea"), parola: t("tipi.parola"), sapevi: t("tipi.sapevi"),
+    storica: t("tipi.storica"), mondo: t("tipi.mondo"), mito: t("tipi.mito"), brillante: t("tipi.brillante"),
   };
   const FILTRI_TIPO = [
-    ["tutto", "Tutto"], ["libri", "Libri e opere"], ["storica", "Citazioni storiche"],
-    ["mondo", "Vero o falso"], ["mito", "Miti"], ["brillante", "Da dire agli amici"], ["salvate", "Salvate"],
+    ["tutto", t("filtri.tutto")], ["libri", t("filtri.libri")], ["storica", t("filtri.storica")],
+    ["mondo", t("filtri.mondo")], ["mito", t("filtri.mito")], ["brillante", t("filtri.brillante")], ["salvate", t("filtri.salvate")],
   ];
-  const VERDETTI = { vera: ["Detta davvero", "good"], attribuita: ["Attribuita", "mid"], mai: ["Mai detta così", "bad"] };
+  const VERDETTI = {
+    vera: [t("verdetti.vera"), "good", t("verdetti_frase.vera")],
+    attribuita: [t("verdetti.attribuita"), "mid", t("verdetti_frase.attribuita")],
+    mai: [t("verdetti.mai"), "bad", t("verdetti_frase.mai")],
+  };
   const OPERE_LIBRI = [...new Set(TUTTI.filter(x => LIBRI.has(x.tipo)).map(x => x.opera))];
 
   const store = {
@@ -67,7 +91,7 @@
       esegui() {
         const v = store.get("sott-tema", null);
         if (v === null) return;
-        const tema = TEMI.find(t => t.id === v) || TEMI.find(t => Object.values(t.nomi).includes(v));
+        const tema = TEMI.find(x => x.id === v) || TEMI.find(x => Object.values(x.nomi).includes(v));
         if (tema) store.set("sott-tema", tema.id); else store.remove("sott-tema");
       },
     },
@@ -86,7 +110,7 @@
   let filtroTipo = store.get("sott-tipo", "tutto");
   if (!FILTRI_TIPO.some(([k]) => k === filtroTipo)) filtroTipo = "tutto";
   let filtroTema = store.get("sott-tema", null); // id del tema
-  if (filtroTema && !TEMI.some(t => t.id === filtroTema)) filtroTema = null;
+  if (filtroTema && !TEMI.some(x => x.id === filtroTema)) filtroTema = null;
   let seme = daySeed();
 
   const chipsTipo = document.getElementById("chips-tipo");
@@ -115,6 +139,10 @@
     return out;
   }
   function el(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  // Bottone con icona e testo; il testo sta in uno <span> da poter cambiare dopo.
+  function bottoneAzione(icona, testo) {
+    const b = el("button", "act"); b.type = "button"; b.innerHTML = icona; b.appendChild(el("span", null, testo)); return b;
+  }
 
   function mainNode(f) {
     const cls = {
@@ -133,15 +161,16 @@
   }
 
   function sourceNode(f, extra) {
+    const sep = t("scheda.separatore");
     const src = el("p", "src");
     src.append(el("b", null, f.autore));
-    if (f.opera) src.append(document.createTextNode(" · "), el(LIBRI.has(f.tipo) ? "i" : "span", null, f.opera));
-    const meta = [f.rif, f.anno].filter(Boolean).join(" · ") + (extra || "");
+    if (f.opera) src.append(document.createTextNode(sep), el(LIBRI.has(f.tipo) ? "i" : "span", null, f.opera));
+    const meta = [f.rif, f.anno, extra].filter(Boolean).join(sep);
     if (meta) src.append(el("small", null, meta));
     return src;
   }
 
-  function renderStats() { stats.textContent = `${imparate.size} imparate · ${salvate.size} salvate`; }
+  function renderStats() { stats.textContent = t("intestazione.contatori", { imparate: imparate.size, salvate: salvate.size }); }
   function impara(id) { imparate.add(id); store.set("sott-imparate", [...imparate]); renderStats(); }
 
   function chip(label, pressed, onClick, id) {
@@ -151,8 +180,8 @@
   function renderChips() {
     chipsTipo.replaceChildren(...FILTRI_TIPO.map(([k, label]) =>
       chip(label, filtroTipo === k, () => { filtroTipo = k; store.set("sott-tipo", k); renderChips(); renderFeed(); }, "tipo-" + k)));
-    chipsTema.replaceChildren(...TEMI.map(t =>
-      chip(t.nome, filtroTema === t.id, () => { filtroTema = filtroTema === t.id ? null : t.id; store.set("sott-tema", filtroTema); renderChips(); renderFeed(); }, "tema-" + t.id)));
+    chipsTema.replaceChildren(...TEMI.map(x =>
+      chip(x.nome, filtroTema === x.id, () => { filtroTema = filtroTema === x.id ? null : x.id; store.set("sott-tema", filtroTema); renderChips(); renderFeed(); }, "tema-" + x.id)));
   }
 
   // Domanda a scelta multipla dentro la scheda. Mentre è aperta, gli elementi .reveal restano sfocati.
@@ -182,8 +211,8 @@
     c.style.setProperty("--tint", `var(--t-${f.temaId})`);
     const head = el("div", "card-head");
     const label = el("span", "label");
-    label.append(el("span", "kind", TIPI[f.tipo]), document.createTextNode(" · " + f.tema));
-    head.append(label, el("span", "count", `${idx + 1} / ${tot}`));
+    label.append(el("span", "kind", NOMI_TIPI[f.tipo]), document.createTextNode(t("scheda.separatore") + f.tema));
+    head.append(label, el("span", "count", t("scheda.contatore", { n: idx + 1, tot })));
 
     const body = el("div", "body");
     body.appendChild(mainNode(f));
@@ -191,56 +220,58 @@
 
     if (LIBRI.has(f.tipo)) {
       if (f.tipo === "parola") body.appendChild(el("p", "def", f.def));
-      const extra = f.tipo === "frase" ? (f.trad ? " · traduzione nostra" : "") : f.tipo === "idea" ? " · raccontata con parole nostre" : "";
+      const extra = f.tipo === "frase" ? (f.trad ? t("scheda.traduzione_nostra") : "") : f.tipo === "idea" ? t("scheda.parole_nostre") : "";
       const src = sourceNode(f, extra); src.classList.add("reveal");
       body.append(src, el("p", "note reveal", f.nota));
-      const head = f.tipo === "frase" ? `«${f.testo.replace(/\n/g, " ")}»` : f.tipo === "parola" ? `${f.testo}: ${f.def}` : f.testo;
-      copyText = `${head} — ${f.autore}, ${f.opera}`;
+      const valori = { testo: f.testo.replace(/\n/g, " "), def: f.def, autore: f.autore, opera: f.opera };
+      copyText = f.tipo === "frase" ? t("copia.frase", valori) : f.tipo === "parola" ? t("copia.parola", valori) : t("copia.libro", { ...valori, testo: f.testo });
     } else if (f.tipo === "storica") {
       body.appendChild(sourceNode(f));
-      const [vt, vk] = VERDETTI[f.verdetto];
+      const [vt, vk, vFrase] = VERDETTI[f.verdetto];
       const res = el("div", "reveal"); res.append(badge(vt, vk), el("p", "note", f.nota));
       body.appendChild(res);
-      const scelte = ["Detta davvero", "Attribuita", "Mai detta così"];
-      body.appendChild(makeQuiz(c, "L'ha detta davvero?", scelte, vt, {
-        onRight: () => impara(f.id), rightText: "Esatto.", wrongText: `No: ${vt.toLowerCase()}.`,
+      const scelte = [VERDETTI.vera[0], VERDETTI.attribuita[0], VERDETTI.mai[0]];
+      body.appendChild(makeQuiz(c, t("quiz.domanda_storica"), scelte, vt, {
+        onRight: () => impara(f.id), rightText: t("quiz.esatto"), wrongText: t("quiz.sbagliato_storica", { verdetto: vFrase }),
       }));
       c.classList.add("quizzing");
-      copyText = `«${f.testo}» — ${f.autore}. Verdetto: ${vt.toLowerCase()}. ${f.nota}`;
+      copyText = t("copia.storica", { testo: f.testo, autore: f.autore, verdetto: vFrase, nota: f.nota });
     } else if (f.tipo === "mondo" || f.tipo === "mito") {
       const mito = f.tipo === "mito";
-      const giusta = mito ? (f.vero ? "È vero" : "È un mito") : (f.vero ? "Vero" : "Falso");
-      const etichetta = mito ? (f.vero ? "Confermato" : "Mito sfatato") : giusta;
+      const opzioni = mito ? [t("quiz.e_vero"), t("quiz.e_un_mito")] : [t("quiz.vero"), t("quiz.falso")];
+      const giusta = f.vero ? opzioni[0] : opzioni[1];
+      const etichetta = mito ? (f.vero ? t("quiz.confermato") : t("quiz.mito_sfatato")) : giusta;
+      const sbagliato = mito ? (f.vero ? t("quiz.sbagliato_mito_vero") : t("quiz.sbagliato_mito_falso")) : (f.vero ? t("quiz.sbagliato_vero") : t("quiz.sbagliato_falso"));
       const res = el("div", "reveal"); res.append(badge(etichetta, f.vero ? "good" : "bad"), el("p", "note", f.nota));
       body.appendChild(res);
-      body.appendChild(makeQuiz(c, mito ? "Mito o realtà?" : "Che ne dici?", mito ? ["È vero", "È un mito"] : ["Vero", "Falso"], giusta, {
-        onRight: () => impara(f.id), rightText: "Esatto.", wrongText: mito ? (f.vero ? "No, è vero." : "No, è un mito.") : `No, è ${giusta.toLowerCase()}.`,
+      body.appendChild(makeQuiz(c, mito ? t("quiz.domanda_mito") : t("quiz.domanda_mondo"), opzioni, giusta, {
+        onRight: () => impara(f.id), rightText: t("quiz.esatto"), wrongText: sbagliato,
       }));
       c.classList.add("quizzing");
-      copyText = `${f.testo} ${etichetta}. ${f.nota}`;
+      copyText = t("copia.mondo", { testo: f.testo, risposta: etichetta, nota: f.nota });
     } else if (f.tipo === "brillante") {
       body.appendChild(el("p", "def", f.def));
       const sp = el("div", "spunto");
-      sp.append(el("span", "spunto-label", "Come tirarlo fuori"), el("p", null, `«${f.spunto}»`));
+      sp.append(el("span", "spunto-label", t("scheda.come_tirarlo_fuori")), el("p", null, t("scheda.spunto", { spunto: f.spunto })));
       body.append(sp, el("p", "note", f.nota));
       if (f.autore) body.appendChild(sourceNode(f));
       copyText = f.spunto;
     }
 
     const actions = el("div", "actions");
-    const bSave = el("button", "act"); bSave.type = "button"; bSave.innerHTML = ICONS.save + "<span>Salva</span>";
-    const syncSave = () => { const on = salvate.has(f.id); bSave.setAttribute("aria-pressed", String(on)); bSave.lastChild.textContent = on ? "Salvata" : "Salva"; };
+    const bSave = bottoneAzione(ICONS.save, t("azioni.salva"));
+    const syncSave = () => { const on = salvate.has(f.id); bSave.setAttribute("aria-pressed", String(on)); bSave.lastChild.textContent = on ? t("azioni.salvata") : t("azioni.salva"); };
     syncSave();
     bSave.addEventListener("click", () => { salvate.has(f.id) ? salvate.delete(f.id) : salvate.add(f.id); store.set("sott-salvate", [...salvate]); syncSave(); renderStats(); });
     actions.appendChild(bSave);
 
     if (LIBRI.has(f.tipo) && f.tipo !== "sapevi") {
-      const bQuiz = el("button", "act"); bQuiz.type = "button"; bQuiz.innerHTML = ICONS.quiz + "<span>Mettimi alla prova</span>";
+      const bQuiz = bottoneAzione(ICONS.quiz, t("azioni.mettimi_alla_prova"));
       bQuiz.addEventListener("click", () => {
         body.querySelector(".quiz")?.remove();
         const scelte = shuffle([f.opera, ...shuffle(OPERE_LIBRI.filter(o => o !== f.opera)).slice(0, 2)]);
-        const quiz = makeQuiz(c, f.tipo === "parola" ? "Da quale opera viene?" : "Da quale libro?", scelte, f.opera, {
-          onRight: () => impara(f.id), rightText: "Esatto. Imparata.", wrongText: `Era «${f.opera}». Ci riprovi la prossima volta.`,
+        const quiz = makeQuiz(c, f.tipo === "parola" ? t("quiz.domanda_parola") : t("quiz.domanda_libro"), scelte, f.opera, {
+          onRight: () => impara(f.id), rightText: t("quiz.esatto_imparata"), wrongText: t("quiz.sbagliato_libro", { opera: f.opera }),
         });
         body.appendChild(quiz); c.classList.add("quizzing");
         quiz.querySelector(".opt").focus({ preventScroll: true });
@@ -248,12 +279,11 @@
       actions.appendChild(bQuiz);
     }
 
-    const bCopy = el("button", "act"); bCopy.type = "button";
-    bCopy.innerHTML = ICONS.copy + `<span>${f.tipo === "brillante" ? "Copia la frase" : "Copia"}</span>`;
-    const copyLabel = bCopy.lastChild.textContent;
+    const copyLabel = f.tipo === "brillante" ? t("azioni.copia_frase") : t("azioni.copia");
+    const bCopy = bottoneAzione(ICONS.copy, copyLabel);
     bCopy.addEventListener("click", async () => {
-      try { await navigator.clipboard.writeText(copyText); bCopy.lastChild.textContent = "Copiata"; }
-      catch { const r = document.createRange(); r.selectNodeContents(body.querySelector(".q")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); bCopy.lastChild.textContent = "Testo selezionato"; }
+      try { await navigator.clipboard.writeText(copyText); bCopy.lastChild.textContent = t("azioni.copiata"); }
+      catch { const r = document.createRange(); r.selectNodeContents(body.querySelector(".q")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); bCopy.lastChild.textContent = t("azioni.testo_selezionato"); }
       setTimeout(() => { bCopy.lastChild.textContent = copyLabel; }, 1800);
     });
     actions.appendChild(bCopy);
@@ -277,8 +307,8 @@
     if (!lista.length) {
       const s = el("section", "slide"); const e = el("div", "card empty");
       const salv = filtroTipo === "salvate";
-      e.append(el("strong", null, salv ? "Nessuna scheda salvata" : "Nessuna scheda qui"),
-        el("span", null, salv ? "Tocca Salva su una scheda per ritrovarla qui." : "Prova un altro tema o torna a Tutto."));
+      e.append(el("strong", null, salv ? t("vuoto.salvate_titolo") : t("vuoto.titolo")),
+        el("span", null, salv ? t("vuoto.salvate_testo") : t("vuoto.testo")));
       s.appendChild(e); feed.appendChild(s); return;
     }
     // Le schede si creano a blocchi mentre si scorre, così la pagina resta leggera anche con migliaia di schede.
@@ -304,6 +334,6 @@
     if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); feed.scrollBy({ top: -feed.clientHeight, behavior: "smooth" }); }
   });
 
-  document.getElementById("totale").textContent = `${TUTTI.length} schede: libri, storia, scienza, musica, cinema e curiosità`;
+  document.getElementById("totale").textContent = t("app.totale", { n: TUTTI.length });
   renderChips(); renderFeed(); renderStats();
 })();

@@ -119,6 +119,46 @@ for (const l of LINGUE_ATTESE) {
   if (mancanti.length) avviso(`${mancanti.length} schede senza testo ${l}${mancanti.length <= 5 ? ": " + mancanti.join(", ") : ` (per esempio ${mancanti.slice(0, 5).join(", ")})`}`);
 }
 
+// ——— Testi dell'interfaccia (i18n) ———
+// Chiavi usate: chiamate t("chiave") nel codice JavaScript e attributi data-i18n / data-i18n-<attributo> in index.html.
+const fileI18n = path.join(radice, "i18n", `${LINGUA_BASE}.json`);
+const chiaviI18n = new Set();
+if (!fs.existsSync(fileI18n)) errore(`i18n/${LINGUA_BASE}.json`, "file mancante");
+else {
+  const appiattisci = (o, prefisso = "") => {
+    for (const [k, v] of Object.entries(o)) {
+      const chiave = prefisso ? `${prefisso}.${k}` : k;
+      if (v && typeof v === "object" && !Array.isArray(v)) appiattisci(v, chiave);
+      else if (typeof v === "string") chiaviI18n.add(chiave);
+      else errore(`i18n/${LINGUA_BASE}.json`, `«${chiave}» deve essere un testo o un gruppo di testi`);
+    }
+  };
+  const radiceI18n = leggi(fileI18n);
+  if (radiceI18n) appiattisci(radiceI18n);
+}
+const fileCodice = [];
+const cerca = dir => { for (const n of fs.readdirSync(dir, { withFileTypes: true })) {
+  const p = path.join(dir, n.name);
+  if (n.isDirectory()) { if (!["node_modules", ".git", "data", "scripts", "i18n"].includes(n.name)) cerca(p); }
+  else if (/\.(m?js|html)$/.test(n.name)) fileCodice.push(p);
+} };
+cerca(radice);
+const usate = new Map(); // chiave → primo file in cui compare
+for (const file of fileCodice) {
+  const testo = fs.readFileSync(file, "utf8");
+  const rel = path.relative(radice, file);
+  const segna = chiave => { if (!usate.has(chiave)) usate.set(chiave, rel); };
+  if (file.endsWith(".html")) {
+    for (const m of testo.matchAll(/data-i18n(?:-[a-z-]+)?="([^"]+)"/g)) segna(m[1]);
+  } else {
+    for (const m of testo.matchAll(/\bt\(\s*(["'])([^"']+)\1/g)) segna(m[2]);
+    for (const m of testo.matchAll(/\bt\(\s*`/g)) avviso(`${rel}: chiamata t(\`…\`) con chiave dinamica, non controllabile`);
+  }
+}
+for (const [chiave, file] of usate) if (!chiaviI18n.has(chiave)) errore(file, `chiave di traduzione «${chiave}» assente in i18n/${LINGUA_BASE}.json`);
+const nonUsate = [...chiaviI18n].filter(k => !usate.has(k));
+if (nonUsate.length) avviso(`${nonUsate.length} chiavi in i18n/${LINGUA_BASE}.json mai usate: ${nonUsate.join(", ")}`);
+
 // ——— Riepilogo ———
 const conta = (chiave) => { const c = {}; for (const s of schede.values()) { const k = chiave(s); c[k] = (c[k] || 0) + 1; } return c; };
 const stampa = (titolo, oggetto) => {

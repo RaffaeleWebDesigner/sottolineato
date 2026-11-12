@@ -55,7 +55,7 @@ Valgono per ogni scheda nuova o modificata.
 - Prima di unire un branch su `main`, provare il sito da server locale: feed, filtri per tipo e tema, quiz, salvate.
 - Commit in italiano, descrittivi.
 - Non introdurre strumenti di build o dipendenze senza averlo deciso prima.
-- Testi dell'interfaccia sempre in italiano, per ora scritti nel codice: verranno spostati in file di traduzione nella fase 1.
+- Testi dell'interfaccia: mai scritti nel codice. Vanno in `i18n/<lingua>.json` e si leggono con `t(chiave, valori)` o, in `index.html`, con `data-i18n`.
 
 ## Roadmap
 

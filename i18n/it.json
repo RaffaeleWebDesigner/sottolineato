@@ -1,0 +1,105 @@
+{
+  "app": {
+    "nome": "Sottolineato",
+    "titolo": "Sottolineato · Cose intelligenti, una alla volta",
+    "totale": "{n} schede: libri, storia, scienza, musica, cinema e curiosità",
+    "suggerimento": "Cose intelligenti, una alla volta · Scorri verso l'alto"
+  },
+  "intestazione": {
+    "rimescola": "Rimescola",
+    "contatori": "{imparate} imparate · {salvate} salvate"
+  },
+  "aria": {
+    "filtri_tipo": "Tipo di scheda",
+    "filtri_tema": "Temi",
+    "feed": "Schede"
+  },
+  "filtri": {
+    "tutto": "Tutto",
+    "libri": "Libri e opere",
+    "storica": "Citazioni storiche",
+    "mondo": "Vero o falso",
+    "mito": "Miti",
+    "brillante": "Da dire agli amici",
+    "salvate": "Salvate"
+  },
+  "tipi": {
+    "frase": "Frase",
+    "idea": "L'idea",
+    "parola": "Parola",
+    "sapevi": "Dietro il libro",
+    "storica": "Citazione storica",
+    "mondo": "Vero o falso?",
+    "mito": "Mito o realtà?",
+    "brillante": "Da dire agli amici"
+  },
+  "scheda": {
+    "contatore": "{n} / {tot}",
+    "separatore": " · ",
+    "traduzione_nostra": "traduzione nostra",
+    "parole_nostre": "raccontata con parole nostre",
+    "come_tirarlo_fuori": "Come tirarlo fuori",
+    "spunto": "«{spunto}»"
+  },
+  "verdetti": {
+    "vera": "Detta davvero",
+    "attribuita": "Attribuita",
+    "mai": "Mai detta così"
+  },
+  "verdetti_frase": {
+    "vera": "detta davvero",
+    "attribuita": "attribuita",
+    "mai": "mai detta così"
+  },
+  "azioni": {
+    "salva": "Salva",
+    "salvata": "Salvata",
+    "mettimi_alla_prova": "Mettimi alla prova",
+    "copia": "Copia",
+    "copia_frase": "Copia la frase",
+    "copiata": "Copiata",
+    "testo_selezionato": "Testo selezionato"
+  },
+  "quiz": {
+    "domanda_storica": "L'ha detta davvero?",
+    "domanda_mondo": "Che ne dici?",
+    "domanda_mito": "Mito o realtà?",
+    "domanda_libro": "Da quale libro?",
+    "domanda_parola": "Da quale opera viene?",
+    "vero": "Vero",
+    "falso": "Falso",
+    "e_vero": "È vero",
+    "e_un_mito": "È un mito",
+    "confermato": "Confermato",
+    "mito_sfatato": "Mito sfatato",
+    "esatto": "Esatto.",
+    "esatto_imparata": "Esatto. Imparata.",
+    "sbagliato_storica": "No: {verdetto}.",
+    "sbagliato_vero": "No, è vero.",
+    "sbagliato_falso": "No, è falso.",
+    "sbagliato_mito_vero": "No, è vero.",
+    "sbagliato_mito_falso": "No, è un mito.",
+    "sbagliato_libro": "Era «{opera}». Ci riprovi la prossima volta."
+  },
+  "copia": {
+    "frase": "«{testo}» — {autore}, {opera}",
+    "libro": "{testo} — {autore}, {opera}",
+    "parola": "{testo}: {def} — {autore}, {opera}",
+    "storica": "«{testo}» — {autore}. Verdetto: {verdetto}. {nota}",
+    "mondo": "{testo} {risposta}. {nota}"
+  },
+  "vuoto": {
+    "titolo": "Nessuna scheda qui",
+    "testo": "Prova un altro tema o torna a Tutto.",
+    "salvate_titolo": "Nessuna scheda salvata",
+    "salvate_testo": "Tocca Salva su una scheda per ritrovarla qui."
+  },
+  "caricamento": {
+    "titolo": "Caricamento…",
+    "testo": "Sto preparando le schede."
+  },
+  "errori": {
+    "caricamento_titolo": "Non riesco a caricare le schede",
+    "caricamento_testo": "Se hai aperto il file direttamente dal computer, avvia un server locale: le istruzioni sono nel README."
+  }
+}

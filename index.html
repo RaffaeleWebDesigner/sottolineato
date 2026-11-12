@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sottolineato · Cose intelligenti, una alla volta</title>
+<title data-i18n="app.titolo">Sottolineato · Cose intelligenti, una alla volta</title>
 <meta name="description" content="Un feed in italiano da scorrere come un social, ma per imparare: frasi dai libri, citazioni storiche vere o false, curiosità su scienza, storia, musica e cinema, e idee da tirare fuori con gli amici.">
 <meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e1217" media="(prefers-color-scheme: dark)">
@@ -186,19 +186,22 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 <header class="top">
   <div class="brandrow">
     <div>
-      <h1 class="brand"><span>Sottolineato</span></h1>
+      <h1 class="brand"><span data-i18n="app.nome">Sottolineato</span></h1>
       <p class="sub" id="totale"></p>
     </div>
     <div class="side">
       <div class="stats" id="stats" aria-live="polite"></div>
-      <button class="mix" id="mix" type="button">Rimescola</button>
+      <button class="mix" id="mix" type="button" data-i18n="intestazione.rimescola">Rimescola</button>
     </div>
   </div>
-  <nav class="chips" id="chips-tipo" aria-label="Tipo di scheda"></nav>
-  <nav class="chips tema" id="chips-tema" aria-label="Temi"></nav>
+  <nav class="chips" id="chips-tipo" aria-label="Tipo di scheda" data-i18n-aria-label="aria.filtri_tipo"></nav>
+  <nav class="chips tema" id="chips-tema" aria-label="Temi" data-i18n-aria-label="aria.filtri_tema"></nav>
 </header>
-<main class="feed" id="feed" tabindex="-1" aria-label="Schede"></main>
-<div class="hint">Cose intelligenti, una alla volta · Scorri verso l'alto</div>
+<main class="feed" id="feed" tabindex="-1" aria-label="Schede" data-i18n-aria-label="aria.feed">
+  <section class="slide" id="stato-caricamento"><div class="card empty"><strong data-i18n="caricamento.titolo">Caricamento…</strong><span data-i18n="caricamento.testo">Sto preparando le schede.</span></div></section>
+  <section class="slide" id="stato-errore" hidden><div class="card empty"><strong data-i18n="errori.caricamento_titolo">Non riesco a caricare le schede</strong><span data-i18n="errori.caricamento_testo">Se hai aperto il file direttamente dal computer, avvia un server locale: le istruzioni sono nel README.</span></div></section>
+</main>
+<div class="hint" data-i18n="app.suggerimento">Cose intelligenti, una alla volta · Scorri verso l'alto</div>
 
 <script src="app.js"></script>
 </body>
