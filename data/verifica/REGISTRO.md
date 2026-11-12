@@ -9,12 +9,12 @@ Chi riprende il lavoro parte da qui: legge il riepilogo e continua dal primo pas
 - **Passo 1, guida di stile**: fatto (`data/GUIDA.md`).
 - **Passo 2, macro-categorie**: approvato il 12 novembre 2026: 6 categorie, premium Mente e vita.
 - **Passo 3, applicare le categorie**: fatto. `data/temi.json` ha `categorie` e un campo `categoria` per ogni tema; `mente-vita` ha `premium: true`, i temi restano `false`.
-- **Passo 4, verifica dei fatti**: blocchi completati 1 su 22. Prossimo blocco: **02 (MONDO 2)**, da `bm-mozart-cane`.
+- **Passo 4, verifica dei fatti**: blocchi completati 2 su 22. Prossimo blocco: **03 (MONDO 3)**, da `bn-neuroni-velocita`.
 - **Passo 5, temi deboli**: da fare.
 
 | Verificate | Corrette | In bozza | Da verificare | Totale |
 |---|---|---|---|---|
-| 98 | 45 | 2 | 1901 | 2001 |
+| 192 | 94 | 8 | 1801 | 2001 |
 
 *Corrette* sono le schede verificate dopo una correzione: sono contate anche tra le verificate.
 
@@ -48,7 +48,7 @@ Il metodo completo è nella richiesta della fase 2, riassunta qui.
 | N. | Blocco | Schede | Primo id | Ultimo id | Stato |
 |---|---|---|---|---|---|
 | 01 | MONDO 1 | 100 | `bf-althing` | `bm-mario-idraulico` | **fatto** (12/11/2026) |
-| 02 | MONDO 2 | 100 | `bm-mozart-cane` | `bn-naso-ricordi` | da fare |
+| 02 | MONDO 2 | 100 | `bm-mozart-cane` | `bn-naso-ricordi` | **fatto** (12/11/2026) |
 | 03 | MONDO 3 | 100 | `bn-neuroni-velocita` | `bq-kiwi` | da fare |
 | 04 | MONDO 4 | 100 | `bq-lampadina-secolo` | `bs-geo-hawaii` | da fare |
 | 05 | MONDO 5 | 100 | `bs-geo-islanda` | `bu-neapolis` | da fare |
@@ -247,6 +247,160 @@ Tipi di scheda dentro ogni categoria («libri» comprende frase, idea, parola e 
   - testo: «Anche i pesci dormono, pur senza chiudere gli occhi.» → «Anche i pesci dormono, anche se non come noi.»
   - hl: «senza chiudere gli occhi» → «Anche i pesci dormono»
   - nota: «Non hanno palpebre, ma rallentano, restano fermi e reagiscono meno agli stimoli. Alcuni si nascondono tra le rocce o si avvolgono in una bolla di muco.» → «Rallentano attività e metabolismo restando attenti ai pericoli: alcuni restano sospesi, altri si infilano nel fango o tra i coralli. Alcuni pesci pappagallo si avvolgono in una bolla di muco.»
+
+**Duplicati segnalati**
+
+- nessuno
+
+### Blocco 02: MONDO 2 (bm-mozart-cane → bn-naso-ricordi) — completato il 2026-11-12
+
+100 schede: 45 confermate, 49 corrette (e poi verificate), 6 in bozza.
+
+**In bozza**
+
+- `bn-cuore-giraffa`: Controversa: la Giraffe Conservation Foundation dice 11 kg, ma la ricerca trova uno studio del Journal of Experimental Biology con circa 2,7 kg (pagina bloccata, non aperta). Da decidere con fonti scientifiche aperte.
+- `bn-lombrichi-cuori`: Le uniche pagine trovate sulle cinque coppie di archi aortici sono siti di curiosità o di ripetizioni scolastiche; le pagine universitarie e di musei trovate erano irraggiungibili (403) o senza testo leggibile. Il fatto è noto: da verificare su una fonte accettata.
+- `bn-mucche-amiche`: La fonte primaria (tesi di dottorato di K. McLennan, University of Northampton, 2013, su core.ac.uk) è bloccata da un controllo anti-bot; trovati solo il titolo di un seminario a Cambridge e articoli di siti divulgativi (VegNews e simili). Da verificare sulla tesi.
+- `bn-impronte-dna`: Le fonti trovate sono studi su campioni piccoli (34-250 persone) che propongono la lingua come identificatore biometrico; nessuna dimostra che l'impronta della lingua sia unica per ogni persona come quella digitale. Da riformulare («la lingua si studia come identificatore biometrico») o lasciare fuori.
+- `bn-arcobaleno`: Non confermata da una pagina aperta: le fonti meteorologiche spiegano la geometria (42° dal punto opposto al Sole) ma non dicono esplicitamente che ognuno vede un arcobaleno diverso; la pagina APOD della NASA non si leggeva. Da riverificare.
+- `bm-musica-piante`: Controversa: la ricerca segnala studi recenti (non aperti: PubMed bloccava le richieste) che riportano effetti del suono sulla crescita delle piante. Il «falso» della scheda non è dimostrato: da riverificare.
+
+**Corrette** (prima → dopo)
+
+- `bn-lingua-giraffa`: 
+  - nota: «La usa per strappare le foglie tra le spine delle acacie. È scura, forse per proteggersi dalle scottature.» → «La usa come una mano per staccare le foglie tra le spine degli alberi. È blu scuro, forse per proteggersi dalle scottature: è l'ipotesi più seguita, ma non è certa.»
+- `bn-balene-canto`: «Si sente a centinaia di chilometri» non è confermato dalle fonti aperte; la seconda parte della nota, confermata, è diventata la scheda.
+  - testo: «Il canto delle megattere può essere sentito a centinaia di chilometri.» → «I maschi di megattera di una stessa popolazione cantano tutti la stessa canzone.»
+  - hl: «a centinaia di chilometri» → «la stessa canzone»
+  - nota: «Sott'acqua il suono viaggia lontanissimo. I maschi di una stessa zona cantano la stessa canzone, che cambia lentamente ogni anno.» → «La canzone cambia col tempo e tutti la aggiornano. Popolazioni dello stesso oceano cantano canzoni simili, quelle di oceani diversi canzoni diverse.»
+- `bn-balena-pesce`: Allattamento e sangue caldo non sono nelle pagine aperte (Smithsonian bloccato); la nota ora usa fatti confermati da National Geographic.
+  - nota: «È un mammifero: respira aria con i polmoni, allatta i piccoli e ha il sangue caldo. I suoi antenati camminavano sulla terraferma.» → «È un mammifero marino: non può respirare sott'acqua e deve tornare in superficie. I suoi antenati avevano le zampe: il Basilosaurus aveva ancora due piccole zampe posteriori.»
+- `bn-elefante-proboscide`: L'assenza di ossa e la nocciolina non sono nella pagina aperta (Smithsonian bloccato); la nota usa i dati di Scientific American.
+  - nota: «Non ha ossa. Con lei l'elefante solleva tronchi, ma riesce anche a raccogliere una nocciolina.» → «Contiene circa 40.000 muscoli e pesa circa 140 chili. Quando serve, è anche un'arma potente.»
+- `bn-koala-impronte-2`: 
+  - nota: «Il loro intestino è lunghissimo e pieno di batteri che neutralizzano le sostanze tossiche.» → «Il loro apparato digerente è adattato a neutralizzare le sostanze velenose delle foglie. Il cieco, un tratto dell'intestino, è lungo circa due metri e pieno di batteri.»
+- `bn-canguro-indietro`: Gli esperti dicono che i canguri faticano ma possono indietreggiare; e la scelta per lo stemma non è una leggenda, la dichiara il governo australiano (ABC).
+  - testo: «I canguri non riescono a camminare all'indietro.» → «I canguri fanno molta fatica a camminare all'indietro.»
+  - hl: «all'indietro» → «all'indietro»
+  - nota: «La coda grossa e le zampe posteriori fatte per saltare glielo impediscono. Si dice, ma è una leggenda, che per questo siano sullo stemma australiano.» → «Per il governo australiano è anche per questo che sono sullo stemma con l'emù: simboleggiano un paese che va avanti. L'emù però all'indietro cammina senza problemi.»
+- `bn-corvi-volti-2`: Il risultato del 2008 è stato messo in dubbio da una replica pubblicata nel 2023 (PLOS One): la scheda lo presentava come certo.
+  - testo: «Le gazze si riconoscono allo specchio.» → «In un esperimento del 2008 alcune gazze sembrarono riconoscersi allo specchio.»
+  - hl: «si riconoscono allo specchio» → «riconoscersi allo specchio»
+  - nota: «È una capacità rara: ce l'hanno le grandi scimmie, i delfini, gli elefanti e pochissimi uccelli.» → «Cercavano di togliersi una macchia che potevano vedere solo riflessa. Ma un tentativo di ripetere l'esperimento, nel 2023, non ha confermato il risultato.»
+- `bn-api-miele`: «Un dodicesimo di cucchiaino per ape» non è confermato da una pagina aperta (fonti dell'industria del miele bloccate); aggiunta la stima riportata da National Geographic.
+  - nota: «Un'ape in tutta la vita produce circa un dodicesimo di cucchiaino di miele. Il lavoro è di tutto l'alveare.» → «Secondo una stima dell'ecologo Bernd Heinrich, mezzo chilo di miele di trifoglio corrisponde al nettare di circa 8,7 milioni di fiori. È il lavoro di tutto l'alveare.»
+- `bn-lumache-denti`: 
+  - nota: «Sono minuscoli e disposti su una specie di lingua ruvida, la radula, con cui grattano le foglie.» → «Sono minuscoli e stanno su una specie di nastro flessibile, la radula, con cui la lumaca gratta il cibo contro la mascella.»
+- `bn-medusa-cervello`: 
+  - nota: «Sono fatte per più del 95% d'acqua. Esistono da più di 500 milioni di anni.» → «Al posto del cervello hanno una semplice rete di nervi. Sono fatte per circa il 95% d'acqua ed esistono da più di 500 milioni di anni.»
+- `bn-corallo-animale`: La fonte NOAA li paragona agli anemoni di mare; la parentela con le meduse non è nella pagina aperta.
+  - nota: «Sono colonie di minuscoli polipi parenti delle meduse. Il colore viene da alghe che vivono dentro di loro.» → «Sono colonie di minuscoli polipi trasparenti, simili a piccoli anemoni di mare. Il colore viene dalle alghe che vivono nei loro tessuti.»
+- `bn-cani-naso`: «In alcuni paesi si usano per identificarli» non è confermato da una pagina aperta.
+  - nota: «Le pieghe del tartufo sono diverse da cane a cane. In alcuni paesi si usano per identificarli.» → «Le pieghe del tartufo cambiano da cane a cane, come le impronte delle dita nelle persone. Lo ricorda l'American Kennel Club.»
+- `bn-cani-tempo`: Horowitz stessa dice che è un'ipotesi mai testata scientificamente (NPR): il testo lo presentava come un fatto.
+  - testo: «I cani riescono a «sentire» il passare del tempo con l'olfatto.» → «Secondo una ricercatrice, i cani potrebbero «sentire» il passare del tempo con l'olfatto.»
+  - hl: «con l'olfatto» → «il passare del tempo»
+  - nota: «Durante il giorno l'odore di una persona in casa si affievolisce. Alcuni ricercatori pensano che sia così che capiscono quando stai per tornare.» → «Durante il giorno l'odore di chi è uscito di casa si affievolisce: la psicologa Alexandra Horowitz pensa che i cani usino questo segnale. È un'ipotesi non ancora verificata.»
+- `bn-camaleonte-lingua`: La fonte (Brown University) dà 2,5 volte la lunghezza del corpo, non «quasi il doppio».
+  - nota: «Nei camaleonti più piccoli supera le 250 volte l'accelerazione di gravità. Può essere lunga quasi il doppio del corpo.» → «In un camaleonte piccolissimo, il Rhampholeon spinosus, è arrivata a 264 volte l'accelerazione di gravità. Ed è uscita fino a 2,5 volte la lunghezza del suo corpo.»
+- `bn-erba-tagliata`: La funzione di «riparare i tessuti» non è confermata dalla fonte aperta.
+  - nota: «Sono sostanze rilasciate dalle ferite, che servono a riparare i tessuti e ad attirare predatori degli insetti.» → «Sono sostanze che la pianta rilascia quando viene ferita. Le libera anche quando un bruco la mangia, e altri insetti accorrono a predare il bruco.»
+- `bn-mandorle-noci`: 
+  - nota: «Sono i semi di un frutto simile alla pesca: il mandorlo è parente stretto di pesco e ciliegio.» → «Per i botanici il frutto del mandorlo è una drupa, come la pesca: la mandorla è il seme dentro il nocciolo. Mandorlo e pesco appartengono allo stesso genere, Prunus.»
+- `bn-baobab`: National Geographic dice 100.000 litri, non «oltre»; l'età di mille anni non è confermata da una pagina aperta (Kew bloccato).
+  - testo: «Il tronco di un baobab può contenere oltre centomila litri d'acqua.» → «Il tronco di un baobab può contenere fino a centomila litri d'acqua.»
+  - hl: «centomila litri» → «fino a centomila litri»
+  - nota: «Lo usa come riserva durante la stagione secca. Alcuni baobab hanno più di mille anni.» → «Lo usa come riserva anche nelle siccità più dure. L'acqua si concentra nel centro spugnoso del tronco, che gli elefanti assetati a volte rosicchiano.»
+- `bn-intestino-lunghezza`: 
+  - testo: «L'intestino umano è lungo circa sette metri.» → «Il tubo digerente di un adulto, dalla bocca all'ultimo tratto dell'intestino, è lungo circa cinque metri.»
+  - hl: «circa sette metri» → «circa cinque metri»
+  - nota: «Ripiegato nella pancia. La sua superficie interna, piena di piccole pieghe, è grande più o meno come metà campo da badminton.» → «La sua superficie interna, piena di pieghe, misura 30-40 metri quadrati: metà campo da badminton. Prima si credeva fosse grande come un campo da tennis.»
+- `bn-cervello-acqua`: PubMed bloccava le richieste: riprovare a fine blocco.
+  - testo: «Il cervello è fatto per circa tre quarti di acqua.» → «Il cervello è fatto per circa l'80% di acqua.»
+  - hl: «tre quarti di acqua» → «circa l'80% di acqua»
+  - nota: «Anche una disidratazione leggera può peggiorare attenzione e memoria.» → «La materia grigia ne contiene di più, circa l'84%, quella bianca circa il 69%. Anche una disidratazione leggera può peggiorare concentrazione e memoria a breve termine.»
+- `bn-cornea`: Il testo «unica parte del corpo senza vasi» sembra sbagliato (anche il cristallino è senza vasi), ma le fonti PubMed erano bloccate: riprovare a fine blocco.
+  - testo: «La cornea è l'unica parte del corpo senza vasi sanguigni.» → «La cornea non ha vasi sanguigni: l'ossigeno lo prende dall'aria.»
+  - hl: «senza vasi sanguigni» → «lo prende dall'aria»
+  - nota: «Prende l'ossigeno direttamente dall'aria. Deve essere trasparente, e i vasi la renderebbero opaca.» → «Con gli occhi chiusi ne riceve circa un terzo. Per questo le lenti a contatto devono lasciarlo passare: senza ossigeno la cornea si gonfia e si appanna.»
+- `bn-battiti-vita`: I «settemila litri al giorno» non sono nelle pagine aperte; aggiunte le stime di American Heart Association e Royal Papworth Hospital.
+  - nota: «Ogni giorno pompa circa settemila litri di sangue.» → «Batte circa 100.000 volte al giorno. Le stime sulla vita intera vanno da 2,5 a 3 miliardi di battiti.»
+- `bn-naso-ricordi`: 
+  - testo: «Gli odori risvegliano ricordi più vividi degli altri sensi.» → «I ricordi risvegliati da un odore sono più carichi di emozione di quelli evocati dagli altri sensi.»
+  - hl: «ricordi più vividi» → «più carichi di emozione»
+  - nota: «Il centro dell'olfatto è collegato direttamente alle aree della memoria e delle emozioni, senza passare dagli altri filtri.» → «L'olfatto è l'unico senso che arriva all'ippocampo e all'amigdala, le aree della memoria e delle emozioni, senza passare dal talamo, lo smistamento degli altri sensi.»
+- `bn-mancini-percentuale`: 
+  - nota: «La percentuale è simile da migliaia di anni: lo mostrano anche gli strumenti preistorici.» → «La stima migliore, da studi su oltre due milioni di persone, è il 10,6%. Dove si scoraggia l'uso della mano sinistra, i mancini dichiarati sono un po' meno.»
+- `bn-altezza-media`: Lo studio (eLife 2016) riguarda gli uomini; le donne più alte sono le lettoni. «Due secoli fa erano tra i più bassi d'Europa» non è confermato.
+  - testo: «Gli olandesi sono il popolo più alto del mondo.» → «Gli uomini olandesi sono i più alti del mondo.»
+  - hl: «il popolo più alto» → «i più alti del mondo»
+  - nota: «In media gli uomini superano gli 1,80 m. Due secoli fa erano tra i più bassi d'Europa: alimentazione e benessere hanno cambiato tutto.» → «In media misurano 182,5 cm, secondo il più grande studio sull'altezza mai fatto. Le donne più alte sono invece le lettoni.»
+- `bn-luna-tutti`: 
+  - testo: «Tra la Terra e la Luna entrano tutti gli altri pianeti del sistema solare, uno accanto all'altro.» → «Tra la Terra e la Luna ci stanno tutti gli altri pianeti del sistema solare, in fila: ma solo da polo a polo.»
+  - hl: «tutti gli altri pianeti» → «solo da polo a polo»
+  - nota: «La distanza media è di circa 384.000 km, e i diametri sommati dei pianeti ci stanno, anche se di poco.» → «Alla distanza media, tra le superfici di Terra e Luna ci sono circa 376.000 km. I sette pianeti misurati da polo a polo fanno circa 365.000 km. Misurati all'equatore, più largo, non ci starebbero.»
+- `bn-giove-protettore`: 
+  - testo: «Giove ha più di novanta lune.» → «Giove ha più di cento lune.»
+  - hl: «più di novanta lune» → «più di cento lune»
+  - nota: «Il numero cresce di continuo con le nuove scoperte. Ganimede, la più grande, è più grande del pianeta Mercurio.» → «La NASA ne conta 115 riconosciute ufficialmente, e il numero cresce con le nuove scoperte. Ganimede, la più grande, è più grande del pianeta Mercurio.»
+- `bn-acqua-espande`: Le bottiglie che scoppiano e i laghi che gelerebbero dal fondo non sono nelle pagine aperte; la nota ora dice ciò che conferma Treccani.
+  - nota: «Per questo il ghiaccio galleggia e le bottiglie in freezer scoppiano. Se il ghiaccio affondasse, laghi e mari gelerebbero dal fondo.» → «Per questo il ghiaccio galleggia, mentre di solito il solido è più denso del liquido. Lo strato di ghiaccio sulla superficie di laghi e mari protegge la vita che sta sotto.»
+- `bn-fulmini-vulcani`: Il ruolo del ghiaccio non è nella pagina aperta; la nota ora dice solo ciò che conferma National Geographic.
+  - nota: «Le particelle di cenere e ghiaccio si urtano e si caricano di elettricità, come in un temporale.» → «Nella nube le particelle di cenere si urtano e si caricano di elettricità: si crea uno squilibrio di cariche, come in un temporale.»
+- `bn-dinamite-nobel`: Il legame tra l'episodio e i premi è un'ipotesi (National Geographic: «it has been suggested»), mentre il testo lo dava per certo.
+  - testo: «Alfred Nobel creò i premi anche dopo aver letto per errore il proprio necrologio.» → «Nel 1888 un giornale pubblicò per errore la notizia della morte di Alfred Nobel.»
+  - hl: «il proprio necrologio» → «per errore»
+  - nota: «Nel 1888 un giornale, confondendolo con il fratello morto, lo definì «il mercante di morte». Si dice che volesse cambiare il modo in cui sarebbe stato ricordato.» → «Era morto il fratello Ludvig, e il giornalista titolò: «Il mercante di morte è morto». Si è ipotizzato che l'episodio abbia spinto Nobel a pensare alla sua eredità, e quindi ai premi.»
+- `bn-dolcificante`: «Diversi dolcificanti» non è confermato: per il ciclamato si racconta di una sigaretta, non delle mani; la scheda ora parla solo della saccarina.
+  - testo: «Diversi dolcificanti sono stati scoperti da chimici che non si erano lavati le mani.» → «La saccarina fu scoperta da un chimico che non si era lavato le mani.»
+  - hl: «non si erano lavati le mani» → «non si era lavato le mani»
+  - nota: «La saccarina nel 1879, e altri dopo: i ricercatori sentirono un sapore dolce sulle dita a cena.» → «Una sera del 1879 Constantin Fahlberg addentò un panino e lo trovò dolcissimo: aveva le mani sporche di un composto del laboratorio. Tornò di corsa ad assaggiare tutto quello che aveva sul bancone.»
+- `bm-telefono-peso`: Pesava 785-794 grammi, non «quasi un chilo»; prezzo e durata della batteria non confermati da pagine aperte (Smithsonian bloccato).
+  - testo: «Il primo cellulare in vendita pesava quasi un chilo.» → «Il primo cellulare in vendita pesava quasi 800 grammi.»
+  - hl: «quasi un chilo» → «quasi 800 grammi»
+  - nota: «Il Motorola DynaTAC, del 1983, costava quasi 4.000 dollari. La batteria durava circa mezz'ora di conversazione.» → «Era il Motorola DynaTAC 8000X, del 1983. Per la forma lo chiamavano «il mattone».»
+- `bm-password-123456`: «Ogni anno in cima» e «si indovina in meno di un secondo» non sono confermati da una pagina aperta (NordPass bloccato).
+  - nota: «Ogni anno compare in cima alle classifiche delle password trovate nei furti di dati. Si indovina in meno di un secondo.» → «Un'analisi del 2019 del Centro nazionale britannico per la sicurezza informatica l'ha trovata in 23,2 milioni di account violati in tutto il mondo.»
+- `bm-spam-quantita`: «I filtri ne bloccano quasi tutti» non è confermato; aggiunto il dato Kaspersky 2024.
+  - nota: «Le stime variano negli anni, ma la quota di messaggi indesiderati resta enorme. I filtri ne bloccano quasi tutti prima che li vediamo.» → «Secondo Kaspersky, nel 2024 lo spam era il 47% del traffico email mondiale. Le stime variano di anno in anno di qualche punto.»
+- `bm-videogiochi-ospedale`: «Fece più file di qualsiasi altra attrazione» non è confermato; la fonte dice che centinaia di persone fecero la fila.
+  - nota: «Nel 1958 il fisico William Higinbotham creò «Tennis for Two» su un oscilloscopio, per l'open day del suo laboratorio. Fece più file di qualsiasi altra attrazione.» → «Nel 1958 il fisico William Higinbotham creò «Tennis for Two», su un computer analogico, per l'open day del laboratorio di Brookhaven. Centinaia di persone fecero la fila per giocarci.»
+- `bm-pacman`: I comportamenti diversi dei fantasmi non sono confermati dalle pagine aperte; aggiunto un fatto confermato (The Strong).
+  - nota: «Lo racconta il suo creatore, Toru Iwatani. Nel gioco, i fantasmi hanno ognuno un comportamento diverso.» → «Toru Iwatani lo creò per Namco nel 1980. È diventato il videogioco da sala più venduto di sempre.»
+- `bm-tetris-urss`: «Non guadagnò nulla, diritti dello Stato» non è nelle pagine aperte; Guinness dice che ricevette pochi diritti fino al 1996.
+  - nota: «Lo creò Aleksej Pažitnov nel 1984, in un centro di ricerca di Mosca. Per anni non guadagnò nulla dai diritti, che appartenevano allo Stato.» → «Lo creò Aleksej Pažitnov nel 1984, al centro di calcolo dell'Accademia delle scienze di Mosca. Per anni ne ricavò pochissimo: cominciò a ricevere diritti solo nel 1996.»
+- `bm-qr-code`: L'ispirazione dal gioco del go non è confermata; la fonte Denso Wave parla di industria automobilistica, elettrica ed elettronica.
+  - testo: «Il codice QR è stato inventato per l'industria delle auto.» → «Il codice QR è nato per gestire i componenti nelle fabbriche.»
+  - hl: «per l'industria delle auto» → «nelle fabbriche»
+  - nota: «Nel 1994 un'azienda del gruppo Toyota lo creò per tracciare i componenti in fabbrica. Il disegno fu ispirato dal gioco del go.» → «Lo creò nel 1994 la giapponese Denso Wave: i codici a barre usati nell'industria dell'auto contenevano solo una ventina di caratteri.»
+- `bm-olimpiadi-tiro-piccione`: «Centinaia di uccelli uccisi» non è confermato; Guinness dà i numeri dei primi classificati.
+  - nota: «A Parigi furono uccisi centinaia di uccelli. Fu la prima e unica volta.» → «Accadde a Parigi: il vincitore, il belga Léon de Lunden, ne abbatté 21. Fu la prima e unica volta.»
+- `bm-olimpiadi-tiro-fune`: «La Gran Bretagna vinse più medaglie di tutti» non è confermato dalla fonte aperta.
+  - nota: «Dal 1900 al 1920. La Gran Bretagna vinse più medaglie di tutti, spesso con squadre di poliziotti.» → «Fu nel programma dal 1900 al 1920. Nel 1908 vinse una squadra della polizia della City di Londra.»
+- `bm-tennis-punteggio`: Il passaggio da 45 a 40 «per comodità» non è confermato dalla fonte aperta (olympics.com irraggiungibile).
+  - nota: «Una delle ipotesi è che si usasse un quadrante, spostando la lancetta di un quarto a ogni punto. Il 45 sarebbe diventato 40 per comodità. L'origine vera è incerta.» → «È solo una delle ipotesi: i punti sarebbero i minuti di un'ora divisa in quarti. L'origine vera è incerta.»
+- `bm-wimbledon-fragole`: Aggiunti i dati del Post (35 tonnellate, dal 1877); «quasi completamente di bianco» reso con il fatto confermato.
+  - nota: «È il cibo simbolo del torneo dall'Ottocento. I giocatori devono vestire quasi completamente di bianco.» → «In media se ne mangiano quasi 35 tonnellate in due settimane: sono il dolce del torneo dalla prima edizione, nel 1877. E dagli anni Ottanta dell'Ottocento i giocatori vestono di bianco.»
+- `bm-phelps-calorie`: «Mai stati nel programma dei Giochi» non è confermato dalla fonte aperta.
+  - nota: «Il CIO riconosce la Federazione internazionale degli scacchi, anche se gli scacchi non sono mai stati nel programma dei Giochi.» → «Il CIO ha riconosciuto la Federazione internazionale degli scacchi nel 1999: per il movimento olimpico gli scacchi sono uno sport.»
+- `bm-scacchi-mosse`: Il numero di atomi (10 alla 80) non è nelle fonti aperte; ora la nota cita Shannon, fonte della stima.
+  - nota: «Le stime parlano di circa 10 elevato alla 120 partite possibili, contro circa 10 alla 80 atomi.» → «Nel 1950 il matematico Claude Shannon stimò circa 10 elevato alla 120 partite possibili: molte più degli atomi dell'universo.»
+- `bm-sci-italia`: L'interruzione del Festival di Sanremo non è confermata dalle pagine aperte (olympics.com irraggiungibile).
+  - nota: «A Calgary nel 1988 (slalom e gigante) e ad Albertville nel 1992 (gigante). Quando gareggiava, il Festival di Sanremo fu interrotto per trasmettere la sua gara.» → «A Calgary nel 1988 vinse slalom gigante e speciale, ad Albertville nel 1992 di nuovo il gigante. Ha vinto anche due argenti olimpici.»
+- `bm-musica-brividi`: «Circa metà delle persone» non è confermato: gli studi danno quote molto diverse (dal 10 al 66%).
+  - testo: «Circa metà delle persone prova i brividi ascoltando certi brani.» → «Molte persone provano i brividi ascoltando certi brani.»
+  - hl: «i brividi» → «i brividi»
+  - nota: «Si chiamano «frisson». Il cervello rilascia dopamina, la stessa sostanza legata al cibo e ad altri piaceri.» → «Si chiamano «frisson». Uno studio del 2011 ha mostrato che nei momenti di massimo piacere musicale il cervello rilascia dopamina, la sostanza legata ad altri piaceri come il cibo.»
+- `bm-musica-mucche`: Aggiunto che lo studio non è mai stato replicato (NPR): il fatto è meno solido di come appariva.
+  - nota: «Uno studio inglese del 2001 trovò un aumento di circa il 3% con musica calma, rispetto a quella veloce.» → «Uno studio dell'Università di Leicester del 2001 trovò un aumento fino al 3% con musica lenta, rispetto a quella veloce. Nessuno però lo ha mai replicato.»
+- `bm-pavarotti`: La fonte non dice dove insegnò; tolto «a Modena».
+  - nota: «Insegnò per un paio d'anni a Modena prima di dedicarsi al canto. Il padre era fornaio e tenore dilettante.» → «Lavorò come maestro elementare per due anni scolastici, mentre studiava canto. Il padre era fornaio e tenore dilettante.»
+- `bm-violino-stradivari-prezzo`: La raccolta fondi per il Giappone non è confermata da una pagina aperta (Tarisio bloccato); aggiunto il record, confermato da NPR nel 2025.
+  - nota: «Il «Lady Blunt» fu venduto all'asta nel 2011 per raccogliere fondi per il Giappone dopo lo tsunami.» → «Il «Lady Blunt», costruito nel 1721, fu venduto all'asta nel 2011 per 15,9 milioni di dollari. È ancora il record per uno strumento musicale.»
+- `bm-musica-coro-alpini`: Il testo diceva che la canzone era diventata famosa nel mondo grazie alla serie; Il Post precisa che era già diffusa in quasi tutte le lingue.
+  - testo: ««Bella ciao» è diventata famosa nel mondo grazie a una serie TV.» → «Una serie TV ha fatto conoscere «Bella ciao» a una nuova generazione in tutto il mondo.»
+  - hl: «grazie a una serie TV» → «Una serie TV»
+  - nota: «Era già un canto popolare noto, ma la serie spagnola «La casa di carta» l'ha fatta conoscere a una nuova generazione in tutto il mondo.» → «È la spagnola «La casa di carta», del 2017: il protagonista la usa come richiamo alla rivolta. La canzone esisteva già in versioni in quasi tutte le lingue.»
 
 **Duplicati segnalati**
 
