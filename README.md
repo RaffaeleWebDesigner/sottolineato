@@ -26,6 +26,9 @@ Un feed verticale in italiano per imparare qualcosa dai libri, una scheda alla v
 - `citazioni-3.js`, `vero-o-falso-3.js`, `da-dire-3.js`: il terzo blocco, con i temi Sport e Tecnologia
 - `miti.js`, `wow.js`, `citazioni-4.js`: miti da sfatare o confermare, fatti sorprendenti, previsioni sbagliate e ultime parole
 - `miti-2.js`, `citazioni-5.js`: secondo blocco di miti e citazioni
+- `blocco-*.js`, `citazioni-6.js`, `miti-3.js`, `da-dire-4.js`: blocchi in formato compatto (funzioni `V`, `M`, `S`, `B`, `P`) per arrivare a oltre 2000 schede
+
+Le schede vengono create a gruppi di 25 mentre si scorre, così la pagina resta leggera anche con migliaia di contenuti.
 
 Ogni nuovo file di contenuti va aggiunto con un `<script>` in `index.html`, prima di `app.js`.
 
