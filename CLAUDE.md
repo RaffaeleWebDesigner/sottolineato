@@ -13,12 +13,22 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
 
 ## Com'è fatto oggi
 
-- `index.html`: struttura e stile. Carica solo `app.js`.
-- `app.js`: carica i JSON con `fetch`, poi feed, filtri, quiz, salvataggi (localStorage). Crea le schede a gruppi di 25 mentre si scorre. Mostra solo le schede con `stato` diverso da `bozza` e con testo nella lingua corrente.
+- `index.html`: struttura e stile. Carica solo `js/main.js` come modulo ES (`<script type="module">`).
+- `js/`: moduli ES nativi, senza variabili globali su `window`.
+  - `main.js`: avvio, nell'ordine: traduzioni, dati, migrazioni, salvataggi, filtri, feed.
+  - `i18n.js`: `LINGUA` (unico punto in cui si sceglie la lingua), `t(chiave, valori)`, testi statici con `data-i18n`.
+  - `dati.js`: carica i JSON con `fetch` e ricompone le schede. Mostra solo le schede con `stato` diverso da `bozza` e con testo nella lingua corrente. Contiene `accessibile(scheda, piano)` (oggi sempre `true`, non ancora usata) e `riservata(scheda)`: una scheda è a pagamento solo se tutti i suoi temi sono `premium`.
+  - `store.js`: lettura e scrittura del localStorage, lista `MIGRAZIONI`.
+  - `salvataggi.js`: schede salvate e imparate, contatore.
+  - `filtri.js`: filtri per tipo e tema.
+  - `quiz.js`: domande a scelta multipla.
+  - `feed.js`: costruzione delle schede, a gruppi di 25 mentre si scorre; Rimescola e tastiera.
+  - `dom.js`: piccoli aiuti per creare elementi.
+- `i18n/it.json`: tutti i testi dell'interfaccia, raggruppati per area, con segnaposto `{n}`.
 - `data/temi.json`: i 24 temi, con `id` stabile, `nome` per lingua e `premium`.
 - `data/schede/<tipo>.json`: dati comuni a tutte le lingue. `data/testi/<lingua>/<tipo>.json`: testi, indicizzati per `id`. Oggi c'è solo `it`.
 - `data/SCHEMA.md`: lo schema completo, con un esempio per tipo. È il riferimento per ogni scheda.
-- `scripts/controlla.mjs`: controllo dei contenuti, nessuna dipendenza.
+- `scripts/controlla.mjs`: controllo dei contenuti e delle chiavi di traduzione, nessuna dipendenza.
 - 2.001 schede, tutte con `stato: "da_verificare"`.
 
 Nessuna compilazione, ma serve un server locale (`python3 -m http.server 8000`, poi `http://localhost:8000`): aprendo `index.html` da file i dati non si caricano.

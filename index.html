@@ -203,6 +203,6 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 </main>
 <div class="hint" data-i18n="app.suggerimento">Cose intelligenti, una alla volta · Scorri verso l'alto</div>
 
-<script src="app.js"></script>
+<script type="module" src="js/main.js" onerror="document.getElementById('stato-caricamento').hidden=true;document.getElementById('stato-errore').hidden=false"></script>
 </body>
 </html>

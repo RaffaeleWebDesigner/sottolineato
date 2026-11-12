@@ -17,13 +17,20 @@ Un feed verticale in italiano per imparare qualcosa di interessante, una scheda 
 
 ## File
 
-- `index.html`: struttura e stile.
-- `app.js`: carica i dati, poi feed, filtri, quiz e salvataggi (nel `localStorage` del browser). Crea le schede a gruppi di 25 mentre si scorre.
+- `index.html`: struttura e stile. Carica `js/main.js` come modulo ES.
+- `js/`: il codice, in moduli ES nativi (nessuna compilazione):
+  - `main.js` avvia tutto;
+  - `dati.js` carica i contenuti;
+  - `i18n.js` gestisce lingua e testi dell'interfaccia;
+  - `store.js` gestisce il `localStorage` e le sue migrazioni;
+  - `salvataggi.js`, `filtri.js`, `quiz.js` e `feed.js` gestiscono le parti dell'app con lo stesso nome;
+  - `dom.js` contiene piccoli aiuti.
+- `i18n/it.json`: i testi dell'interfaccia (bottoni, filtri, messaggi). Nel codice si usano con `t("gruppo.chiave")`, in `index.html` con `data-i18n`.
 - `data/temi.json`: i 24 temi.
 - `data/schede/<tipo>.json`: i dati comuni a tutte le lingue (id, temi, risposta, autore, stato, date…).
 - `data/testi/it/<tipo>.json`: i testi italiani, indicizzati per id.
 - `data/SCHEMA.md`: lo schema completo della scheda, con un esempio per ogni tipo.
-- `scripts/controlla.mjs`: il controllo dei contenuti.
+- `scripts/controlla.mjs`: il controllo dei contenuti e delle chiavi di traduzione.
 
 ## Avvio in locale
 
