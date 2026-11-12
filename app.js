@@ -1,6 +1,46 @@
-(() => {
-  const TUTTI = window.CONTENUTI;
-  const TEMI = window.TEMI;
+(async () => {
+  const LINGUA = "it";
+  const TIPI_DATI = ["frase", "idea", "parola", "sapevi", "storica", "mondo", "mito", "brillante"];
+  const feed = document.getElementById("feed");
+
+  // Carica temi, schede (dati comuni) e testi nella lingua scelta, e ricompone ogni scheda
+  // con gli stessi campi usati dal resto del codice: tema è il nome del tema principale.
+  async function caricaDati(lingua) {
+    const json = p => fetch(p).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
+    const [temi, ...parti] = await Promise.all([
+      json("data/temi.json"),
+      ...TIPI_DATI.map(t => Promise.all([json(`data/schede/${t}.json`), json(`data/testi/${lingua}/${t}.json`)])),
+    ]);
+    const nomeTema = new Map(temi.map(t => [t.id, t.nome[lingua] || t.nome.it]));
+    const schede = [];
+    for (const [base, testi] of parti) {
+      for (const b of base) {
+        if (b.stato === "bozza" || !testi[b.id]) continue; // bozze e schede senza testo in questa lingua non si mostrano
+        schede.push({ ...b, ...testi[b.id], tema: nomeTema.get(b.temi[0]), temaId: b.temi[0] });
+      }
+    }
+    return { schede, temi: temi.map(t => nomeTema.get(t.id)), temaId: new Map(temi.map(t => [nomeTema.get(t.id), t.id])) };
+  }
+
+  function messaggio(titolo, testo) {
+    const s = document.createElement("section"); s.className = "slide";
+    const e = document.createElement("div"); e.className = "card empty";
+    const st = document.createElement("strong"); st.textContent = titolo;
+    const sp = document.createElement("span"); sp.textContent = testo;
+    e.append(st, sp); s.appendChild(e); feed.replaceChildren(s);
+  }
+
+  messaggio("Caricamento…", "Sto preparando le schede.");
+  let dati;
+  try { dati = await caricaDati(LINGUA); }
+  catch (err) {
+    console.error(err);
+    messaggio("Non riesco a caricare le schede", "Se hai aperto il file direttamente dal computer, avvia un server locale: le istruzioni sono nel README.");
+    return;
+  }
+  const TUTTI = dati.schede;
+  const TEMI = dati.temi;
+  const TEMA_ID = dati.temaId;
   const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
   const TIPI = {
     frase: "Frase", idea: "L'idea", parola: "Parola", sapevi: "Dietro il libro",
@@ -25,7 +65,6 @@
   if (filtroTema && !TEMI.includes(filtroTema)) filtroTema = null;
   let seme = daySeed();
 
-  const feed = document.getElementById("feed");
   const chipsTipo = document.getElementById("chips-tipo");
   const chipsTema = document.getElementById("chips-tema");
   const stats = document.getElementById("stats");
@@ -89,7 +128,7 @@
     chipsTipo.replaceChildren(...FILTRI_TIPO.map(([k, label]) =>
       chip(label, filtroTipo === k, () => { filtroTipo = k; store.set("sott-tipo", k); renderChips(); renderFeed(); }, "tipo-" + k)));
     chipsTema.replaceChildren(...TEMI.map(t =>
-      chip(t, filtroTema === t, () => { filtroTema = filtroTema === t ? null : t; store.set("sott-tema", filtroTema); renderChips(); renderFeed(); }, "tema-" + t.toLowerCase())));
+      chip(t, filtroTema === t, () => { filtroTema = filtroTema === t ? null : t; store.set("sott-tema", filtroTema); renderChips(); renderFeed(); }, "tema-" + TEMA_ID.get(t))));
   }
 
   // Domanda a scelta multipla dentro la scheda. Mentre è aperta, gli elementi .reveal restano sfocati.
@@ -116,7 +155,7 @@
   function card(f, idx, tot) {
     const slide = el("section", "slide");
     const c = el("article", "card tipo-" + f.tipo);
-    c.style.setProperty("--tint", `var(--t-${f.tema.toLowerCase()})`);
+    c.style.setProperty("--tint", `var(--t-${f.temaId})`);
     const head = el("div", "card-head");
     const label = el("span", "label");
     label.append(el("span", "kind", TIPI[f.tipo]), document.createTextNode(" · " + f.tema));
