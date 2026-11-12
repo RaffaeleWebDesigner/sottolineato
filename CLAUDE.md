@@ -28,6 +28,8 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
 - `data/temi.json`: i 24 temi, con `id` stabile, `nome` per lingua e `premium`.
 - `data/schede/<tipo>.json`: dati comuni a tutte le lingue. `data/testi/<lingua>/<tipo>.json`: testi, indicizzati per `id`. Oggi c'è solo `it`.
 - `data/SCHEMA.md`: lo schema completo, con un esempio per tipo. È il riferimento per ogni scheda.
+- `data/GUIDA.md`: la guida di stile e le fonti accettate.
+- `data/verifica/REGISTRO.md`: il registro della verifica dei fatti (fase 2). Da lì riparte chi continua il lavoro.
 - `scripts/controlla.mjs`: controllo dei contenuti e delle chiavi di traduzione, nessuna dipendenza.
 - 2.001 schede, tutte con `stato: "da_verificare"`.
 
@@ -68,6 +70,7 @@ Il filtro per tema trova una scheda se il tema è in qualsiasi posizione del suo
 
 Valgono per ogni scheda nuova o modificata.
 
+- Ogni scheda nuova segue `data/GUIDA.md`: tono, struttura per tipo, italiano, fonti accettate.
 - Formato: dati comuni in `data/schede/<tipo>.json`, testi in `data/testi/it/<tipo>.json`, come descritto in `data/SCHEMA.md`.
 - `id` unico e stabile. Non rinominare un id esistente: i salvataggi degli utenti dipendono dall'id.
 - `temi`: almeno uno, tutti presenti in `data/temi.json`; il primo è il tema principale. Non aggiungere temi alle schede in automatico.
@@ -98,12 +101,4 @@ Valgono per ogni scheda nuova o modificata.
 7. **Monetizzazione**: pubblicità con premio e abbonamenti.
 8. **Pre-lancio**, poi **pubblicazione**.
 
-Fase attuale: 1, **completata, in attesa di revisione** (branch `fase-1-fine`, non ancora unito a `main`). Fatto:
-- schema della scheda e contenuti in JSON per lingua;
-- script di controllo, anche per le chiavi di traduzione;
-- filtro per id del tema e migrazione dei salvataggi;
-- testi dell'interfaccia in `i18n/it.json`;
-- codice in moduli ES in `js/`;
-- caricamento in due passi e `VERSIONE_DATI`.
-
-Prossima: fase 2.
+Fase attuale: 2, in corso sul branch `fase-2-contenuti`. Lo stato aggiornato è in `data/verifica/REGISTRO.md`.
