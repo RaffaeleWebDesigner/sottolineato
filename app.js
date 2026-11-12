@@ -200,7 +200,8 @@
     return slide;
   }
 
-  let observer;
+  let observer, loader;
+  const BLOCCO = 25;
   function renderFeed() {
     let lista = TUTTI;
     if (filtroTipo === "salvate") lista = lista.filter(f => salvate.has(f.id));
@@ -217,10 +218,20 @@
         el("span", null, salv ? "Tocca Salva su una scheda per ritrovarla qui." : "Prova un altro tema o torna a Tutto."));
       s.appendChild(e); feed.appendChild(s); return;
     }
-    lista.forEach((f, i) => feed.appendChild(card(f, i, lista.length)));
-    observer?.disconnect();
+    // Le schede si creano a blocchi mentre si scorre, così la pagina resta leggera anche con migliaia di schede.
+    observer?.disconnect(); loader?.disconnect();
     observer = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.querySelector(".card").classList.add("seen"); }), { root: feed, threshold: .6 });
-    feed.querySelectorAll(".slide").forEach(s => observer.observe(s));
+    let fatte = 0;
+    const sentinella = el("div", "sentinella");
+    const prossimoBlocco = () => {
+      const fine = Math.min(fatte + BLOCCO, lista.length);
+      for (; fatte < fine; fatte++) { const s = card(lista[fatte], fatte, lista.length); feed.insertBefore(s, sentinella); observer.observe(s); }
+      if (fatte >= lista.length) { loader.disconnect(); sentinella.remove(); }
+    };
+    feed.appendChild(sentinella);
+    loader = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) prossimoBlocco(); }, { root: feed, rootMargin: "300% 0px" });
+    prossimoBlocco();
+    if (fatte < lista.length) loader.observe(sentinella);
     requestAnimationFrame(() => feed.querySelector(".card")?.classList.add("seen"));
   }
 
