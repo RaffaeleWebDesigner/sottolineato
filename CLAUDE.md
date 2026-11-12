@@ -31,7 +31,7 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
 - `data/GUIDA.md`: la guida di stile e le fonti accettate.
 - `data/verifica/REGISTRO.md`: il registro della verifica dei fatti (fase 2). Da lì riparte chi continua il lavoro.
 - `scripts/controlla.mjs`: controllo dei contenuti e delle chiavi di traduzione, nessuna dipendenza.
-- 2.001 schede, tutte con `stato: "da_verificare"`.
+- 2.001 schede. Stato della verifica (verificate, in bozza, da verificare): vedi `data/verifica/REGISTRO.md`.
 
 **`VERSIONE_DATI`** (in `js/dati.js`) va aumentata di 1 a ogni modifica di `data/` o `i18n/`. Si aggiunge come `?v=` a ogni richiesta JSON, così il browser non usa copie vecchie.
 
