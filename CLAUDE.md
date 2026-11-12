@@ -13,11 +13,11 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
 
 ## Com'è fatto oggi
 
-- `index.html`: struttura e stile. Carica solo `js/main.js` come modulo ES (`<script type="module">`).
+- `index.html`: struttura e stile. Carica solo `js/main.js` come modulo ES (`<script type="module">`). Elenca tutti i moduli di `js/` con `<link rel="modulepreload">`: un modulo nuovo va aggiunto lì, altrimenti funziona lo stesso ma si scarica più tardi.
 - `js/`: moduli ES nativi, senza variabili globali su `window`.
-  - `main.js`: avvio, nell'ordine: traduzioni, dati, migrazioni, salvataggi, filtri, feed.
+  - `main.js`: avvio, nell'ordine: traduzioni e indice delle schede, migrazioni, salvataggi, filtri, feed; poi i testi delle schede.
   - `i18n.js`: `LINGUA` (unico punto in cui si sceglie la lingua), `t(chiave, valori)`, testi statici con `data-i18n`.
-  - `dati.js`: carica i JSON con `fetch` e ricompone le schede. Mostra solo le schede con `stato` diverso da `bozza` e con testo nella lingua corrente. Contiene `accessibile(scheda, piano)` (oggi sempre `true`, non ancora usata) e `riservata(scheda)`: una scheda è a pagamento solo se tutti i suoi temi sono `premium`.
+  - `dati.js`: carica i JSON con `fetch` e ricompone le schede. Contiene `VERSIONE_DATI`. Mostra solo le schede con `stato` diverso da `bozza` e con testo nella lingua corrente. Contiene `accessibile(scheda, piano)` (oggi sempre `true`, non ancora usata) e `riservata(scheda)`: una scheda è a pagamento solo se tutti i suoi temi sono `premium`.
   - `store.js`: lettura e scrittura del localStorage, lista `MIGRAZIONI`.
   - `salvataggi.js`: schede salvate e imparate, contatore.
   - `filtri.js`: filtri per tipo e tema.
@@ -30,6 +30,26 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
 - `data/SCHEMA.md`: lo schema completo, con un esempio per tipo. È il riferimento per ogni scheda.
 - `scripts/controlla.mjs`: controllo dei contenuti e delle chiavi di traduzione, nessuna dipendenza.
 - 2.001 schede, tutte con `stato: "da_verificare"`.
+
+**`VERSIONE_DATI`** (in `js/dati.js`) va aumentata di 1 a ogni modifica di `data/` o `i18n/`. Si aggiunge come `?v=` a ogni richiesta JSON, così il browser non usa copie vecchie.
+
+Caricamento, in due passi:
+1. Traduzioni, `data/temi.json` e tutti i `data/schede/<tipo>.json`: bastano per conteggi, filtri e ordine del feed.
+2. I testi `data/testi/<lingua>/<tipo>.json`: prima quello del tipo della prima scheda in vista, da solo, poi tutti gli altri insieme.
+
+Il feed crea le schede in ordine e si ferma alla prima il cui testo non è ancora arrivato. Se a una scheda manca il testo nella lingua corrente, viene tolta, e conteggi e feed si ricalcolano. In italiano non succede: `controlla.mjs` lo considera un errore.
+
+Misure del 12 novembre 2026:
+- Peso dei JSON: 828 KB, 231 KB con gzip. Di questi, `schede/` e temi sono 28 KB in gzip, i testi italiani 201 KB.
+- Tempo alla prima scheda visibile: server locale HTTP/2 con gzip, come GitHub Pages; Chrome con i preset di rete di DevTools; cache vuota; mediana di 5 prove.
+
+| | Fast 4G | Slow 4G |
+|---|---|---|
+| Prima (tutti i JSON in parallelo, dopo le traduzioni) | 1,34 s | 4,89 s |
+| Con `modulepreload` e traduzioni in parallelo ai dati | 0,98 s | 3,88 s |
+| Con il caricamento in due passi (oggi) | 0,91 s | 3,45 s |
+
+Su Slow 4G (562 ms di latenza) restano tre attese in fila, ognuna di almeno una latenza: HTML (0,6 s), moduli e indice (fino a 2,2 s), testo della prima scheda (fino a 3,6 s, con `mondo` da 81 KB). Per scendere sotto 2 s servirebbe dividere i file di testi in pezzi più piccoli: è un cambio di formato dei dati, da decidere.
 
 Nessuna compilazione, ma serve un server locale (`python3 -m http.server 8000`, poi `http://localhost:8000`): aprendo `index.html` da file i dati non si caricano.
 

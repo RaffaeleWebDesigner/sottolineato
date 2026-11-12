@@ -1,7 +1,7 @@
 // Il feed: costruzione delle schede e caricamento a blocchi mentre si scorre.
 import { el, bottoneAzione } from "./dom.js";
 import { t } from "./i18n.js";
-import { LIBRI, mixVario, semeDelGiorno } from "./dati.js";
+import { LIBRI, mixVario, semeDelGiorno, testoPronto } from "./dati.js";
 import { makeQuiz, quizLibro } from "./quiz.js";
 import { salvata, alternaSalvata, impara } from "./salvataggi.js";
 
@@ -33,6 +33,8 @@ let feed;
 let seme = semeDelGiorno();
 let observer, loader;
 let ultimaLista = [], ultimoVuotoSalvate = false;
+let listaInVista = [];
+let riempi = null; // continua a creare le schede quando arrivano altri testi
 
 export function inizializzaFeed() {
   feed = document.getElementById("feed");
@@ -159,31 +161,50 @@ function card(f, idx, tot) {
   return slide;
 }
 
-// lista: le schede già filtrate; vuotoSalvate: se la lista vuota va spiegata come «nessuna salvata».
+// Tipo della prima scheda in vista: i suoi testi vanno caricati per primi.
+export const tipoInCima = () => listaInVista[0]?.tipo;
+
+// Chiamata quando arriva un file di testi: crea le schede che lo aspettavano.
+export function continuaFeed() { riempi?.(); }
+
+function slideMessaggio(titolo, testo) {
+  const s = el("section", "slide"); const e = el("div", "card empty");
+  e.append(el("strong", null, titolo), el("span", null, testo));
+  s.appendChild(e); return s;
+}
+
+export function mostraErrore() {
+  observer?.disconnect(); loader?.disconnect(); riempi = null;
+  feed.replaceChildren(slideMessaggio(t("errori.caricamento_titolo"), t("errori.caricamento_testo")));
+}
+
+// listaFiltrata: le schede già filtrate; vuotoSalvate: se la lista vuota va spiegata come «nessuna salvata».
 export function renderFeed(listaFiltrata, vuotoSalvate) {
   ultimaLista = listaFiltrata; ultimoVuotoSalvate = vuotoSalvate;
-  const lista = mixVario(listaFiltrata, seme);
+  const lista = listaInVista = mixVario(listaFiltrata, seme);
 
+  observer?.disconnect(); loader?.disconnect(); riempi = null;
   feed.replaceChildren(); feed.scrollTop = 0;
   if (!lista.length) {
-    const s = el("section", "slide"); const e = el("div", "card empty");
-    e.append(el("strong", null, vuotoSalvate ? t("vuoto.salvate_titolo") : t("vuoto.titolo")),
-      el("span", null, vuotoSalvate ? t("vuoto.salvate_testo") : t("vuoto.testo")));
-    s.appendChild(e); feed.appendChild(s); return;
+    feed.appendChild(vuotoSalvate ? slideMessaggio(t("vuoto.salvate_titolo"), t("vuoto.salvate_testo")) : slideMessaggio(t("vuoto.titolo"), t("vuoto.testo")));
+    return;
   }
   // Le schede si creano a blocchi mentre si scorre, così la pagina resta leggera anche con migliaia di schede.
-  observer?.disconnect(); loader?.disconnect();
+  // Una scheda si crea solo quando sono arrivati i suoi testi; fino ad allora il feed si ferma lì.
   observer = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.querySelector(".card").classList.add("seen"); }), { root: feed, threshold: .6 });
-  let fatte = 0;
+  let fatte = 0, richieste = 0;
   const sentinella = el("div", "sentinella");
-  const prossimoBlocco = () => {
-    const fine = Math.min(fatte + BLOCCO, lista.length);
-    for (; fatte < fine; fatte++) { const s = card(lista[fatte], fatte, lista.length); feed.insertBefore(s, sentinella); observer.observe(s); }
-    if (fatte >= lista.length) { loader.disconnect(); sentinella.remove(); }
+  const attesa = slideMessaggio(t("caricamento.titolo"), t("caricamento.testo"));
+  riempi = () => {
+    for (; fatte < richieste && testoPronto(lista[fatte]); fatte++) {
+      const s = card(lista[fatte], fatte, lista.length); feed.insertBefore(s, sentinella); observer.observe(s);
+      if (fatte === 0) { attesa.remove(); requestAnimationFrame(() => feed.querySelector(".card")?.classList.add("seen")); }
+    }
+    if (fatte >= lista.length) { loader.disconnect(); sentinella.remove(); riempi = null; }
   };
-  feed.appendChild(sentinella);
-  loader = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) prossimoBlocco(); }, { root: feed, rootMargin: "300% 0px" });
+  const prossimoBlocco = () => { richieste = Math.min(richieste + BLOCCO, lista.length); riempi(); };
+  feed.append(attesa, sentinella);
+  loader = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting) && fatte >= richieste) prossimoBlocco(); }, { root: feed, rootMargin: "300% 0px" });
   prossimoBlocco();
   if (fatte < lista.length) loader.observe(sentinella);
-  requestAnimationFrame(() => feed.querySelector(".card")?.classList.add("seen"));
 }

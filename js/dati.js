@@ -2,27 +2,44 @@
 export const TIPI_DATI = ["frase", "idea", "parola", "sapevi", "storica", "mondo", "mito", "brillante"];
 export const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
 
-export const leggiJson = p => fetch(p).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
+// Versione dei contenuti: va aumentata a ogni modifica di data/ o i18n/, così il browser non usa copie vecchie.
+export const VERSIONE_DATI = 1;
+
+export const leggiJson = p => fetch(`${p}?v=${VERSIONE_DATI}`).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
 
 let temiPremium = new Set();
+const tipiConTesti = new Set();
 
-// Carica temi, schede (dati comuni) e testi nella lingua scelta, e ricompone ogni scheda:
-// tema è il nome del tema principale, temi resta la lista completa di id.
-export async function caricaDati(lingua) {
-  const [temi, ...parti] = await Promise.all([
+// Primo passo: temi e dati comuni di tutte le schede (file piccoli). Bastano per contare, filtrare e ordinare il feed.
+// tema è il nome del tema principale, temi resta la lista completa di id. Le bozze non si mostrano.
+export async function caricaIndice(lingua) {
+  const [temi, ...basi] = await Promise.all([
     leggiJson("data/temi.json"),
-    ...TIPI_DATI.map(tipo => Promise.all([leggiJson(`data/schede/${tipo}.json`), leggiJson(`data/testi/${lingua}/${tipo}.json`)])),
+    ...TIPI_DATI.map(tipo => leggiJson(`data/schede/${tipo}.json`)),
   ]);
   const nomeTema = new Map(temi.map(x => [x.id, x.nome[lingua] || x.nome.it]));
   temiPremium = new Set(temi.filter(x => x.premium).map(x => x.id));
-  const schede = [];
-  for (const [base, testi] of parti) {
-    for (const b of base) {
-      if (b.stato === "bozza" || !testi[b.id]) continue; // bozze e schede senza testo in questa lingua non si mostrano
-      schede.push({ ...b, ...testi[b.id], tema: nomeTema.get(b.temi[0]), temaId: b.temi[0] });
-    }
-  }
+  const schede = basi.flat().filter(b => b.stato !== "bozza").map(b => ({ ...b, tema: nomeTema.get(b.temi[0]), temaId: b.temi[0] }));
   return { schede, temi: temi.map(x => ({ id: x.id, nome: nomeTema.get(x.id), nomi: x.nome, premium: x.premium })) };
+}
+
+// La scheda ha già i suoi testi?
+export const testoPronto = scheda => tipiConTesti.has(scheda.tipo);
+
+// Secondo passo: i testi nella lingua scelta, un file per tipo. Prima il tipo indicato (quello della prima scheda
+// in vista), da solo per non dividere la banda, poi tutti gli altri insieme. A ogni file arrivato chiama
+// arrivato(tipo, senzaTesto): senzaTesto sono le schede di quel tipo che non hanno testo in questa lingua.
+export async function caricaTesti(lingua, schede, primoTipo, arrivato) {
+  const carica = async tipo => {
+    const testi = await leggiJson(`data/testi/${lingua}/${tipo}.json`);
+    const senzaTesto = [];
+    for (const s of schede) if (s.tipo === tipo) { if (testi[s.id]) Object.assign(s, testi[s.id]); else senzaTesto.push(s.id); }
+    tipiConTesti.add(tipo);
+    arrivato(tipo, senzaTesto);
+  };
+  const resto = TIPI_DATI.filter(t => t !== primoTipo);
+  if (primoTipo) await carica(primoTipo);
+  await Promise.all(resto.map(carica));
 }
 
 // Una scheda è riservata ai piani a pagamento solo se TUTTI i suoi temi sono premium:
