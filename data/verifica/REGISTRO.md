@@ -7,8 +7,8 @@ Chi riprende il lavoro parte da qui: legge il riepilogo e continua dal primo pas
 *Aggiornato il 12 novembre 2026.*
 
 - **Passo 1, guida di stile**: fatto (`data/GUIDA.md`).
-- **Passo 2, macro-categorie**: proposta scritta qui sotto. **In attesa di approvazione**: nessun dato modificato.
-- **Passo 3, applicare le categorie**: da fare, dopo l'approvazione.
+- **Passo 2, macro-categorie**: approvato il 12 novembre 2026: 6 categorie, premium Mente e vita.
+- **Passo 3, applicare le categorie**: fatto. `data/temi.json` ha `categorie` e un campo `categoria` per ogni tema; `mente-vita` ha `premium: true`, i temi restano `false`.
 - **Passo 4, verifica dei fatti**: blocchi completati 0 su 22. Prossimo blocco: 01 (MONDO 1).
 - **Passo 5, temi deboli**: da fare.
 
@@ -66,7 +66,7 @@ Il metodo completo è nella richiesta della fase 2, riassunta qui.
 
 ALTRI comprende `frase`, `idea`, `parola`, `sapevi` e `brillante`, in quest'ordine, ognuno ordinato per id.
 
-## Passo 2: proposta di macro-categorie
+## Passo 2: macro-categorie (approvate)
 
 I 24 temi si raggruppano in 6 categorie. Ogni tema sta in una sola categoria.
 

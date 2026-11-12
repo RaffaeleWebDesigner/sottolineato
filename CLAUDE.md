@@ -25,7 +25,7 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
   - `feed.js`: costruzione delle schede, a gruppi di 25 mentre si scorre; Rimescola e tastiera.
   - `dom.js`: piccoli aiuti per creare elementi.
 - `i18n/it.json`: tutti i testi dell'interfaccia, raggruppati per area, con segnaposto `{n}`.
-- `data/temi.json`: i 24 temi, con `id` stabile, `nome` per lingua e `premium`.
+- `data/temi.json`: le 6 macro-categorie (`categorie`) e i 24 temi (`temi`), con `id` stabile, `nome` per lingua e `premium`. Ogni tema ha una `categoria`. Premium deciso: Mente e vita (solo sulla categoria; i temi restano `false` fino alla fase 7).
 - `data/schede/<tipo>.json`: dati comuni a tutte le lingue. `data/testi/<lingua>/<tipo>.json`: testi, indicizzati per `id`. Oggi c'è solo `it`.
 - `data/SCHEMA.md`: lo schema completo, con un esempio per tipo. È il riferimento per ogni scheda.
 - `data/GUIDA.md`: la guida di stile e le fonti accettate.

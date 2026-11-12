@@ -1,194 +1,36 @@
-[
-  {
-    "id": "mente",
-    "nome": {
-      "it": "Mente",
-      "en": "Mente"
-    },
-    "premium": false
-  },
-  {
-    "id": "scienza",
-    "nome": {
-      "it": "Scienza",
-      "en": "Scienza"
-    },
-    "premium": false
-  },
-  {
-    "id": "storia",
-    "nome": {
-      "it": "Storia",
-      "en": "Storia"
-    },
-    "premium": false
-  },
-  {
-    "id": "italia",
-    "nome": {
-      "it": "Italia",
-      "en": "Italia"
-    },
-    "premium": false
-  },
-  {
-    "id": "musica",
-    "nome": {
-      "it": "Musica",
-      "en": "Musica"
-    },
-    "premium": false
-  },
-  {
-    "id": "cinema",
-    "nome": {
-      "it": "Cinema",
-      "en": "Cinema"
-    },
-    "premium": false
-  },
-  {
-    "id": "geografia",
-    "nome": {
-      "it": "Geografia",
-      "en": "Geografia"
-    },
-    "premium": false
-  },
-  {
-    "id": "sport",
-    "nome": {
-      "it": "Sport",
-      "en": "Sport"
-    },
-    "premium": false
-  },
-  {
-    "id": "tecnologia",
-    "nome": {
-      "it": "Tecnologia",
-      "en": "Tecnologia"
-    },
-    "premium": false
-  },
-  {
-    "id": "spazio",
-    "nome": {
-      "it": "Spazio",
-      "en": "Spazio"
-    },
-    "premium": false
-  },
-  {
-    "id": "natura",
-    "nome": {
-      "it": "Natura",
-      "en": "Natura"
-    },
-    "premium": false
-  },
-  {
-    "id": "corpo",
-    "nome": {
-      "it": "Corpo",
-      "en": "Corpo"
-    },
-    "premium": false
-  },
-  {
-    "id": "cibo",
-    "nome": {
-      "it": "Cibo",
-      "en": "Cibo"
-    },
-    "premium": false
-  },
-  {
-    "id": "parole",
-    "nome": {
-      "it": "Parole",
-      "en": "Parole"
-    },
-    "premium": false
-  },
-  {
-    "id": "arte",
-    "nome": {
-      "it": "Arte",
-      "en": "Arte"
-    },
-    "premium": false
-  },
-  {
-    "id": "economia",
-    "nome": {
-      "it": "Economia",
-      "en": "Economia"
-    },
-    "premium": false
-  },
-  {
-    "id": "vita",
-    "nome": {
-      "it": "Vita",
-      "en": "Vita"
-    },
-    "premium": false
-  },
-  {
-    "id": "amore",
-    "nome": {
-      "it": "Amore",
-      "en": "Amore"
-    },
-    "premium": false
-  },
-  {
-    "id": "tempo",
-    "nome": {
-      "it": "Tempo",
-      "en": "Tempo"
-    },
-    "premium": false
-  },
-  {
-    "id": "coraggio",
-    "nome": {
-      "it": "Coraggio",
-      "en": "Coraggio"
-    },
-    "premium": false
-  },
-  {
-    "id": "lavoro",
-    "nome": {
-      "it": "Lavoro",
-      "en": "Lavoro"
-    },
-    "premium": false
-  },
-  {
-    "id": "societa",
-    "nome": {
-      "it": "Società",
-      "en": "Società"
-    },
-    "premium": false
-  },
-  {
-    "id": "potere",
-    "nome": {
-      "it": "Potere",
-      "en": "Potere"
-    },
-    "premium": false
-  },
-  {
-    "id": "fantasia",
-    "nome": {
-      "it": "Fantasia",
-      "en": "Fantasia"
-    },
-    "premium": false
-  }
-]
+{
+  "categorie": [
+    {"id": "scienza-natura", "nome": {"it": "Scienza e natura", "en": "Scienza e natura"}, "premium": false},
+    {"id": "storia-societa", "nome": {"it": "Storia e società", "en": "Storia e società"}, "premium": false},
+    {"id": "italia-parole", "nome": {"it": "Italia e parole", "en": "Italia e parole"}, "premium": false},
+    {"id": "arte-spettacolo", "nome": {"it": "Arte e spettacolo", "en": "Arte e spettacolo"}, "premium": false},
+    {"id": "mente-vita", "nome": {"it": "Mente e vita", "en": "Mente e vita"}, "premium": true},
+    {"id": "mondo-quotidiano", "nome": {"it": "Mondo di ogni giorno", "en": "Mondo di ogni giorno"}, "premium": false}
+  ],
+  "temi": [
+    {"id": "mente", "nome": {"it": "Mente", "en": "Mente"}, "categoria": "mente-vita", "premium": false},
+    {"id": "scienza", "nome": {"it": "Scienza", "en": "Scienza"}, "categoria": "scienza-natura", "premium": false},
+    {"id": "storia", "nome": {"it": "Storia", "en": "Storia"}, "categoria": "storia-societa", "premium": false},
+    {"id": "italia", "nome": {"it": "Italia", "en": "Italia"}, "categoria": "italia-parole", "premium": false},
+    {"id": "musica", "nome": {"it": "Musica", "en": "Musica"}, "categoria": "arte-spettacolo", "premium": false},
+    {"id": "cinema", "nome": {"it": "Cinema", "en": "Cinema"}, "categoria": "arte-spettacolo", "premium": false},
+    {"id": "geografia", "nome": {"it": "Geografia", "en": "Geografia"}, "categoria": "mondo-quotidiano", "premium": false},
+    {"id": "sport", "nome": {"it": "Sport", "en": "Sport"}, "categoria": "mondo-quotidiano", "premium": false},
+    {"id": "tecnologia", "nome": {"it": "Tecnologia", "en": "Tecnologia"}, "categoria": "mondo-quotidiano", "premium": false},
+    {"id": "spazio", "nome": {"it": "Spazio", "en": "Spazio"}, "categoria": "scienza-natura", "premium": false},
+    {"id": "natura", "nome": {"it": "Natura", "en": "Natura"}, "categoria": "scienza-natura", "premium": false},
+    {"id": "corpo", "nome": {"it": "Corpo", "en": "Corpo"}, "categoria": "scienza-natura", "premium": false},
+    {"id": "cibo", "nome": {"it": "Cibo", "en": "Cibo"}, "categoria": "mondo-quotidiano", "premium": false},
+    {"id": "parole", "nome": {"it": "Parole", "en": "Parole"}, "categoria": "italia-parole", "premium": false},
+    {"id": "arte", "nome": {"it": "Arte", "en": "Arte"}, "categoria": "arte-spettacolo", "premium": false},
+    {"id": "economia", "nome": {"it": "Economia", "en": "Economia"}, "categoria": "storia-societa", "premium": false},
+    {"id": "vita", "nome": {"it": "Vita", "en": "Vita"}, "categoria": "mente-vita", "premium": false},
+    {"id": "amore", "nome": {"it": "Amore", "en": "Amore"}, "categoria": "mente-vita", "premium": false},
+    {"id": "tempo", "nome": {"it": "Tempo", "en": "Tempo"}, "categoria": "mente-vita", "premium": false},
+    {"id": "coraggio", "nome": {"it": "Coraggio", "en": "Coraggio"}, "categoria": "mente-vita", "premium": false},
+    {"id": "lavoro", "nome": {"it": "Lavoro", "en": "Lavoro"}, "categoria": "mente-vita", "premium": false},
+    {"id": "societa", "nome": {"it": "Società", "en": "Società"}, "categoria": "storia-societa", "premium": false},
+    {"id": "potere", "nome": {"it": "Potere", "en": "Potere"}, "categoria": "storia-societa", "premium": false},
+    {"id": "fantasia", "nome": {"it": "Fantasia", "en": "Fantasia"}, "categoria": "arte-spettacolo", "premium": false}
+  ]
+}

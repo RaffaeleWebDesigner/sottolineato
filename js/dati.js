@@ -3,7 +3,7 @@ export const TIPI_DATI = ["frase", "idea", "parola", "sapevi", "storica", "mondo
 export const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
 
 // Versione dei contenuti: va aumentata a ogni modifica di data/ o i18n/, così il browser non usa copie vecchie.
-export const VERSIONE_DATI = 1;
+export const VERSIONE_DATI = 2;
 
 export const leggiJson = p => fetch(`${p}?v=${VERSIONE_DATI}`).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
 
@@ -13,7 +13,7 @@ const tipiConTesti = new Set();
 // Primo passo: temi e dati comuni di tutte le schede (file piccoli). Bastano per contare, filtrare e ordinare il feed.
 // tema è il nome del tema principale, temi resta la lista completa di id. Le bozze non si mostrano.
 export async function caricaIndice(lingua) {
-  const [temi, ...basi] = await Promise.all([
+  const [{ temi }, ...basi] = await Promise.all([
     leggiJson("data/temi.json"),
     ...TIPI_DATI.map(tipo => leggiJson(`data/schede/${tipo}.json`)),
   ]);

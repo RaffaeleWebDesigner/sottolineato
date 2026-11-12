@@ -26,7 +26,7 @@ Un feed verticale in italiano per imparare qualcosa di interessante, una scheda 
   - `salvataggi.js`, `filtri.js`, `quiz.js` e `feed.js` gestiscono le parti dell'app con lo stesso nome;
   - `dom.js` contiene piccoli aiuti.
 - `i18n/it.json`: i testi dell'interfaccia (bottoni, filtri, messaggi). Nel codice si usano con `t("gruppo.chiave")`, in `index.html` con `data-i18n`.
-- `data/temi.json`: i 24 temi.
+- `data/temi.json`: le 6 macro-categorie e i 24 temi, ognuno in una categoria.
 - `data/schede/<tipo>.json`: i dati comuni a tutte le lingue (id, temi, risposta, autore, stato, date…).
 - `data/testi/it/<tipo>.json`: i testi italiani, indicizzati per id.
 - `data/SCHEMA.md`: lo schema completo della scheda, con un esempio per ogni tipo.

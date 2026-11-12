@@ -38,19 +38,33 @@ const leggi = file => {
   catch (e) { errore(path.relative(radice, file), `JSON non leggibile (${e.message})`); return null; }
 };
 
-// ——— Temi ———
-const temi = leggi(path.join(dati, "temi.json")) || [];
-const idTemi = new Set();
-if (!Array.isArray(temi)) errore("data/temi.json", "deve essere una lista");
-for (const t of Array.isArray(temi) ? temi : []) {
-  const dove = `data/temi.json [${t.id ?? "?"}]`;
+// ——— Categorie e temi ———
+// data/temi.json: { categorie: [...], temi: [...] }. Ogni tema appartiene a una sola categoria.
+const fileTemi = leggi(path.join(dati, "temi.json")) || {};
+if (!fileTemi || Array.isArray(fileTemi) || typeof fileTemi !== "object") errore("data/temi.json", "deve essere un oggetto con «categorie» e «temi»");
+const categorie = Array.isArray(fileTemi.categorie) ? fileTemi.categorie : [];
+const temi = Array.isArray(fileTemi.temi) ? fileTemi.temi : [];
+if (!Array.isArray(fileTemi.categorie)) errore("data/temi.json", "manca la lista «categorie»");
+if (!Array.isArray(fileTemi.temi)) errore("data/temi.json", "manca la lista «temi»");
+const controllaVoce = (t, dove, ids, cosa) => {
   if (typeof t.id !== "string" || !/^[a-z0-9-]+$/.test(t.id)) errore(dove, "id mancante o non valido (solo minuscole, cifre e trattini)");
-  else if (idTemi.has(t.id)) errore(dove, "id del tema duplicato");
-  else idTemi.add(t.id);
+  else if (ids.has(t.id)) errore(dove, `id ${cosa} duplicato`);
+  else ids.add(t.id);
   if (!t.nome || typeof t.nome[LINGUA_BASE] !== "string" || !t.nome[LINGUA_BASE]) errore(dove, `manca il nome in ${LINGUA_BASE}`);
   if (typeof t.premium !== "boolean") errore(dove, "premium deve essere true o false");
-  for (const l of LINGUE_ATTESE) if (l !== LINGUA_BASE && !(t.nome && t.nome[l])) avviso(`Tema «${t.id}» senza nome ${l}`);
+  for (const l of LINGUE_ATTESE) if (l !== LINGUA_BASE && !(t.nome && t.nome[l])) avviso(`${cosa === "della categoria" ? "Categoria" : "Tema"} «${t.id}» senza nome ${l}`);
+};
+const idCategorie = new Set();
+for (const c of categorie) controllaVoce(c, `data/temi.json categorie [${c.id ?? "?"}]`, idCategorie, "della categoria");
+const idTemi = new Set();
+const temiPerCategoria = new Map();
+for (const t of temi) {
+  const dove = `data/temi.json temi [${t.id ?? "?"}]`;
+  controllaVoce(t, dove, idTemi, "del tema");
+  if (!idCategorie.has(t.categoria)) errore(dove, `categoria mancante o inesistente «${t.categoria ?? ""}»`);
+  else temiPerCategoria.set(t.categoria, (temiPerCategoria.get(t.categoria) || 0) + 1);
 }
+for (const c of idCategorie) if (!temiPerCategoria.has(c)) avviso(`Categoria «${c}» senza temi`);
 
 // ——— Schede (file base) ———
 const schede = new Map(); // id → scheda base
@@ -167,8 +181,10 @@ const stampa = (titolo, oggetto) => {
   const largo = Math.max(...righe.map(([k]) => k.length), 4);
   for (const [k, v] of righe) console.log(`  ${k.padEnd(largo)}  ${String(v).padStart(5)}`);
 };
-console.log(`Sottolineato: ${schede.size} schede, ${idTemi.size} temi, lingue: ${lingue.join(", ") || "nessuna"}`);
+console.log(`Sottolineato: ${schede.size} schede, ${idCategorie.size} categorie, ${idTemi.size} temi, lingue: ${lingue.join(", ") || "nessuna"}`);
 stampa("Per tipo", conta(s => s.tipo));
+const categoriaDi = new Map(temi.map(t => [t.id, t.categoria]));
+stampa("Per categoria (del tema principale)", conta(s => categoriaDi.get(Array.isArray(s.temi) && s.temi[0]) || "?"));
 stampa("Per tema principale", conta(s => (Array.isArray(s.temi) && s.temi[0]) || "?"));
 stampa("Per stato", conta(s => s.stato));
 stampa("Per lingua", Object.fromEntries(LINGUE_ATTESE.map(l => [l, (perLingua[l] || new Set()).size])));

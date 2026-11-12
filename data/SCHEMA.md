@@ -7,7 +7,7 @@ Ogni scheda è divisa in due parti:
 
 L'`id` lega le due parti. Una scheda senza testo in una lingua non viene mostrata in quella lingua. Lo stesso `id` può avere testi diversi in lingue diverse: le schede legate all'italiano (per esempio Parole o Italia) andranno adattate, non tradotte alla lettera.
 
-I temi sono in `data/temi.json`.
+Categorie e temi sono in `data/temi.json`.
 
 Per controllare tutto: `node scripts/controlla.mjs` (deve finire senza errori prima di ogni commit).
 
@@ -76,19 +76,42 @@ Campi vuoti (`""`) non si scrivono: si omette il campo.
 | `def` | `parola`, `brillante` | Definizione in una riga. |
 | `spunto` | `brillante` | La frase pronta da dire agli amici. |
 
-## Temi (`data/temi.json`)
+## Categorie e temi (`data/temi.json`)
+
+Il file è un oggetto con due liste. `categorie` contiene le 6 macro-categorie, `temi` i 24 temi. Ogni tema appartiene a una sola categoria.
 
 ```json
-[
-  { "id": "storia", "nome": { "it": "Storia", "en": "Storia" }, "premium": false }
-]
+{
+  "categorie": [
+    { "id": "storia-societa", "nome": { "it": "Storia e società", "en": "Storia e società" }, "premium": false }
+  ],
+  "temi": [
+    { "id": "storia", "nome": { "it": "Storia", "en": "Storia" }, "categoria": "storia-societa", "premium": false }
+  ]
+}
 ```
 
-- `id` stabile, minuscole senza accenti: è anche il nome del colore CSS (`--t-<id>` in `index.html`).
+- `id` stabile, minuscole senza accenti, cifre e trattini. L'id di un tema è anche il nome del suo colore CSS (`--t-<id>` in `index.html`).
 - `nome` per lingua. Per ora `en` è uguale a `it`, verrà tradotto.
-- `premium`: una scheda è riservata a chi paga solo se **tutti** i suoi temi sono premium. Per ora tutti `false`.
+- `categoria` (solo temi): id di una categoria esistente. È obbligatoria.
+- `premium`:
+  - sulla categoria, registra quali categorie saranno riservate a chi paga;
+  - sul tema, è quello che usa oggi il codice (`riservata` in `js/dati.js`): una scheda è riservata solo se **tutti** i suoi temi sono premium.
 
-Ci sono 24 temi: mente, scienza, storia, italia, musica, cinema, geografia, sport, tecnologia, spazio, natura, corpo, cibo, parole, arte, economia, vita, amore, tempo, coraggio, lavoro, societa, potere, fantasia.
+  Oggi i temi sono tutti `false`. Come collegare i due livelli si decide con la monetizzazione (fase 7).
+
+Le categorie, con i loro temi:
+
+| Categoria (`id`) | Temi | Premium |
+|---|---|---|
+| Scienza e natura (`scienza-natura`) | scienza, natura, spazio, corpo | no |
+| Storia e società (`storia-societa`) | storia, societa, potere, economia | no |
+| Italia e parole (`italia-parole`) | italia, parole | no |
+| Arte e spettacolo (`arte-spettacolo`) | arte, musica, cinema, fantasia | no |
+| Mente e vita (`mente-vita`) | mente, vita, amore, tempo, coraggio, lavoro | sì |
+| Mondo di ogni giorno (`mondo-quotidiano`) | geografia, cibo, tecnologia, sport | no |
+
+Per ora l'app usa solo i temi: i filtri per categoria arrivano nella fase 3.
 
 ## Esempi, uno per tipo
 
