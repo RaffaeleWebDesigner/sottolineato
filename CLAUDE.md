@@ -122,3 +122,9 @@ Branch `fase-3-esperienza`. Niente pagamenti, pubblicità vere o notifiche: si p
 - **Avvio veloce**: `main.js` avvia i dati senza aspettare gli altri moduli; solo `main`, `i18n`, `dati` e `store` hanno priorità alta nei `modulepreload`, gli altri `fetchpriority="low"`; i caratteri di Google Fonts non bloccano l'avvio (`media="print"` con `onload`). Un modulo nuovo va aggiunto ai `modulepreload` (con `fetchpriority="low"`, salvo che serva a far partire i dati). La prima scheda visibile deve restare entro +0,3 s rispetto alla misura di fine fase 1.
 - **Accessibilità**: colori controllati con `scripts/contrasto.mjs` (4,5:1 in tutte le coppie, in entrambi i temi); se si cambia un colore in `index.html` va rilanciato. Tema chiaro/scuro/di sistema e testo su tre livelli si applicano da uno script in `<head>` per evitare il lampo del tema sbagliato.
 - **Lingue**: se `LINGUE` in `i18n.js` avrà più di una lingua, l'onboarding mostra da solo la scelta della lingua.
+
+## Fase 4 — sito installabile e offline (in corso, branch `fase-4-installabile`)
+
+- **Caratteri**: in `fonts/` (woff2 + licenza OFL accanto), con `@font-face` in `index.html`. Nessuna richiesta a Google. Si precarica solo Instrument Sans.
+- **Manifest e icone**: `manifest.webmanifest`, icone PNG in `icone/` (generate da `scripts/icone.mjs`, che usa Playwright e non fa parte del sito). **Nome provvisorio**: quando ci sarà il nome definitivo va cambiato in `manifest.webmanifest` (`name`, `short_name`, `shortcuts`) e in `index.html` (`apple-mobile-web-app-title`).
+- Le scorciatoie del manifest aprono `./?apri=feed` (la scheda del giorno è la prima del feed) e `./?apri=salvate`; `nav.js` legge `?apri=` all'avvio e ripulisce l'indirizzo.

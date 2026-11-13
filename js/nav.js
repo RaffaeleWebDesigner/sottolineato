@@ -39,7 +39,10 @@ function mostraDaHash(primaVolta = false) {
 
 // All'apertura si va sempre al feed, qualunque sia l'indirizzo.
 export function avviaNav() {
-  if (location.hash !== "#feed") history.replaceState(null, "", location.pathname + location.search + "#feed");
+  // Le scorciatoie dell'app installata aprono con ?apri=<vista>; l'indirizzo si ripulisce subito.
+  const apri = new URLSearchParams(location.search).get("apri");
+  const inizio = viste.has(apri) ? apri : "feed";
+  if (location.hash !== "#" + inizio || location.search) history.replaceState(null, "", location.pathname + "#" + inizio);
   window.addEventListener("hashchange", () => mostraDaHash());
   mostraDaHash(true);
 }
