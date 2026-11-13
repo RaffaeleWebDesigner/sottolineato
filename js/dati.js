@@ -47,7 +47,14 @@ export const testoPronto = scheda => tipiConTesti.has(scheda.tipo);
 // arrivato(tipo, senzaTesto): senzaTesto sono le schede di quel tipo che non hanno testo in questa lingua.
 export async function caricaTesti(lingua, schede, primoTipo, arrivato) {
   const carica = async tipo => {
-    const testi = await leggiJson(`data/testi/${lingua}/${tipo}.json`);
+    let testi;
+    try { testi = await leggiJson(`data/testi/${lingua}/${tipo}.json`); }
+    catch (err) {
+      // Senza rete (fetch fallisce con TypeError) un file di testi che non è in cache non è un errore: le schede di quel
+      // tipo si tolgono dal feed. Un errore del server (404, 500...) resta un errore.
+      if (!(err instanceof TypeError)) throw err;
+      testi = {};
+    }
     const senzaTesto = [];
     for (const s of schede) if (s.tipo === tipo) { if (testi[s.id]) Object.assign(s, testi[s.id]); else senzaTesto.push(s.id); }
     tipiConTesti.add(tipo);

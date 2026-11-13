@@ -21,16 +21,20 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
   - Dati dell'utente: `salvataggi.js`, `cronologia.js` (viste, giorni, contatori, esiti dei quiz), `ripasso.js`, `preferenze.js` (categorie, tema, dimensione del testo), `giorno.js` (scheda del giorno e archivio), `limiti.js` (limite giornaliero, piani, `MOSTRA_PREMIUM`).
   - Viste: `nav.js` (hash), `feed.js`, `esplora.js`, `salvate.js`, `profilo.js`, `pro.js`, `onboarding.js`, `aperta.js` (scheda aperta a tutto schermo), `limiteui.js` (schermata del limite e pubblicità di prova).
   - Scheda: `scheda.js` (costruzione), `quiz.js`, `effetti.js` (coriandoli, scossone), `feedback.js` (vibrazione: `gioia()` ed `errore()`), `condividi.js` (immagine da condividere), `filtri.js`.
+  - Installazione e offline: `installazione.js` (registra `sw.js` a feed già in vista, avviso «Nuova versione disponibile», indicatore «Offline»).
 - `i18n/it.json`: tutti i testi dell'interfaccia, raggruppati per area, con segnaposto `{n}`.
 - `data/temi.json`: le 6 macro-categorie (`categorie`) e i 24 temi (`temi`), con `id` stabile, `nome` per lingua e `premium`. Ogni tema ha una `categoria`. Premium deciso: Mente e vita (solo sulla categoria; i temi restano `false` fino alla fase 7).
 - `data/schede/<tipo>.json`: dati comuni a tutte le lingue. `data/testi/<lingua>/<tipo>.json`: testi, indicizzati per `id`. Oggi c'è solo `it`.
 - `data/SCHEMA.md`: lo schema completo, con un esempio per tipo. È il riferimento per ogni scheda.
 - `data/GUIDA.md`: la guida di stile e le fonti accettate.
 - `data/verifica/REGISTRO.md`: il registro della verifica dei fatti (fase 2). Da lì riparte chi continua il lavoro.
+- `sw.js` (radice): service worker; `manifest.webmanifest`; `fonts/` (woff2 e licenze OFL); `icone/` (PNG generate da `scripts/icone.mjs`). Vedi la sezione «Fase 4».
 - `scripts/controlla.mjs`: controllo dei contenuti, delle chiavi di traduzione e dei `modulepreload`, nessuna dipendenza. `scripts/prova-ordine.mjs`: prova di `ordine.js` e `ricerca.js` senza browser. `scripts/contrasto.mjs`: contrasto dei colori (WCAG AA) nei due temi.
 - 2.001 schede. Stato della verifica (verificate, in bozza, da verificare): vedi `data/verifica/REGISTRO.md`.
 
 **`VERSIONE_DATI`** (in `js/dati.js`) va aumentata di 1 a ogni modifica di `data/` o `i18n/`. Si aggiunge come `?v=` a ogni richiesta JSON, così il browser non usa copie vecchie.
+
+**`VERSIONE_APP`** (in `sw.js`) va aumentata di 1 a ogni modifica di `index.html`, `js/`, `fonts/`, `icone/` o `manifest.webmanifest`. Quindi **anche quando si aumenta `VERSIONE_DATI`** (sta in `js/dati.js`): le due righe vanno sempre insieme. Senza questo, chi ha già il sito installato continua a vedere i file vecchi.
 
 Caricamento, in due passi:
 1. Traduzioni, `data/temi.json` e tutti i `data/schede/<tipo>.json`: bastano per conteggi, filtri e ordine del feed.

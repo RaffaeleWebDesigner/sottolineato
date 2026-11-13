@@ -16,6 +16,7 @@ import { inizializzaPro } from "./pro.js";
 import { applicaAspetto, applicaDimensione } from "./preferenze.js";
 import { registraVista, avviaNav } from "./nav.js";
 import { serveOnboarding, avviaOnboarding } from "./onboarding.js";
+import { avviaIndicatoreOffline, registraServiceWorker } from "./installazione.js";
 
 export async function avvia(dati) {
   try {
@@ -41,6 +42,7 @@ export async function avvia(dati) {
   // Con l'onboarding il feed si costruisce alla fine, con le preferenze scelte.
   if (primoAvvio) sospendiFeed(true);
   avviaNav();
+  avviaIndicatoreOffline();
   if (primoAvvio) avviaOnboarding(() => { sospendiFeed(false); aggiornaFeed(); }); else aggiornaFeed();
 
   try {
@@ -56,6 +58,8 @@ export async function avvia(dati) {
     console.error(err);
     mostraErrore();
   }
+  // Per ultimo, a prima scheda già in vista e testi arrivati: il service worker non toglie banda all'avvio.
+  registraServiceWorker();
 }
 
 export function mostraErroreIniziale(err) {

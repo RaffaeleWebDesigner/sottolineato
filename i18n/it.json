@@ -226,5 +226,10 @@
     "titolo": "Ripasso",
     "esci": "Esci dal ripasso",
     "da_rivedere": "Da rivedere: {n}"
+  },
+  "installazione": {
+    "offline": "Offline",
+    "nuova_versione": "Nuova versione disponibile",
+    "aggiorna": "Aggiorna"
   }
 }

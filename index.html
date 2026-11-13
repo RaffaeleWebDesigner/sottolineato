@@ -56,6 +56,7 @@
 <link rel="modulepreload" fetchpriority="low" href="js/esplora.js">
 <link rel="modulepreload" fetchpriority="low" href="js/salvate.js">
 <link rel="modulepreload" fetchpriority="low" href="js/profilo.js">
+<link rel="modulepreload" fetchpriority="low" href="js/installazione.js">
 <!-- Caratteri inclusi nel sito (fonts/, licenza OFL accanto). Si precarica solo quello usato in tutte le schede e nella barra. -->
 <link rel="preload" href="fonts/InstrumentSans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -276,6 +277,13 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 .riga .nome { min-width: 0; }
 .riga .data { display: block; font-size: .72rem; color: var(--muted); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 
+/* Avvisi discreti sopra la barra: «Offline» e «Nuova versione disponibile». */
+.avvisi-app { flex: none; display: flex; flex-direction: column; }
+.avvisi-app:empty { display: none; }
+.avviso-app { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 32px; padding: 4px max(14px, env(safe-area-inset-left, 0px)); font-size: .78rem; font-weight: 600; color: var(--muted); background: var(--chip); border-top: 1px solid var(--line); }
+.avviso-bottone { min-height: 32px; padding: 0 12px; border: 0; background: none; color: var(--fg); font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.avviso-bottone:disabled { opacity: .5; }
+
 /* Barra in basso: quattro sezioni, sempre visibile. */
 .tabbar { flex: none; display: flex; justify-content: center; background: var(--bg); border-top: 1px solid var(--line); padding: 0 max(8px, env(safe-area-inset-left, 0px)) env(safe-area-inset-bottom, 0px); }
 .tab { flex: 1; max-width: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; padding-block: 6px; color: var(--muted); text-decoration: none; font-size: .72rem; font-weight: 600; border-radius: 12px; }
@@ -414,6 +422,8 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
     </div>
   </section>
 </main>
+
+<div class="avvisi-app" id="avvisi-app" aria-live="polite"></div>
 
 <nav class="tabbar" aria-label="Sezioni" data-i18n-aria-label="aria.sezioni">
   <a class="tab" id="tab-feed" href="#feed" data-sezione="feed"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg><span data-i18n="nav.feed">Feed</span></a>
