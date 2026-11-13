@@ -67,3 +67,19 @@ export function ordina(schede, { cronologia = {}, categorie = [], categoriaDiTem
   }
   return uscita;
 }
+
+// ——— Scheda del giorno ———
+// Dato il giorno (un intero) e le schede tra cui scegliere (id in ordine stabile), restituisce l'id della scheda del giorno.
+// Stessa data e stesso elenco: stessa scheda per tutti. Il passo tra un giorno e l'altro è coprimo con la lunghezza
+// dell'elenco, quindi la stessa scheda torna solo dopo n giorni: con almeno 365 schede non si ripete per un anno.
+const mcd = (a, b) => (b ? mcd(b, a % b) : a);
+export function passoDelGiorno(n) {
+  if (n < 3) return 1;
+  let passo = Math.max(1, Math.round(n * 0.381966));
+  while (mcd(passo, n) !== 1) passo++;
+  return passo;
+}
+export function schedaDelGiorno(ids, giorno) {
+  if (!ids.length) return null;
+  return ids[(((giorno % ids.length) * passoDelGiorno(ids.length)) % ids.length + ids.length) % ids.length];
+}

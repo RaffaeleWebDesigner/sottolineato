@@ -27,6 +27,8 @@
 <link rel="modulepreload" href="js/feed.js">
 <link rel="modulepreload" href="js/dom.js">
 <link rel="modulepreload" href="js/tempo.js">
+<link rel="modulepreload" href="js/giorno.js">
+<link rel="modulepreload" href="js/aperta.js">
 <link rel="modulepreload" href="js/onboarding.js">
 <link rel="modulepreload" href="js/ordine.js">
 <link rel="modulepreload" href="js/cronologia.js">
@@ -210,6 +212,15 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 .piano h3 { margin: 0; font-family: var(--font-quote); font-size: 1.5rem; font-weight: 500; }
 .piano p { margin: 0; }
 .piano .prezzo { font-weight: 700; }
+
+/* Scheda aperta a tutto schermo. */
+.aperta { display: flex; flex-direction: column; }
+.aperta-chiudi { position: absolute; top: max(8px, env(safe-area-inset-top, 0px)); right: max(10px, env(safe-area-inset-right, 0px)); z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--chip); font-size: 1.6rem; line-height: 1; }
+.aperta-corpo { flex: 1; min-height: 0; width: 100%; max-width: 640px; margin-inline: auto; padding: max(58px, calc(env(safe-area-inset-top, 0px) + 50px)) max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; }
+.aperta-corpo .card { flex: 1; min-height: 0; height: auto; }
+.riga-testo { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.riga .nome { min-width: 0; }
+.riga .data { display: block; font-size: .72rem; color: var(--muted); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 
 /* Barra in basso: quattro sezioni, sempre visibile. */
 .tabbar { flex: none; display: flex; justify-content: center; background: var(--bg); border-top: 1px solid var(--line); padding: 0 max(8px, env(safe-area-inset-left, 0px)) env(safe-area-inset-bottom, 0px); }

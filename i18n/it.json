@@ -171,5 +171,13 @@
     "schede_al_giorno": "{n} schede al giorno",
     "presto": "Presto disponibile",
     "nota": "Per ora tutte le schede sono gratis e non c'è nessun limite."
+  },
+  "profilo": {
+    "archivio": "Schede del giorno passate",
+    "archivio_vuoto": "Qui compariranno le schede del giorno dei giorni passati."
+  },
+  "aperta": {
+    "titolo": "Scheda",
+    "chiudi": "Chiudi"
   }
 }

@@ -1,6 +1,6 @@
 // Prova di js/ordine.js senza browser: simula il feed e controlla le regole. Nessuna dipendenza.
 // Uso: node scripts/prova-ordine.mjs   (esce con codice 1 se una regola non regge)
-import { ordina, MAX_STESSO_TIPO, MAX_STESSO_TEMA } from "../js/ordine.js";
+import { ordina, schedaDelGiorno, MAX_STESSO_TIPO, MAX_STESSO_TEMA } from "../js/ordine.js";
 
 // Un catalogo finto con più o meno la forma di quello vero.
 const TIPI = { mondo: 900, storica: 280, mito: 375, brillante: 140, frase: 60, idea: 50, parola: 70, sapevi: 94 };
@@ -85,6 +85,19 @@ controlla(ordina([], {}).length === 0, "lista vuota");
 const primo = catalogo[500].id;
 controlla(ordina(catalogo, { ...opzioni, prima: primo })[0].id === primo, "la scheda indicata va per prima");
 controlla(ordina(catalogo, { ...opzioni, prima: "non-esiste" }).length === catalogo.length, "una scheda «prima» che non c'è si ignora");
+
+console.log("\nScheda del giorno");
+for (const n of [278, 400, 2001]) {
+  const ids = Array.from({ length: n }, (_, i) => "s" + i);
+  const g0 = 20770; const sequenza = Array.from({ length: Math.min(n, 800) }, (_, i) => schedaDelGiorno(ids, g0 + i));
+  const distinte = new Set(sequenza.slice(0, Math.min(n, 365))).size;
+  controlla(distinte === Math.min(n, 365), `con ${n} schede, nessuna ripetizione nei primi ${Math.min(n, 365)} giorni`);
+  controlla(schedaDelGiorno(ids, g0) === schedaDelGiorno(ids.slice(), g0), `con ${n} schede, stesso giorno stessa scheda`);
+}
+controlla(schedaDelGiorno([], 5) === null, "senza schede verificate non c'è scheda del giorno");
+controlla(schedaDelGiorno(["solo"], 5) === "solo" && ["a", "b"].includes(schedaDelGiorno(["a", "b"], 7)), "con una o due schede risponde comunque");
+const consecutive = Array.from({ length: 30 }, (_, i) => schedaDelGiorno(Array.from({ length: 500 }, (_, k) => "s" + k), 20000 + i));
+controlla(new Set(consecutive).size === 30, "30 giorni di fila, 30 schede diverse");
 
 console.log(errori ? `\n${errori} controlli falliti.` : "\nTutti i controlli superati.");
 process.exit(errori ? 1 : 0);

@@ -9,6 +9,8 @@ import { creaCard } from "./scheda.js";
 import { filtra, filtroAttivo, filtroCorrente, descriviFiltro, azzeraFiltro, soloSalvate } from "./filtri.js";
 import { vistaCorrente } from "./nav.js";
 import { oggi } from "./tempo.js";
+import { delGiorno } from "./giorno.js";
+import { contatoriDiOggi, aggiornaContatori } from "./cronologia.js";
 import { limiteAttivo, rimaste } from "./limiti.js";
 import { creaSchermataLimite } from "./limiteui.js";
 
@@ -105,8 +107,9 @@ function avviaTimer(slide) {
   if (timer.has(slide) || document.hidden) return;
   timer.set(slide, setTimeout(() => {
     timer.delete(slide);
-    const { f, conta } = infoSlide.get(slide);
-    registraVista(f.id, { conta }); aggiornaContatore();
+    const { f, conta, giorno } = infoSlide.get(slide);
+    registraVista(f.id, { conta }); if (giorno) aggiornaContatori({ giornoVisto: true });
+    aggiornaContatore();
   }, TEMPO_VISTA));
 }
 function fermaTimer(slide) { clearTimeout(timer.get(slide)); timer.delete(slide); }
@@ -120,10 +123,11 @@ function osservaVista(es) {
 }
 
 // Con il limite acceso la lista si ferma prima della scheda nuova che non si può più vedere.
-function tagliaAlLimite(lista, cronologia) {
+// La scheda del giorno non conta: si salta.
+function tagliaAlLimite(lista, cronologia, giornoId) {
   let disponibili = rimaste();
   for (let i = 0; i < lista.length; i++) {
-    if (lista[i].id in cronologia) continue;
+    if (lista[i].id in cronologia || lista[i].id === giornoId) continue;
     if (disponibili === 0) return { lista: lista.slice(0, i), finito: true };
     disponibili--;
   }
@@ -132,9 +136,12 @@ function tagliaAlLimite(lista, cronologia) {
 
 function renderFeed(listaFiltrata, vuotoSalvate) {
   const cronologia = cronologiaViste();
-  let lista = ordina(listaFiltrata, { cronologia, categorie: interessi(), categoriaDiTema: catalogo.categoriaDiTema, seme });
+  // Alla prima apertura del giorno la scheda del giorno è la prima del feed (se passa il filtro).
+  const dg = delGiorno(), giornoId = dg?.id ?? null;
+  const primaId = dg && !contatoriDiOggi().giornoVisto && listaFiltrata.includes(dg) ? giornoId : null;
+  let lista = ordina(listaFiltrata, { cronologia, categorie: interessi(), categoriaDiTema: catalogo.categoriaDiTema, seme, prima: primaId });
   let finito = false;
-  if (limiteAttivo()) ({ lista, finito } = tagliaAlLimite(lista, cronologia));
+  if (limiteAttivo()) ({ lista, finito } = tagliaAlLimite(lista, cronologia, giornoId));
   listaInVista = lista;
   for (const x of timer.values()) clearTimeout(x); timer.clear(); inVista.clear();
 
@@ -154,8 +161,9 @@ function renderFeed(listaFiltrata, vuotoSalvate) {
   riempi = () => {
     for (; fatte < richieste && testoPronto(lista[fatte]); fatte++) {
       const slide = el("section", "slide");
-      infoSlide.set(slide, { f: lista[fatte], conta: true });
-      slide.appendChild(creaCard(lista[fatte], fatte, lista.length));
+      const f = lista[fatte], oggiLaDelGiorno = f.id === giornoId;
+      infoSlide.set(slide, { f, conta: !oggiLaDelGiorno, giorno: oggiLaDelGiorno });
+      slide.appendChild(creaCard(f, fatte, lista.length, { delGiorno: oggiLaDelGiorno }));
       feed.insertBefore(slide, sentinella); observer.observe(slide);
       if (fatte === 0) { attesa.remove(); requestAnimationFrame(() => feed.querySelector(".card")?.classList.add("seen")); }
     }
