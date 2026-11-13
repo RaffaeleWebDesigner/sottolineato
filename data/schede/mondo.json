@@ -922,5 +922,20 @@
   {"id":"bu-urbino","tipo":"mondo","temi":["italia"],"vero":true,"stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"bu-ravenna-mosaici","tipo":"mondo","temi":["italia"],"vero":true,"stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"bu-orvieto-pozzo","tipo":"mondo","temi":["italia"],"vero":true,"stato":"da_verificare","aggiunta":"2026-11-12"},
-  {"id":"bu-civita","tipo":"mondo","temi":["italia"],"vero":true,"stato":"da_verificare","aggiunta":"2026-11-12"}
+  {"id":"bu-civita","tipo":"mondo","temi":["italia"],"vero":true,"stato":"da_verificare","aggiunta":"2026-11-12"},
+  {"id":"n1-tempo-secondo-cesio","tipo":"mondo","temi":["tempo","scienza"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.nist.gov/si-redefinition/second-introduction","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-secondi-intercalari","tipo":"mondo","temi":["tempo","scienza"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.nist.gov/pml/time-and-frequency-division/time-realization/leap-seconds | https://www.nist.gov/pml/time-and-frequency-division/leap-seconds-faqs","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-maya-senza-nome","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/calendario_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-aztechi-52","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/calendario_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-fusi-fleming","tipo":"mondo","temi":["tempo","geografia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/ora_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-ore-stagioni","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/ora_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-ore-tramonto","tipo":"mondo","temi":["tempo","italia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/ora_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-paura-lenta","tipo":"mondo","temi":["tempo","mente"],"vero":false,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0001295","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-giorni-pianeti","tipo":"mondo","temi":["tempo","spazio"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/settimana_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-metone","tipo":"mondo","temi":["tempo","scienza"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/calendario_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-anno-islamico","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/calendario_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-comte-13-mesi","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/calendario_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-egitto-anno-vago","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/calendario_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-harrison","tipo":"mondo","temi":["tempo","scienza"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/john-harrison/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-huygens","tipo":"mondo","temi":["tempo","spazio"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/christiaan-huygens/ | https://www.treccani.it/enciclopedia/orologio/","aggiunta":"2026-11-13"}
 ]

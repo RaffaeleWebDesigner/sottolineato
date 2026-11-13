@@ -140,5 +140,6 @@
   {"id":"d4-pianificazione","tipo":"brillante","temi":["lavoro"],"autore":"Daniel Kahneman e Amos Tversky","anno":"1979","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"d4-dilbert","tipo":"brillante","temi":["lavoro"],"autore":"Scott Adams","anno":"1995","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"d4-decoy-tempo","tipo":"brillante","temi":["societa"],"autore":"Psicologia della percezione","stato":"da_verificare","aggiunta":"2026-11-12"},
-  {"id":"d4-spaziatura","tipo":"brillante","temi":["lavoro"],"autore":"David Allen","anno":"2001","stato":"da_verificare","aggiunta":"2026-11-12"}
+  {"id":"d4-spaziatura","tipo":"brillante","temi":["lavoro"],"autore":"David Allen","anno":"2001","stato":"da_verificare","aggiunta":"2026-11-12"},
+  {"id":"n1-tempo-cronostasi","tipo":"brillante","temi":["tempo","mente"],"autore":"Kielan Yarrow","anno":"2001","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.nature.com/articles/35104551","aggiunta":"2026-11-13"}
 ]
