@@ -110,5 +110,15 @@
   },
   "salvate": {
     "vedi_nel_feed": "Vedi le {n} salvate nel feed"
+  },
+  "esplora": {
+    "categorie": "Categorie",
+    "per_tipo": "Per tipo",
+    "temi": "Temi",
+    "una_scheda": "1 scheda",
+    "n_schede": "{n} schede",
+    "indietro": "Tutte le categorie",
+    "tutta_categoria": "Tutte le schede di {nome}",
+    "pro": "Pro"
   }
 }
