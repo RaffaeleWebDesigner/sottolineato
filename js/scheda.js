@@ -1,9 +1,14 @@
-// Una scheda: costruzione dell'articolo con testo, risposta, quiz e azioni.
+// Una scheda: costruzione dell'articolo con testo, quiz, spiegazione e azioni.
+//
+// Nei quiz (Vero o falso, Miti, Citazioni storiche, «Mettimi alla prova» sui libri) prima della risposta il DOM contiene
+// solo tipo, frase principale, domanda e pulsanti. Nota, bollino e fonte vengono creati dopo la risposta:
+// non esistono né sfocati né nascosti, quindi nessun indizio per lettori di schermo, selezione del testo o «Copia».
 import { el, bottoneAzione } from "./dom.js";
 import { t } from "./i18n.js";
 import { LIBRI } from "./dati.js";
-import { makeQuiz, quizLibro } from "./quiz.js";
-import { salvata, alternaSalvata, impara } from "./salvataggi.js";
+import { creaQuiz, opzioniLibro, rispostaDiSessione } from "./quiz.js";
+import { salvata, alternaSalvata } from "./salvataggi.js";
+import { effettoRisposta, movimentoRidotto } from "./effetti.js";
 
 const ICONS = {
   save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
@@ -56,57 +61,115 @@ function sourceNode(f, extra) {
 
 function badge(text, kind) { return el("span", "badge " + kind, text); }
 
-export function creaCard(f, idx, tot) {
+// La spiegazione entra dal basso (300 ms); con movimento ridotto compare e basta.
+function mostraSpiegazione(body, spiega, prima, animato) {
+  body.insertBefore(spiega, prima);
+  if (!animato) return;
+  if (!movimentoRidotto()) { spiega.classList.add("entra"); spiega.addEventListener("animationend", () => spiega.classList.remove("entra"), { once: true }); }
+  requestAnimationFrame(() => { if (body.scrollHeight > body.clientHeight) body.scrollTo({ top: body.scrollHeight, behavior: movimentoRidotto() ? "auto" : "smooth" }); });
+}
+
+// La scritta grande in cima: «Esatto!» con un leggero rimbalzo, «Sbagliato» in rosso.
+function scrittaEsito(giusto, animato) {
+  const s = el("strong", "esito-testo " + (giusto ? "giusto" : "sbagliato"), giusto ? t("quiz.esatto") : t("quiz.sbagliato"));
+  // La classe si toglie a fine animazione, così non riparte quando la vista torna a mostrarsi.
+  if (animato && giusto && !movimentoRidotto()) { s.classList.add("rimbalza"); s.addEventListener("animationend", () => s.classList.remove("rimbalza"), { once: true }); }
+  return s;
+}
+
+// opzioni.modo: "feed", "ripasso" o "aperta". Nel ripasso le domande tornano sempre senza risposta.
+export function creaCard(f, idx, tot, { modo = "feed", delGiorno = false } = {}) {
   const { tipi, verdetti } = testiFeed();
   const c = el("article", "card tipo-" + f.tipo);
   c.style.setProperty("--tint", `var(--t-${f.temaId})`);
   const head = el("div", "card-head");
   const label = el("span", "label");
   label.append(el("span", "kind", tipi[f.tipo]), document.createTextNode(t("scheda.separatore") + f.tema));
-  head.append(label, el("span", "count", t("scheda.contatore", { n: idx + 1, tot })));
+  const destra = el("span", "destra");
+  if (delGiorno) destra.append(el("span", "del-giorno", t("scheda.del_giorno")));
+  if (tot) destra.append(el("span", "count", t("scheda.contatore", { n: idx + 1, tot })));
+  head.append(label, destra);
 
   const body = el("div", "body");
-  body.appendChild(mainNode(f));
-  let copyText;
+  const esitoEl = el("div", "esito"); esitoEl.setAttribute("aria-live", "polite");
+  body.append(esitoEl, mainNode(f));
+  // Cosa si copia: prima della risposta non c'è la risposta.
+  let risposta = false;
+  let copia = () => "";
+  const precedente = modo === "ripasso" ? undefined : rispostaDiSessione(f.id);
 
   if (LIBRI.has(f.tipo)) {
     if (f.tipo === "parola") body.appendChild(el("p", "def", f.def));
     const extra = f.tipo === "frase" ? (f.trad ? t("scheda.traduzione_nostra") : "") : f.tipo === "idea" ? t("scheda.parole_nostre") : "";
-    const src = sourceNode(f, extra); src.classList.add("reveal");
-    body.append(src, el("p", "note reveal", f.nota));
+    const src = sourceNode(f, extra), nota = el("p", "note", f.nota);
+    body.append(src, nota);
     const valori = { testo: f.testo.replace(/\n/g, " "), def: f.def, autore: f.autore, opera: f.opera };
-    copyText = f.tipo === "frase" ? t("copia.frase", valori) : f.tipo === "parola" ? t("copia.parola", valori) : t("copia.libro", { ...valori, testo: f.testo });
-  } else if (f.tipo === "storica") {
-    body.appendChild(sourceNode(f));
-    const [vt, vk, vFrase] = verdetti[f.verdetto];
-    const res = el("div", "reveal"); res.append(badge(vt, vk), el("p", "note", f.nota));
-    body.appendChild(res);
-    const scelte = [verdetti.vera[0], verdetti.attribuita[0], verdetti.mai[0]];
-    body.appendChild(makeQuiz(c, t("quiz.domanda_storica"), scelte, vt, {
-      onRight: () => impara(f.id), rightText: t("quiz.esatto"), wrongText: t("quiz.sbagliato_storica", { verdetto: vFrase }),
-    }));
-    c.classList.add("quizzing");
-    copyText = t("copia.storica", { testo: f.testo, autore: f.autore, verdetto: vFrase, nota: f.nota });
-  } else if (f.tipo === "mondo" || f.tipo === "mito") {
-    const mito = f.tipo === "mito";
-    const opzioni = mito ? [t("quiz.e_vero"), t("quiz.e_un_mito")] : [t("quiz.vero"), t("quiz.falso")];
-    const giusta = f.vero ? opzioni[0] : opzioni[1];
-    const etichetta = mito ? (f.vero ? t("quiz.confermato") : t("quiz.mito_sfatato")) : giusta;
-    const sbagliato = mito ? (f.vero ? t("quiz.sbagliato_mito_vero") : t("quiz.sbagliato_mito_falso")) : (f.vero ? t("quiz.sbagliato_vero") : t("quiz.sbagliato_falso"));
-    const res = el("div", "reveal"); res.append(badge(etichetta, f.vero ? "good" : "bad"), el("p", "note", f.nota));
-    body.appendChild(res);
-    body.appendChild(makeQuiz(c, mito ? t("quiz.domanda_mito") : t("quiz.domanda_mondo"), opzioni, giusta, {
-      onRight: () => impara(f.id), rightText: t("quiz.esatto"), wrongText: sbagliato,
-    }));
-    c.classList.add("quizzing");
-    copyText = t("copia.mondo", { testo: f.testo, risposta: etichetta, nota: f.nota });
+    const completo = f.tipo === "frase" ? t("copia.frase", valori) : f.tipo === "parola" ? t("copia.parola", valori) : t("copia.libro", { ...valori, testo: f.testo });
+    const parziale = f.tipo === "frase" ? t("copia.frase_quiz", valori) : f.tipo === "parola" ? t("copia.parola_quiz", valori) : t("copia.libro_quiz", { testo: f.testo });
+    let inQuiz = false;
+    copia = () => (inQuiz && !risposta ? parziale : completo);
+    c._avviaQuiz = () => {
+      body.querySelector(".quiz")?.remove(); body.querySelector(".spiega")?.remove(); esitoEl.replaceChildren();
+      src.remove(); nota.remove(); inQuiz = true; risposta = false;
+      const quiz = creaQuiz({
+        id: f.id, ...opzioniLibro(f),
+        alRisposta({ giusto, animato, bottone, dettaglio }) {
+          risposta = true;
+          esitoEl.replaceChildren(scrittaEsito(giusto, animato));
+          dettaglio.textContent = giusto ? t("quiz.imparata") : t("quiz.sbagliato_libro", { opera: f.opera });
+          const spiega = el("div", "spiega"); spiega.append(src, nota);
+          mostraSpiegazione(body, spiega, quiz, animato);
+          if (animato) effettoRisposta(c, giusto, bottone);
+        },
+      });
+      body.appendChild(quiz);
+      quiz.querySelector(".opt").focus({ preventScroll: true });
+    };
+  } else if (f.tipo === "storica" || f.tipo === "mondo" || f.tipo === "mito") {
+    let cfg, spiegazione, parziale, completo;
+    if (f.tipo === "storica") {
+      const [vt, vk, vFrase] = verdetti[f.verdetto];
+      cfg = {
+        domanda: t("quiz.domanda_storica", { autore: f.autore }), opzioni: [verdetti.vera[0], verdetti.attribuita[0], verdetti.mai[0]], giusta: vt,
+        dettaglio: t("quiz.sbagliato_storica", { verdetto: vFrase }),
+      };
+      spiegazione = () => { const d = el("div", "spiega"); d.append(badge(vt, vk), el("p", "note", f.nota), sourceNode(f)); return d; };
+      parziale = t("copia.storica_quiz", { testo: f.testo, autore: f.autore });
+      completo = t("copia.storica", { testo: f.testo, autore: f.autore, verdetto: vFrase, nota: f.nota });
+    } else {
+      const mito = f.tipo === "mito";
+      const opzioni = mito ? [t("quiz.e_vero"), t("quiz.e_un_mito")] : [t("quiz.vero"), t("quiz.falso")];
+      const giusta = f.vero ? opzioni[0] : opzioni[1];
+      const etichetta = mito ? (f.vero ? t("quiz.confermato") : t("quiz.mito_sfatato")) : giusta;
+      const domanda = mito ? t("quiz.domanda_mito") : t("quiz.domanda_mondo");
+      cfg = {
+        domanda, opzioni, giusta,
+        dettaglio: mito ? (f.vero ? t("quiz.sbagliato_mito_vero") : t("quiz.sbagliato_mito_falso")) : (f.vero ? t("quiz.sbagliato_vero") : t("quiz.sbagliato_falso")),
+      };
+      spiegazione = () => { const d = el("div", "spiega"); d.append(badge(etichetta, f.vero ? "good" : "bad"), el("p", "note", f.nota)); return d; };
+      parziale = t("copia.domanda", { testo: f.testo, domanda });
+      completo = t("copia.mondo", { testo: f.testo, risposta: etichetta, nota: f.nota });
+    }
+    copia = () => (risposta ? completo : parziale);
+    const quiz = creaQuiz({
+      id: f.id, domanda: cfg.domanda, opzioni: cfg.opzioni, giusta: cfg.giusta,
+      alRisposta({ giusto, animato, bottone, dettaglio }) {
+        risposta = true;
+        esitoEl.replaceChildren(scrittaEsito(giusto, animato));
+        dettaglio.textContent = giusto ? "" : cfg.dettaglio;
+        mostraSpiegazione(body, spiegazione(), quiz, animato);
+        if (animato) effettoRisposta(c, giusto, bottone);
+      },
+    });
+    body.appendChild(quiz);
+    if (precedente != null) quiz.mostraRisposta(precedente); // già risposto in questa sessione: aperto, senza effetti
   } else if (f.tipo === "brillante") {
     body.appendChild(el("p", "def", f.def));
     const sp = el("div", "spunto");
     sp.append(el("span", "spunto-label", t("scheda.come_tirarlo_fuori")), el("p", null, t("scheda.spunto", { spunto: f.spunto })));
     body.append(sp, el("p", "note", f.nota));
     if (f.autore) body.appendChild(sourceNode(f));
-    copyText = f.spunto;
+    copia = () => f.spunto;
   }
 
   const actions = el("div", "actions");
@@ -116,21 +179,16 @@ export function creaCard(f, idx, tot) {
   bSave.addEventListener("click", () => { alternaSalvata(f.id); syncSave(); });
   actions.appendChild(bSave);
 
-  if (LIBRI.has(f.tipo) && f.tipo !== "sapevi") {
+  if (c._avviaQuiz) {
     const bQuiz = bottoneAzione(ICONS.quiz, t("azioni.mettimi_alla_prova"));
-    bQuiz.addEventListener("click", () => {
-      body.querySelector(".quiz")?.remove();
-      const quiz = quizLibro(c, f);
-      body.appendChild(quiz); c.classList.add("quizzing");
-      quiz.querySelector(".opt").focus({ preventScroll: true });
-    });
+    bQuiz.addEventListener("click", c._avviaQuiz);
     actions.appendChild(bQuiz);
   }
 
   const copyLabel = f.tipo === "brillante" ? t("azioni.copia_frase") : t("azioni.copia");
   const bCopy = bottoneAzione(ICONS.copy, copyLabel);
   bCopy.addEventListener("click", async () => {
-    try { await navigator.clipboard.writeText(copyText); bCopy.lastChild.textContent = t("azioni.copiata"); }
+    try { await navigator.clipboard.writeText(copia()); bCopy.lastChild.textContent = t("azioni.copiata"); }
     catch { const r = document.createRange(); r.selectNodeContents(body.querySelector(".q")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); bCopy.lastChild.textContent = t("azioni.testo_selezionato"); }
     setTimeout(() => { bCopy.lastChild.textContent = copyLabel; }, 1800);
   });
@@ -139,4 +197,3 @@ export function creaCard(f, idx, tot) {
   c.append(head, body, actions);
   return c;
 }
-

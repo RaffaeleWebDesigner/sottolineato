@@ -36,7 +36,8 @@
     "traduzione_nostra": "traduzione nostra",
     "parole_nostre": "raccontata con parole nostre",
     "come_tirarlo_fuori": "Come tirarlo fuori",
-    "spunto": "«{spunto}»"
+    "spunto": "«{spunto}»",
+    "del_giorno": "Scheda del giorno"
   },
   "verdetti": {
     "vera": "Detta davvero",
@@ -58,7 +59,7 @@
     "testo_selezionato": "Testo selezionato"
   },
   "quiz": {
-    "domanda_storica": "L'ha detta davvero?",
+    "domanda_storica": "{autore}: l'ha detta davvero?",
     "domanda_mondo": "Che ne dici?",
     "domanda_mito": "Mito o realtà?",
     "domanda_libro": "Da quale libro?",
@@ -69,21 +70,27 @@
     "e_un_mito": "È un mito",
     "confermato": "Confermato",
     "mito_sfatato": "Mito sfatato",
-    "esatto": "Esatto.",
-    "esatto_imparata": "Esatto. Imparata.",
+    "esatto": "Esatto!",
     "sbagliato_storica": "No: {verdetto}.",
     "sbagliato_vero": "No, è vero.",
     "sbagliato_falso": "No, è falso.",
     "sbagliato_mito_vero": "No, è vero.",
     "sbagliato_mito_falso": "No, è un mito.",
-    "sbagliato_libro": "Era «{opera}». Ci riprovi la prossima volta."
+    "sbagliato_libro": "Era «{opera}». Ci riprovi la prossima volta.",
+    "sbagliato": "Sbagliato",
+    "imparata": "Imparata."
   },
   "copia": {
     "frase": "«{testo}» — {autore}, {opera}",
     "libro": "{testo} — {autore}, {opera}",
     "parola": "{testo}: {def} — {autore}, {opera}",
     "storica": "«{testo}» — {autore}. Verdetto: {verdetto}. {nota}",
-    "mondo": "{testo} {risposta}. {nota}"
+    "mondo": "{testo} {risposta}. {nota}",
+    "frase_quiz": "«{testo}»",
+    "libro_quiz": "{testo}",
+    "parola_quiz": "{testo}",
+    "storica_quiz": "«{testo}» — {autore}. L'ha detta davvero?",
+    "domanda": "{testo} {domanda}"
   },
   "vuoto": {
     "titolo": "Nessuna scheda qui",
