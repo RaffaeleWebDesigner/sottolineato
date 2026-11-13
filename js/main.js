@@ -5,6 +5,7 @@ import { leggiJson, caricaIndice, caricaTesti, testoPronto, togliSchede, catalog
 import { migra } from "./store.js";
 import { inizializzaSalvataggi } from "./salvataggi.js";
 import { inizializzaCronologia } from "./cronologia.js";
+import { inizializzaRipasso } from "./ripasso.js";
 import { preparaQuizLibri } from "./quiz.js";
 import { inizializzaFiltri } from "./filtri.js";
 import { inizializzaFeed, aggiornaFeed, mostraFeed, sospendiFeed, tipoInCima, continuaFeed, mostraErrore } from "./feed.js";
@@ -29,11 +30,12 @@ async function avvia() {
   const primoAvvio = serveOnboarding(); // prima di qualunque scrittura nel localStorage
   migra({ temi: catalogo.temi }); // prima di leggere i salvataggi
   inizializzaSalvataggi();
-  inizializzaCronologia();
+  inizializzaCronologia(); inizializzaRipasso();
   inizializzaFiltri();
   inizializzaFeed();
   inizializzaEsplora(); inizializzaSalvate(); inizializzaProfilo(); inizializzaPro();
-  registraVista("feed", { mostra: mostraFeed });
+  registraVista("feed", { mostra: () => mostraFeed("feed") });
+  registraVista("ripasso", { mostra: () => mostraFeed("ripasso") });
   document.getElementById("stato-caricamento")?.remove();
   document.getElementById("stato-errore")?.remove();
   // Con l'onboarding il feed si costruisce alla fine, con le preferenze scelte.

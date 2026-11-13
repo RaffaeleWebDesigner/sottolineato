@@ -1,6 +1,6 @@
 // Prova di js/ordine.js senza browser: simula il feed e controlla le regole. Nessuna dipendenza.
 // Uso: node scripts/prova-ordine.mjs   (esce con codice 1 se una regola non regge)
-import { ordina, schedaDelGiorno, MAX_STESSO_TIPO, MAX_STESSO_TEMA } from "../js/ordine.js";
+import { ordina, schedaDelGiorno, ordinaRipasso, ripassoDovuto, dopoRipasso, intervalloDopo, MAX_STESSO_TIPO, MAX_STESSO_TEMA } from "../js/ordine.js";
 
 // Un catalogo finto con più o meno la forma di quello vero.
 const TIPI = { mondo: 900, storica: 280, mito: 375, brillante: 140, frase: 60, idea: 50, parola: 70, sapevi: 94 };
@@ -98,6 +98,18 @@ controlla(schedaDelGiorno([], 5) === null, "senza schede verificate non c'è sch
 controlla(schedaDelGiorno(["solo"], 5) === "solo" && ["a", "b"].includes(schedaDelGiorno(["a", "b"], 7)), "con una o due schede risponde comunque");
 const consecutive = Array.from({ length: 30 }, (_, i) => schedaDelGiorno(Array.from({ length: 500 }, (_, k) => "s" + k), 20000 + i));
 controlla(new Set(consecutive).size === 30, "30 giorni di fila, 30 schede diverse");
+
+console.log("\nRipasso delle salvate");
+controlla([1, 2, 3, 4, 5, 9].map(intervalloDopo).join() === "1,3,7,30,30,30", "intervalli dopo 1, 2, 3 e 4 ripassi: 1, 3, 7 e 30 giorni");
+let voce = null, g = 100;
+const calendario = [];
+for (let k = 0; k < 6; k++) { while (!ripassoDovuto(voce, g)) g++; calendario.push(g); voce = dopoRipasso(voce, g); }
+controlla(calendario.slice(1).map((x, i) => x - calendario[i]).join() === "1,3,7,30,30", `giorni tra un ripasso e l'altro: ${calendario.slice(1).map((x, i) => x - calendario[i]).join(", ")}`);
+controlla(JSON.stringify(dopoRipasso([2, 100], 101)) === "[2,100]", "ripassare in anticipo non fa avanzare");
+const sav = ["a", "b", "c", "d", "e"].map(id => ({ id }));
+const ripasso = { a: [1, 100], b: [2, 90], c: [3, 99], d: [1, 95] };
+const ord = ordinaRipasso(sav, ripasso, 101).map(x => x.id).join("");
+controlla(ord === "ebdac", `prima le mai ripassate, poi le più in ritardo, in fondo le non ancora dovute (${ord})`);
 
 console.log(errori ? `\n${errori} controlli falliti.` : "\nTutti i controlli superati.");
 process.exit(errori ? 1 : 0);

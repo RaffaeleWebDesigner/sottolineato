@@ -7,12 +7,14 @@ import { cronologiaViste, registraVista } from "./cronologia.js";
 import { interessi } from "./preferenze.js";
 import { creaCard } from "./scheda.js";
 import { filtra, filtroAttivo, filtroCorrente, descriviFiltro, azzeraFiltro, soloSalvate } from "./filtri.js";
-import { vistaCorrente } from "./nav.js";
+import { vistaCorrente, vaiA } from "./nav.js";
 import { oggi } from "./tempo.js";
 import { delGiorno } from "./giorno.js";
 import { contatoriDiOggi, aggiornaContatori } from "./cronologia.js";
 import { limiteAttivo, rimaste } from "./limiti.js";
 import { creaSchermataLimite } from "./limiteui.js";
+import { elencoSalvate } from "./salvataggi.js";
+import { ordinaPerRipasso, daRipassare, registraRipasso } from "./ripasso.js";
 
 const BLOCCO = 25;
 const TEMPO_VISTA = 1500; // millisecondi a schermo perché una scheda conti come vista
@@ -28,12 +30,13 @@ const timer = new Map();   // slide → timer della «vista»
 const inVista = new Set(); // slide a schermo
 const infoSlide = new WeakMap(); // slide → { f, conta }
 let sospeso = false;
+let modo = "feed"; // «feed», oppure «ripasso»: il feed delle sole salvate
 
 export function inizializzaFeed() {
   feed = document.getElementById("feed");
   pillola = document.getElementById("filtro-attivo");
   contatore = document.getElementById("rimaste");
-  pillola.addEventListener("click", () => { azzeraFiltro(); aggiornaFeed(); });
+  pillola.addEventListener("click", () => { if (modo === "ripasso") { vaiA("feed"); return; } azzeraFiltro(); aggiornaFeed(); });
   document.getElementById("mix").addEventListener("click", rimescola);
   // Se la pagina va in secondo piano i timer si fermano; al ritorno ripartono per le schede ancora a schermo.
   document.addEventListener("visibilitychange", () => {
@@ -72,9 +75,13 @@ export function mostraErrore() {
 }
 
 function aggiornaPillola() {
-  const attivo = filtroAttivo();
+  const attivo = modo === "ripasso" || filtroAttivo();
   pillola.hidden = !attivo;
-  if (attivo) {
+  document.getElementById("mix").hidden = modo === "ripasso";
+  if (modo === "ripasso") {
+    pillola.textContent = t("ripasso.titolo") + " ×";
+    pillola.setAttribute("aria-label", t("ripasso.esci"));
+  } else if (attivo) {
     const nome = descriviFiltro();
     pillola.textContent = nome + " ×";
     pillola.setAttribute("aria-label", t("feed.togli_filtro", { filtro: nome }));
@@ -83,23 +90,28 @@ function aggiornaPillola() {
 
 // Il contatore delle schede rimaste compare solo con il limite acceso.
 function aggiornaContatore() {
+  if (modo === "ripasso") { contatore.hidden = false; contatore.textContent = t("ripasso.da_rivedere", { n: daRipassare(listaInVista) }); return; }
   const mostra = limiteAttivo();
   contatore.hidden = !mostra;
   if (mostra) contatore.textContent = t("limite.rimaste", { n: rimaste() });
 }
 
-const firma = () => JSON.stringify([filtroCorrente(), seme, catalogo.schede.length, oggi(), interessi()]);
+const firma = () => JSON.stringify([modo, filtroCorrente(), seme, catalogo.schede.length, oggi(), interessi(), modo === "ripasso" ? elencoSalvate() : 0]);
 
 // Quando si torna al feed si ricostruisce solo se qualcosa è cambiato: così si resta dov'eri.
-export function mostraFeed() { if (!sospeso && firma() !== firmaRender) aggiornaFeed(); else aggiornaContatore(); }
+export function mostraFeed(richiesto = "feed") {
+  modo = richiesto;
+  if (!sospeso && firma() !== firmaRender) aggiornaFeed(); else { aggiornaPillola(); aggiornaContatore(); }
+}
 
 // Finché c'è l'onboarding il feed non si costruisce: nessuna scheda deve risultare vista da chi non l'ha vista.
 export function sospendiFeed(si) { sospeso = si; }
 
 export function aggiornaFeed() {
   firmaRender = firma(); giornoRender = oggi();
-  aggiornaPillola(); aggiornaContatore();
-  renderFeed(filtra(catalogo.schede), soloSalvate());
+  aggiornaPillola();
+  renderFeed(modo === "ripasso" ? catalogo.schede.filter(s => elencoSalvate().includes(s.id)) : filtra(catalogo.schede), modo === "ripasso" || soloSalvate());
+  aggiornaContatore();
 }
 
 // La scheda resta a schermo: dopo 1,5 secondi si registra come vista.
@@ -108,7 +120,8 @@ function avviaTimer(slide) {
   timer.set(slide, setTimeout(() => {
     timer.delete(slide);
     const { f, conta, giorno } = infoSlide.get(slide);
-    registraVista(f.id, { conta }); if (giorno) aggiornaContatori({ giornoVisto: true });
+    registraVista(f.id, { conta: conta && modo === "feed" }); if (giorno) aggiornaContatori({ giornoVisto: true });
+    if (modo === "ripasso") registraRipasso(f.id);
     aggiornaContatore();
   }, TEMPO_VISTA));
 }
@@ -137,11 +150,12 @@ function tagliaAlLimite(lista, cronologia, giornoId) {
 function renderFeed(listaFiltrata, vuotoSalvate) {
   const cronologia = cronologiaViste();
   // Alla prima apertura del giorno la scheda del giorno è la prima del feed (se passa il filtro).
-  const dg = delGiorno(), giornoId = dg?.id ?? null;
+  const dg = modo === "feed" ? delGiorno() : null, giornoId = dg?.id ?? null;
   const primaId = dg && !contatoriDiOggi().giornoVisto && listaFiltrata.includes(dg) ? giornoId : null;
-  let lista = ordina(listaFiltrata, { cronologia, categorie: interessi(), categoriaDiTema: catalogo.categoriaDiTema, seme, prima: primaId });
+  let lista = modo === "ripasso" ? ordinaPerRipasso(listaFiltrata)
+    : ordina(listaFiltrata, { cronologia, categorie: interessi(), categoriaDiTema: catalogo.categoriaDiTema, seme, prima: primaId });
   let finito = false;
-  if (limiteAttivo()) ({ lista, finito } = tagliaAlLimite(lista, cronologia, giornoId));
+  if (modo === "feed" && limiteAttivo()) ({ lista, finito } = tagliaAlLimite(lista, cronologia, giornoId));
   listaInVista = lista;
   for (const x of timer.values()) clearTimeout(x); timer.clear(); inVista.clear();
 
@@ -163,7 +177,7 @@ function renderFeed(listaFiltrata, vuotoSalvate) {
       const slide = el("section", "slide");
       const f = lista[fatte], oggiLaDelGiorno = f.id === giornoId;
       infoSlide.set(slide, { f, conta: !oggiLaDelGiorno, giorno: oggiLaDelGiorno });
-      slide.appendChild(creaCard(f, fatte, lista.length, { delGiorno: oggiLaDelGiorno }));
+      slide.appendChild(creaCard(f, fatte, lista.length, { delGiorno: oggiLaDelGiorno, modo }));
       feed.insertBefore(slide, sentinella); observer.observe(slide);
       if (fatte === 0) { attesa.remove(); requestAnimationFrame(() => feed.querySelector(".card")?.classList.add("seen")); }
     }

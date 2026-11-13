@@ -116,7 +116,13 @@
     "togli_filtro": "Togli il filtro: {filtro}"
   },
   "salvate": {
-    "vedi_nel_feed": "Vedi le {n} salvate nel feed"
+    "ripassa": "Ripassa",
+    "da_rivedere": "{n} da rivedere oggi.",
+    "niente_da_rivedere": "Niente da rivedere oggi.",
+    "tutte": "Tutte",
+    "togli": "Togli dalle salvate: {testo}",
+    "togli_breve": "Togli",
+    "vuoto_testo": "Nessuna scheda salvata. Tocca Salva su una scheda per ritrovarla qui e ripassarla."
   },
   "esplora": {
     "categorie": "Categorie",
@@ -201,5 +207,10 @@
     "preparo": "Preparo l'immagine…",
     "scaricata": "Immagine scaricata.",
     "cta_quiz": "Scopri la risposta nell'app"
+  },
+  "ripasso": {
+    "titolo": "Ripasso",
+    "esci": "Esci dal ripasso",
+    "da_rivedere": "Da rivedere: {n}"
   }
 }

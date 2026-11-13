@@ -35,6 +35,9 @@ function testiFeed() {
   };
 }
 
+// Il nome del tipo di scheda, nella lingua corrente.
+export const nomeTipo = tipo => testiFeed().tipi[tipo];
+
 function mainNode(f) {
   const cls = {
     frase: "q", storica: "q", idea: "q idea", brillante: "q idea", parola: "q parola", sapevi: "q sapevi", mondo: "q sapevi", mito: "q sapevi",

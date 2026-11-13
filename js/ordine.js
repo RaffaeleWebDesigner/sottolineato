@@ -83,3 +83,20 @@ export function schedaDelGiorno(ids, giorno) {
   if (!ids.length) return null;
   return ids[(((giorno % ids.length) * passoDelGiorno(ids.length)) % ids.length + ids.length) % ids.length];
 }
+
+// ——— Ripasso delle salvate ———
+// Ogni scheda salvata ha una voce [passi, ultimoGiorno]: quante volte è stata ripassata e quando l'ultima volta.
+// Dopo il 1° ripasso torna dopo 1 giorno, dopo il 2° dopo 3, dopo il 3° dopo 7, poi ogni 30. Mai ripassata: subito.
+export const INTERVALLI_RIPASSO = [1, 3, 7, 30];
+export const intervalloDopo = passi => INTERVALLI_RIPASSO[Math.min(Math.max(passi, 1), INTERVALLI_RIPASSO.length) - 1];
+export const ripassoDovuto = (voce, giorno) => !voce || giorno - voce[1] >= intervalloDopo(voce[0]);
+// Giorni di ritardo rispetto alla scadenza (negativo: manca ancora tempo). Mai ripassata: infinito.
+const ritardo = (voce, giorno) => (voce ? giorno - voce[1] - intervalloDopo(voce[0]) : Infinity);
+
+// Le salvate da ripassare prima, le più in ritardo per prime; poi le altre, quelle che scadono prima.
+export function ordinaRipasso(schede, ripasso = {}, giorno = 0) {
+  return schede.map((s, i) => ({ s, i, r: ritardo(ripasso[s.id], giorno) }))
+    .sort((a, b) => (a.r >= 0) !== (b.r >= 0) ? (a.r >= 0 ? -1 : 1) : (b.r - a.r) || (a.i - b.i)).map(x => x.s);
+}
+// La voce dopo un ripasso: avanza solo se la scheda era davvero da ripassare (ripassarla in anticipo non conta).
+export const dopoRipasso = (voce, giorno) => (ripassoDovuto(voce, giorno) ? [(voce ? voce[0] : 0) + 1, giorno] : voce);
