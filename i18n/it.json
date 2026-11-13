@@ -4,8 +4,7 @@
     "titolo": "Sottolineato · Cose intelligenti, una alla volta"
   },
   "intestazione": {
-    "rimescola": "Rimescola",
-    "contatori": "{imparate} imparate · {salvate} salvate"
+    "rimescola": "Rimescola"
   },
   "aria": {
     "feed": "Schede",
@@ -174,7 +173,19 @@
   },
   "profilo": {
     "archivio": "Schede del giorno passate",
-    "archivio_vuoto": "Qui compariranno le schede del giorno dei giorni passati."
+    "archivio_vuoto": "Qui compariranno le schede del giorno dei giorni passati.",
+    "progressi": "I tuoi progressi",
+    "giorni_consecutivi": "Giorni di fila",
+    "schede_viste": "Schede viste",
+    "quiz_indovinati": "Quiz indovinati",
+    "quiz_dettaglio": "{giusti} su {tot}",
+    "quiz_nessuno": "Nessun quiz ancora",
+    "imparate": "Imparate",
+    "salvate_n": "{n} salvate",
+    "per_categoria": "Schede viste per categoria",
+    "preferenze": "Le tue categorie",
+    "categorie_testo": "Le vedrai più spesso, ma il feed resta vario. Nessuna scelta: vedi un po' di tutto.",
+    "piani": "Vedi i piani"
   },
   "aperta": {
     "titolo": "Scheda",

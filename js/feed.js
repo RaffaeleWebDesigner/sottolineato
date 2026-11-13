@@ -88,7 +88,7 @@ function aggiornaContatore() {
   if (mostra) contatore.textContent = t("limite.rimaste", { n: rimaste() });
 }
 
-const firma = () => JSON.stringify([filtroCorrente(), seme, catalogo.schede.length, oggi()]);
+const firma = () => JSON.stringify([filtroCorrente(), seme, catalogo.schede.length, oggi(), interessi()]);
 
 // Quando si torna al feed si ricostruisce solo se qualcosa è cambiato: così si resta dov'eri.
 export function mostraFeed() { if (!sospeso && firma() !== firmaRender) aggiornaFeed(); else aggiornaContatore(); }
