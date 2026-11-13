@@ -72,7 +72,11 @@ function aggiornaPillola() {
 const firma = () => JSON.stringify([filtroCorrente(), seme, catalogo.schede.length]);
 
 // Quando si torna al feed si ricostruisce solo se qualcosa è cambiato: così si resta dov'eri.
-export function mostraFeed() { if (firma() !== firmaRender) aggiornaFeed(); }
+export function mostraFeed() { if (!sospeso && firma() !== firmaRender) aggiornaFeed(); }
+
+// Finché c'è l'onboarding il feed non si costruisce: nessuna scheda deve risultare vista da chi non l'ha vista.
+let sospeso = false;
+export function sospendiFeed(si) { sospeso = si; }
 
 export function aggiornaFeed() {
   firmaRender = firma();

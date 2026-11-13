@@ -127,5 +127,25 @@
     "indietro": "Tutte le categorie",
     "tutta_categoria": "Tutte le schede di {nome}",
     "pro": "Pro"
+  },
+  "onboarding": {
+    "salta": "Salta",
+    "avanti": "Avanti",
+    "indietro": "Indietro",
+    "inizia": "Inizia",
+    "passo": "{n} di {tot}",
+    "lingua_titolo": "Scegli la lingua",
+    "benvenuto_titolo": "Cose intelligenti, una alla volta",
+    "benvenuto_testo": "Un feed di schede brevi per persone curiose: una idea da ricordare alla volta, con la parte che conta sottolineata.",
+    "interessi_titolo": "Che cosa ti incuriosisce?",
+    "interessi_testo": "Scegli almeno due categorie: le vedrai più spesso, ma il feed resterà vario. Potrai cambiarle dal Profilo.",
+    "come_titolo": "Come funziona",
+    "come_scorri": "Scorri verso l'alto: una scheda alla volta.",
+    "come_salva": "Salva le schede che vuoi ritrovare e ripassare.",
+    "come_quiz": "Rispondi ai quiz: la spiegazione arriva dopo la risposta."
+  },
+  "lingue": {
+    "it": "Italiano",
+    "en": "English"
   }
 }
