@@ -973,5 +973,13 @@
   {"id":"n1-tempo-nobel-orologio-biologico","tipo":"mondo","temi":["tempo","corpo"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.nobelprize.org/prizes/medicine/2017/press-release/","aggiunta":"2026-11-13"},
   {"id":"n1-tempo-eta-veloce","tipo":"mondo","temi":["tempo","mente"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://europepmc.org/article/MED/16512313","aggiunta":"2026-11-13"},
   {"id":"n1-amore-innamorati-amigdala","tipo":"mondo","temi":["amore","mente"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://europepmc.org/article/MED/11117499","aggiunta":"2026-11-13"},
-  {"id":"n1-tempo-cina-animali","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/ora_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"}
+  {"id":"n1-tempo-cina-animali","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/ora_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-pasqua-nicea","tipo":"mondo","temi":["tempo","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/calendario_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-amore-matrimonio-consenso","tipo":"mondo","temi":["amore","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/matrimonio/","aggiunta":"2026-11-13"},
+  {"id":"n1-amore-scozia-1940","tipo":"mondo","temi":["amore","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/matrimonio/","aggiunta":"2026-11-13"},
+  {"id":"n1-amore-poliandria","tipo":"mondo","temi":["amore","societa"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/matrimonio/","aggiunta":"2026-11-13"},
+  {"id":"n1-amore-dote","tipo":"mondo","temi":["amore","societa"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/matrimonio/","aggiunta":"2026-11-13"},
+  {"id":"n1-lavoro-sciopero-legge","tipo":"mondo","temi":["lavoro","societa"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/sciopero/","aggiunta":"2026-11-13"},
+  {"id":"n1-lavoro-ford-paghe","tipo":"mondo","temi":["lavoro","economia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/fordismo/","aggiunta":"2026-11-13"},
+  {"id":"n1-cinema-trust-edison","tipo":"mondo","temi":["cinema","potere"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/cinema/","aggiunta":"2026-11-13"}
 ]
