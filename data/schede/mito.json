@@ -376,5 +376,6 @@
   {"id":"bu-sherpa","tipo":"mito","temi":["societa"],"vero":false,"stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"n1-cinema-sonoro-avversato","tipo":"mito","temi":["cinema","tecnologia"],"vero":false,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/cinema/","aggiunta":"2026-11-13"},
   {"id":"n1-amore-cuore-spezzato","tipo":"mito","temi":["amore","corpo"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://europepmc.org/article/MED/42152717","aggiunta":"2026-11-13"},
-  {"id":"n1-tempo-sonno-senza-luce","tipo":"mito","temi":["tempo","corpo"],"vero":false,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://europepmc.org/article/MED/26480842","aggiunta":"2026-11-13"}
+  {"id":"n1-tempo-sonno-senza-luce","tipo":"mito","temi":["tempo","corpo"],"vero":false,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://europepmc.org/article/MED/26480842","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-ora-legale-parti","tipo":"mito","temi":["tempo","corpo"],"vero":false,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://europepmc.org/article/MED/27630067","aggiunta":"2026-11-13"}
 ]

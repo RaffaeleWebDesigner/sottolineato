@@ -69,5 +69,6 @@
   {"id":"lb-pinocchio","tipo":"parola","temi":["societa"],"autore":"Carlo Collodi","anno":"1883","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"lb-sherlock","tipo":"parola","temi":["mente"],"autore":"Arthur Conan Doyle","anno":"1887","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"lb-cenerentola","tipo":"parola","temi":["fantasia"],"autore":"Giambattista Basile","anno":"1634","stato":"da_verificare","aggiunta":"2026-11-12"},
-  {"id":"n1-lavoro-travet","tipo":"parola","temi":["lavoro","italia"],"autore":"Vittorio Bersezio","anno":"1863","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/vocabolario/travet/","aggiunta":"2026-11-13"}
+  {"id":"n1-lavoro-travet","tipo":"parola","temi":["lavoro","italia"],"autore":"Vittorio Bersezio","anno":"1863","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/vocabolario/travet/","aggiunta":"2026-11-13"},
+  {"id":"n1-lavoro-tela-penelope","tipo":"parola","temi":["lavoro","amore"],"autore":"Omero","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/vocabolario/penelope/","aggiunta":"2026-11-13"}
 ]

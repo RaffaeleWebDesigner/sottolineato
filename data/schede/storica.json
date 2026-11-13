@@ -282,5 +282,7 @@
   {"id":"bx-flaiano-grave","tipo":"storica","temi":["italia"],"verdetto":"attribuita","autore":"Ennio Flaiano","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"bx-flaiano-vincitore","tipo":"storica","temi":["italia"],"verdetto":"attribuita","autore":"Ennio Flaiano","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"bx-longanesi","tipo":"storica","temi":["italia"],"verdetto":"attribuita","autore":"Leo Longanesi","stato":"da_verificare","aggiunta":"2026-11-12"},
-  {"id":"bu-barberini","tipo":"storica","temi":["italia"],"verdetto":"vera","autore":"Una pasquinata anonima","anno":"XVII secolo","stato":"da_verificare","aggiunta":"2026-11-12"}
+  {"id":"bu-barberini","tipo":"storica","temi":["italia"],"verdetto":"vera","autore":"Una pasquinata anonima","anno":"XVII secolo","stato":"da_verificare","aggiunta":"2026-11-12"},
+  {"id":"n1-vita-sii-te-stesso","tipo":"storica","temi":["vita"],"verdetto":"mai","autore":"Oscar Wilde","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://quoteinvestigator.com/2014/01/20/be-yourself/","aggiunta":"2026-11-13"},
+  {"id":"n1-lavoro-scegli-lavoro-che-ami","tipo":"storica","temi":["lavoro","vita"],"verdetto":"mai","autore":"Confucio","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://quoteinvestigator.com/2014/09/02/job-love/","aggiunta":"2026-11-13"}
 ]
