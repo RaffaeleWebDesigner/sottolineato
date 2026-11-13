@@ -4,6 +4,7 @@ import { LINGUA, caricaTraduzioni, traduciPagina, t } from "./i18n.js";
 import { leggiJson, caricaIndice, caricaTesti, testoPronto, togliSchede, catalogo } from "./dati.js";
 import { migra } from "./store.js";
 import { inizializzaSalvataggi } from "./salvataggi.js";
+import { inizializzaCronologia } from "./cronologia.js";
 import { preparaQuizLibri } from "./quiz.js";
 import { inizializzaFiltri } from "./filtri.js";
 import { inizializzaFeed, aggiornaFeed, mostraFeed, tipoInCima, continuaFeed, mostraErrore } from "./feed.js";
@@ -25,6 +26,7 @@ async function avvia() {
 
   migra({ temi: catalogo.temi }); // prima di leggere i salvataggi
   inizializzaSalvataggi();
+  inizializzaCronologia();
   inizializzaFiltri();
   inizializzaFeed();
   inizializzaEsplora(); inizializzaSalvate(); inizializzaProfilo();

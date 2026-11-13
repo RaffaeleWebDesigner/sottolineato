@@ -74,15 +74,3 @@ export function accessibile(scheda, piano) {
 export function semeDelGiorno() { const d = new Date(); return d.getFullYear() * 1000 + d.getMonth() * 40 + d.getDate(); }
 function rng(seed) { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return ((s >>> 0) % 100000) / 100000; }; }
 export function shuffle(a, r = Math.random) { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
-// Mescola evitando due schede dello stesso tipo (o tema) di fila, quando possibile.
-export function mixVario(lista, seed) {
-  const r = rng(seed); const pool = shuffle(lista, r); const out = [];
-  while (pool.length) {
-    const last = out[out.length - 1];
-    let i = pool.findIndex(x => !last || (x.tipo !== last.tipo && x.tema !== last.tema));
-    if (i < 0) i = pool.findIndex(x => !last || x.tipo !== last.tipo);
-    if (i < 0) i = 0;
-    out.push(pool.splice(i, 1)[0]);
-  }
-  return out;
-}
