@@ -1,18 +1,15 @@
 {
   "app": {
     "nome": "Sottolineato",
-    "titolo": "Sottolineato · Cose intelligenti, una alla volta",
-    "totale": "{n} schede: libri, storia, scienza, musica, cinema e curiosità",
-    "suggerimento": "Cose intelligenti, una alla volta · Scorri verso l'alto"
+    "titolo": "Sottolineato · Cose intelligenti, una alla volta"
   },
   "intestazione": {
     "rimescola": "Rimescola",
     "contatori": "{imparate} imparate · {salvate} salvate"
   },
   "aria": {
-    "filtri_tipo": "Tipo di scheda",
-    "filtri_tema": "Temi",
-    "feed": "Schede"
+    "feed": "Schede",
+    "sezioni": "Sezioni"
   },
   "filtri": {
     "tutto": "Tutto",
@@ -101,5 +98,17 @@
   "errori": {
     "caricamento_titolo": "Non riesco a caricare le schede",
     "caricamento_testo": "Se hai aperto il file direttamente dal computer, avvia un server locale: le istruzioni sono nel README."
+  },
+  "nav": {
+    "feed": "Feed",
+    "esplora": "Esplora",
+    "salvate": "Salvate",
+    "profilo": "Profilo"
+  },
+  "feed": {
+    "togli_filtro": "Togli il filtro: {filtro}"
+  },
+  "salvate": {
+    "vedi_nel_feed": "Vedi le {n} salvate nel feed"
   }
 }

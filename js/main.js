@@ -1,17 +1,20 @@
-// Avvio: traduzioni e indice delle schede, migrazioni, filtri e feed; poi i testi delle schede, a partire
-// da quelli che servono alla prima scheda in vista.
+// Avvio: traduzioni e indice delle schede, migrazioni, salvataggi, filtri, viste; poi i testi delle schede,
+// a partire da quelli che servono alla prima scheda in vista.
 import { LINGUA, caricaTraduzioni, traduciPagina, t } from "./i18n.js";
-import { leggiJson, caricaIndice, caricaTesti, testoPronto } from "./dati.js";
+import { leggiJson, caricaIndice, caricaTesti, testoPronto, togliSchede, catalogo } from "./dati.js";
 import { migra } from "./store.js";
-import { inizializzaSalvataggi, renderStats } from "./salvataggi.js";
+import { inizializzaSalvataggi } from "./salvataggi.js";
 import { preparaQuizLibri } from "./quiz.js";
-import { inizializzaFiltri, renderChips, filtra, soloSalvate } from "./filtri.js";
-import { inizializzaFeed, renderFeed, rimescola, tipoInCima, continuaFeed, mostraErrore } from "./feed.js";
+import { inizializzaFiltri } from "./filtri.js";
+import { inizializzaFeed, aggiornaFeed, mostraFeed, tipoInCima, continuaFeed, mostraErrore } from "./feed.js";
+import { inizializzaEsplora } from "./esplora.js";
+import { inizializzaSalvate } from "./salvate.js";
+import { inizializzaProfilo } from "./profilo.js";
+import { registraVista, avviaNav } from "./nav.js";
 
 async function avvia() {
-  let dati;
   try {
-    [, dati] = await Promise.all([caricaTraduzioni(leggiJson), caricaIndice(LINGUA)]);
+    await Promise.all([caricaTraduzioni(leggiJson), caricaIndice(LINGUA)]);
     traduciPagina();
   } catch (err) {
     console.error(err);
@@ -19,27 +22,26 @@ async function avvia() {
     document.getElementById("stato-errore").hidden = false;
     return;
   }
-  let { schede, temi } = dati;
 
-  migra({ temi }); // prima di leggere i salvataggi
+  migra({ temi: catalogo.temi }); // prima di leggere i salvataggi
   inizializzaSalvataggi();
+  inizializzaFiltri();
   inizializzaFeed();
-  const aggiorna = () => renderFeed(filtra(schede), soloSalvate());
-  inizializzaFiltri(temi, aggiorna);
-
-  document.getElementById("mix").addEventListener("click", rimescola);
-  const totale = () => { document.getElementById("totale").textContent = t("app.totale", { n: schede.length }); };
-  totale(); renderChips(); aggiorna(); renderStats();
+  inizializzaEsplora(); inizializzaSalvate(); inizializzaProfilo();
+  registraVista("feed", { mostra: mostraFeed });
+  document.getElementById("stato-caricamento")?.remove();
+  document.getElementById("stato-errore")?.remove();
+  aggiornaFeed();
+  avviaNav();
 
   try {
-    await caricaTesti(LINGUA, schede, tipoInCima(), (tipo, senzaTesto) => {
-      preparaQuizLibri(schede.filter(testoPronto));
+    await caricaTesti(LINGUA, catalogo.schede, tipoInCima(), (tipo, senzaTesto) => {
+      preparaQuizLibri(catalogo.schede.filter(testoPronto));
       if (senzaTesto.length) {
         // Schede senza testo in questa lingua: non si mostrano, e conteggi e feed si ricalcolano.
-        const via = new Set(senzaTesto);
-        schede = schede.filter(s => !via.has(s.id));
-        totale(); aggiorna();
+        togliSchede(senzaTesto); aggiornaFeed();
       } else continuaFeed();
+      document.dispatchEvent(new CustomEvent("sott:testi", { detail: { tipo } }));
     });
   } catch (err) {
     console.error(err);

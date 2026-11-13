@@ -10,17 +10,33 @@ export const leggiJson = p => fetch(`${p}?v=${VERSIONE_DATI}`).then(r => { if (!
 let temiPremium = new Set();
 const tipiConTesti = new Set();
 
+// Il catalogo caricato: le schede visibili (niente bozze, solo con testo nella lingua), i temi, le categorie.
+// Le viste lo leggono da qui; viene riempito da caricaIndice e ridotto da togliSchede.
+export const catalogo = { schede: [], temi: [], categorie: [], perId: new Map(), categoriaDiTema: {} };
+
 // Primo passo: temi e dati comuni di tutte le schede (file piccoli). Bastano per contare, filtrare e ordinare il feed.
 // tema è il nome del tema principale, temi resta la lista completa di id. Le bozze non si mostrano.
 export async function caricaIndice(lingua) {
-  const [{ temi }, ...basi] = await Promise.all([
+  const [{ temi, categorie }, ...basi] = await Promise.all([
     leggiJson("data/temi.json"),
     ...TIPI_DATI.map(tipo => leggiJson(`data/schede/${tipo}.json`)),
   ]);
   const nomeTema = new Map(temi.map(x => [x.id, x.nome[lingua] || x.nome.it]));
   temiPremium = new Set(temi.filter(x => x.premium).map(x => x.id));
   const schede = basi.flat().filter(b => b.stato !== "bozza").map(b => ({ ...b, tema: nomeTema.get(b.temi[0]), temaId: b.temi[0] }));
-  return { schede, temi: temi.map(x => ({ id: x.id, nome: nomeTema.get(x.id), nomi: x.nome, premium: x.premium })) };
+  catalogo.schede = schede;
+  catalogo.perId = new Map(schede.map(s => [s.id, s]));
+  catalogo.temi = temi.map(x => ({ id: x.id, nome: nomeTema.get(x.id), nomi: x.nome, premium: x.premium, categoria: x.categoria }));
+  catalogo.categorie = categorie.map(c => ({ id: c.id, nome: c.nome[lingua] || c.nome.it, premium: c.premium }));
+  catalogo.categoriaDiTema = Object.fromEntries(temi.map(x => [x.id, x.categoria]));
+  return catalogo;
+}
+
+// Toglie dal catalogo le schede senza testo nella lingua corrente.
+export function togliSchede(ids) {
+  const via = new Set(ids);
+  catalogo.schede = catalogo.schede.filter(s => !via.has(s.id));
+  catalogo.perId = new Map(catalogo.schede.map(s => [s.id, s]));
 }
 
 // La scheda ha già i suoi testi?

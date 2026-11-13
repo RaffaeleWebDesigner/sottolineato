@@ -26,6 +26,12 @@
 <link rel="modulepreload" href="js/filtri.js">
 <link rel="modulepreload" href="js/feed.js">
 <link rel="modulepreload" href="js/dom.js">
+<link rel="modulepreload" href="js/tempo.js">
+<link rel="modulepreload" href="js/nav.js">
+<link rel="modulepreload" href="js/scheda.js">
+<link rel="modulepreload" href="js/esplora.js">
+<link rel="modulepreload" href="js/salvate.js">
+<link rel="modulepreload" href="js/profilo.js">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
@@ -100,38 +106,54 @@
   color-scheme: dark;
 }
 
-html { height: 100%; box-sizing: border-box; color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); -webkit-text-size-adjust: 100%; }
+html { height: 100%; box-sizing: border-box; color-scheme: light; padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
 [hidden] { display: none !important; }
 img { max-width: 100%; }
 *, *::before, *::after { box-sizing: inherit; }
 body {
-  height: 100%; margin: 0; background: var(--bg); color: var(--fg);
+  height: calc(100vh - env(safe-area-inset-top, 0px)); height: calc(100dvh - env(safe-area-inset-top, 0px));
+  margin: 0; background: var(--bg); color: var(--fg);
   font-family: var(--font-ui); font-size: 15px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: flex; flex-direction: column; overflow: hidden;
 }
+.solo-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 button { font: inherit; color: inherit; cursor: pointer; }
 button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
-.top { display: flex; flex-direction: column; gap: 8px; padding-block: 12px 4px; max-width: 640px; width: 100%; margin-inline: auto; }
-.brandrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.brand { font-family: var(--font-quote); font-size: 1.55rem; font-weight: 500; letter-spacing: -.01em; margin: 0; line-height: 1.1; }
+/* Le viste (feed, esplora, salvate, profilo) stanno una sopra l'altra; ne è visibile una sola. La barra è sotto. */
+.viste { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.vista { flex: 1; min-height: 0; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+.vista:focus, [data-fuoco]:focus, .feed:focus { outline: none; }
+.vista-feed { display: flex; flex-direction: column; }
+.vista-scroll { overflow-y: auto; overscroll-behavior: contain; }
+.contenuto { max-width: 640px; margin-inline: auto; padding-block: 16px 24px; display: flex; flex-direction: column; gap: 18px; }
+.titolo-vista { font-family: var(--font-quote); font-size: 1.7rem; font-weight: 500; letter-spacing: -.01em; margin: 0; line-height: 1.15; }
+
+.feedbar { display: flex; align-items: center; gap: 8px; padding-block: 8px 2px; max-width: 640px; width: 100%; margin-inline: auto; min-height: 42px; }
+.brand { font-family: var(--font-quote); font-size: 1.25rem; font-weight: 500; letter-spacing: -.01em; margin: 0; line-height: 1.1; }
 .brand span { background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%); padding-inline: 2px; }
-.sub { font-size: .75rem; color: var(--muted); margin: 2px 0 0; }
-.side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-.stats { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.spazio { flex: 1; }
+.rimaste { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .mix { border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 4px 10px; font-size: .78rem; font-weight: 600; }
 .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips.wrap { flex-wrap: wrap; overflow: visible; }
 .chips::-webkit-scrollbar { display: none; }
 .chip { flex: none; border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 6px 12px; font-size: .82rem; font-weight: 500; }
-.chips.tema .chip { padding: 4px 10px; font-size: .76rem; background: transparent; }
-.chip[aria-pressed="true"], .chips.tema .chip[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); }
+.chip[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); }
+.filtro-attivo { padding: 4px 10px; font-size: .76rem; min-width: 0; max-width: 55vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); }
 
-.feed { flex: 1; min-height: 0; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; max-width: 640px; width: 100%; margin-inline: auto; }
+/* Barra in basso: quattro sezioni, sempre visibile. */
+.tabbar { flex: none; display: flex; justify-content: center; background: var(--bg); border-top: 1px solid var(--line); padding: 0 max(8px, env(safe-area-inset-left, 0px)) env(safe-area-inset-bottom, 0px); }
+.tab { flex: 1; max-width: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; padding-block: 6px; color: var(--muted); text-decoration: none; font-size: .72rem; font-weight: 600; border-radius: 12px; }
+.tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.tab[aria-current="page"] { color: var(--fg); }
+.tab[aria-current="page"] svg { stroke-width: 2.3; }
+.tab:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+
+.feed { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scroll-snap-type: y mandatory; scrollbar-width: none; max-width: 640px; width: 100%; margin-inline: auto; }
 .feed::-webkit-scrollbar { display: none; }
 .sentinella { height: 1px; }
-.slide { height: 100%; scroll-snap-align: start; scroll-snap-stop: always; padding-block: 6px 10px; }
+.slide { height: 100%; scroll-snap-align: start; scroll-snap-stop: always; padding-block: 6px 8px; }
 .card {
   height: 100%; border-radius: 22px; background: var(--tint, var(--chip));
   display: flex; flex-direction: column; padding: clamp(20px, 5vw, 36px); gap: 16px; overflow: hidden;
@@ -177,7 +199,6 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
 .empty { display: grid; place-content: center; text-align: center; gap: 8px; color: var(--muted); }
 .empty strong { color: var(--fg); font-family: var(--font-quote); font-size: 1.4rem; font-weight: 500; }
-.hint { text-align: center; font-size: .72rem; color: var(--muted); padding-block: 0 8px; }
 
 .badge { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid currentColor; border-radius: 6px; padding: 3px 8px; margin-bottom: 8px; }
 .badge.good { color: var(--ok); }
@@ -193,25 +214,50 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="brandrow">
-    <div>
+<main class="viste" id="viste">
+  <section class="vista vista-feed" id="vista-feed" aria-labelledby="titolo-feed" tabindex="-1">
+    <h2 class="solo-sr" id="titolo-feed" data-i18n="nav.feed">Feed</h2>
+    <div class="feedbar">
       <h1 class="brand"><span data-i18n="app.nome">Sottolineato</span></h1>
-      <p class="sub" id="totale"></p>
-    </div>
-    <div class="side">
-      <div class="stats" id="stats" aria-live="polite"></div>
+      <button class="chip filtro-attivo" id="filtro-attivo" type="button" hidden></button>
+      <span class="spazio"></span>
+      <span class="rimaste" id="rimaste" hidden></span>
       <button class="mix" id="mix" type="button" data-i18n="intestazione.rimescola">Rimescola</button>
     </div>
-  </div>
-  <nav class="chips" id="chips-tipo" aria-label="Tipo di scheda" data-i18n-aria-label="aria.filtri_tipo"></nav>
-  <nav class="chips tema" id="chips-tema" aria-label="Temi" data-i18n-aria-label="aria.filtri_tema"></nav>
-</header>
-<main class="feed" id="feed" tabindex="-1" aria-label="Schede" data-i18n-aria-label="aria.feed">
-  <section class="slide" id="stato-caricamento"><div class="card empty"><strong data-i18n="caricamento.titolo">Caricamento…</strong><span data-i18n="caricamento.testo">Sto preparando le schede.</span></div></section>
-  <section class="slide" id="stato-errore" hidden><div class="card empty"><strong data-i18n="errori.caricamento_titolo">Non riesco a caricare le schede</strong><span data-i18n="errori.caricamento_testo">Se hai aperto il file direttamente dal computer, avvia un server locale: le istruzioni sono nel README.</span></div></section>
+    <div class="feed" id="feed" tabindex="-1" aria-label="Schede" data-i18n-aria-label="aria.feed">
+      <section class="slide" id="stato-caricamento"><div class="card empty"><strong data-i18n="caricamento.titolo">Caricamento…</strong><span data-i18n="caricamento.testo">Sto preparando le schede.</span></div></section>
+      <section class="slide" id="stato-errore" hidden><div class="card empty"><strong data-i18n="errori.caricamento_titolo">Non riesco a caricare le schede</strong><span data-i18n="errori.caricamento_testo">Se hai aperto il file direttamente dal computer, avvia un server locale: le istruzioni sono nel README.</span></div></section>
+    </div>
+  </section>
+
+  <section class="vista vista-scroll" id="vista-esplora" aria-labelledby="titolo-esplora" tabindex="-1" hidden>
+    <div class="contenuto">
+      <h2 class="titolo-vista" id="titolo-esplora" data-fuoco tabindex="-1" data-i18n="nav.esplora">Esplora</h2>
+      <div id="esplora-contenuto"></div>
+    </div>
+  </section>
+
+  <section class="vista vista-scroll" id="vista-salvate" aria-labelledby="titolo-salvate" tabindex="-1" hidden>
+    <div class="contenuto">
+      <h2 class="titolo-vista" id="titolo-salvate" data-fuoco tabindex="-1" data-i18n="nav.salvate">Salvate</h2>
+      <div id="salvate-contenuto"></div>
+    </div>
+  </section>
+
+  <section class="vista vista-scroll" id="vista-profilo" aria-labelledby="titolo-profilo" tabindex="-1" hidden>
+    <div class="contenuto">
+      <h2 class="titolo-vista" id="titolo-profilo" data-fuoco tabindex="-1" data-i18n="nav.profilo">Profilo</h2>
+      <div id="profilo-contenuto"></div>
+    </div>
+  </section>
 </main>
-<div class="hint" data-i18n="app.suggerimento">Cose intelligenti, una alla volta · Scorri verso l'alto</div>
+
+<nav class="tabbar" aria-label="Sezioni" data-i18n-aria-label="aria.sezioni">
+  <a class="tab" id="tab-feed" href="#feed" data-sezione="feed"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg><span data-i18n="nav.feed">Feed</span></a>
+  <a class="tab" id="tab-esplora" href="#esplora" data-sezione="esplora"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span data-i18n="nav.esplora">Esplora</span></a>
+  <a class="tab" id="tab-salvate" href="#salvate" data-sezione="salvate"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span data-i18n="nav.salvate">Salvate</span></a>
+  <a class="tab" id="tab-profilo" href="#profilo" data-sezione="profilo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span data-i18n="nav.profilo">Profilo</span></a>
+</nav>
 
 <script type="module" src="js/main.js" onerror="document.getElementById('stato-caricamento').hidden=true;document.getElementById('stato-errore').hidden=false"></script>
 </body>

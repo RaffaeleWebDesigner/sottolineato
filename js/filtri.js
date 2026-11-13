@@ -1,54 +1,58 @@
-// Filtri per tipo (sott-tipo) e per tema (sott-tema, id del tema).
-import { el } from "./dom.js";
+// Filtri del feed: per tipo (sott-tipo), per tema (sott-tema, id del tema) e per categoria (sott-categoria, id).
+// Si scelgono in Esplora; qui c'è solo lo stato, il salvataggio e il filtro vero e proprio.
 import { t } from "./i18n.js";
 import { store } from "./store.js";
-import { LIBRI } from "./dati.js";
+import { LIBRI, catalogo } from "./dati.js";
 import { salvata } from "./salvataggi.js";
 
 // Valori interni dei filtri per tipo: non dipendono dalla lingua.
-const TIPI_FILTRO = ["tutto", "libri", "storica", "mondo", "mito", "brillante", "salvate"];
-const etichette = () => ({
+export const TIPI_FILTRO = ["tutto", "libri", "storica", "mondo", "mito", "brillante", "salvate"];
+export const nomeTipoFiltro = k => ({
   tutto: t("filtri.tutto"), libri: t("filtri.libri"), storica: t("filtri.storica"), mondo: t("filtri.mondo"),
   mito: t("filtri.mito"), brillante: t("filtri.brillante"), salvate: t("filtri.salvate"),
-});
+})[k];
 
-let temi = [];
-let filtroTipo = "tutto";
-let filtroTema = null;
-let quandoCambia = () => {};
-let chipsTipo, chipsTema;
+let tipo = "tutto";
+let tema = null;
+let categoria = null;
 
-// temi: [{ id, nome }]; cambia: funzione da chiamare quando l'utente cambia un filtro.
-export function inizializzaFiltri(listaTemi, cambia) {
-  temi = listaTemi; quandoCambia = cambia;
-  chipsTipo = document.getElementById("chips-tipo");
-  chipsTema = document.getElementById("chips-tema");
-  filtroTipo = store.get("sott-tipo", "tutto");
-  if (!TIPI_FILTRO.includes(filtroTipo)) filtroTipo = "tutto";
-  filtroTema = store.get("sott-tema", null);
-  if (filtroTema && !temi.some(x => x.id === filtroTema)) filtroTema = null;
+export function inizializzaFiltri() {
+  tipo = store.get("sott-tipo", "tutto");
+  if (!TIPI_FILTRO.includes(tipo)) tipo = "tutto";
+  tema = store.get("sott-tema", null);
+  if (tema && !catalogo.temi.some(x => x.id === tema)) tema = null;
+  categoria = store.get("sott-categoria", null);
+  if (categoria && !catalogo.categorie.some(x => x.id === categoria)) categoria = null;
 }
 
-export const soloSalvate = () => filtroTipo === "salvate";
+export const filtroCorrente = () => ({ tipo, tema, categoria });
+export const filtroAttivo = () => tipo !== "tutto" || tema !== null || categoria !== null;
+export const soloSalvate = () => tipo === "salvate";
+
+// Sostituisce l'intero filtro: quello che non si indica torna al valore di partenza.
+export function impostaFiltro({ tipo: t1 = "tutto", tema: t2 = null, categoria: t3 = null } = {}) {
+  tipo = TIPI_FILTRO.includes(t1) ? t1 : "tutto"; tema = t2; categoria = t3;
+  store.set("sott-tipo", tipo); store.set("sott-tema", tema); store.set("sott-categoria", categoria);
+}
+export const azzeraFiltro = () => impostaFiltro();
+
+// Il testo che dice che filtro è attivo, per esempio «Vero o falso · Storia».
+export function descriviFiltro() {
+  const parti = [];
+  if (tipo !== "tutto") parti.push(nomeTipoFiltro(tipo));
+  if (tema) parti.push(catalogo.temi.find(x => x.id === tema)?.nome);
+  if (categoria) parti.push(catalogo.categorie.find(x => x.id === categoria)?.nome);
+  return parti.filter(Boolean).join(t("scheda.separatore"));
+}
+
+export const inCategoria = (scheda, id) => scheda.temi.some(m => catalogo.categoriaDiTema[m] === id);
 
 export function filtra(schede) {
   let lista = schede;
-  if (filtroTipo === "salvate") lista = lista.filter(f => salvata(f.id));
-  else if (filtroTipo === "libri") lista = lista.filter(f => LIBRI.has(f.tipo));
-  else if (filtroTipo !== "tutto") lista = lista.filter(f => f.tipo === filtroTipo);
-  if (filtroTema) lista = lista.filter(f => f.temi.includes(filtroTema)); // qualsiasi posizione in temi
+  if (tipo === "salvate") lista = lista.filter(f => salvata(f.id));
+  else if (tipo === "libri") lista = lista.filter(f => LIBRI.has(f.tipo));
+  else if (tipo !== "tutto") lista = lista.filter(f => f.tipo === tipo);
+  if (tema) lista = lista.filter(f => f.temi.includes(tema)); // qualsiasi posizione in temi
+  if (categoria) lista = lista.filter(f => inCategoria(f, categoria));
   return lista;
-}
-
-function chip(label, pressed, onClick, id) {
-  const b = el("button", "chip", label); b.type = "button"; b.id = id;
-  b.setAttribute("aria-pressed", String(pressed)); b.addEventListener("click", onClick); return b;
-}
-
-export function renderChips() {
-  const nomi = etichette();
-  chipsTipo.replaceChildren(...TIPI_FILTRO.map(k =>
-    chip(nomi[k], filtroTipo === k, () => { filtroTipo = k; store.set("sott-tipo", k); renderChips(); quandoCambia(); }, "tipo-" + k)));
-  chipsTema.replaceChildren(...temi.map(x =>
-    chip(x.nome, filtroTema === x.id, () => { filtroTema = filtroTema === x.id ? null : x.id; store.set("sott-tema", filtroTema); renderChips(); quandoCambia(); }, "tema-" + x.id)));
 }

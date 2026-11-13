@@ -1,5 +1,10 @@
 // Testi dell'interfaccia. La lingua si decide qui, in un solo punto.
-export const LINGUA = "it";
+import { store } from "./store.js";
+
+// Lingue disponibili. Quando ce n'è più di una l'onboarding chiede quale usare (sott-lingua).
+export const LINGUE = ["it"];
+const scelta = store.get("sott-lingua", null);
+export const LINGUA = LINGUE.includes(scelta) ? scelta : LINGUE[0];
 
 const SVILUPPO = ["localhost", "127.0.0.1", ""].includes(location.hostname);
 let traduzioni = {};
