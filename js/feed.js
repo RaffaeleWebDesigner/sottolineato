@@ -9,6 +9,7 @@ import { creaCard } from "./scheda.js";
 import { filtra, filtroAttivo, filtroCorrente, descriviFiltro, azzeraFiltro, soloSalvate } from "./filtri.js";
 import { vistaCorrente, vaiA } from "./nav.js";
 import { oggi } from "./tempo.js";
+import { movimentoRidotto } from "./effetti.js";
 import { delGiorno } from "./giorno.js";
 import { contatoriDiOggi, aggiornaContatori } from "./cronologia.js";
 import { limiteAttivo, rimaste } from "./limiti.js";
@@ -46,8 +47,8 @@ export function inizializzaFeed() {
   setInterval(controllaGiorno, 60000);
   document.addEventListener("keydown", e => {
     if (vistaCorrente() !== "feed" || e.target.closest("input, textarea, select, dialog")) return;
-    if (e.key === "ArrowDown" || e.key === "j") { e.preventDefault(); feed.scrollBy({ top: feed.clientHeight, behavior: "smooth" }); }
-    if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); feed.scrollBy({ top: -feed.clientHeight, behavior: "smooth" }); }
+    if (e.key === "ArrowDown" || e.key === "j") { e.preventDefault(); feed.scrollBy({ top: feed.clientHeight, behavior: movimentoRidotto() ? "auto" : "smooth" }); }
+    if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); feed.scrollBy({ top: -feed.clientHeight, behavior: movimentoRidotto() ? "auto" : "smooth" }); }
   });
 }
 

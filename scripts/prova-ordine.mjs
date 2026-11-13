@@ -1,5 +1,6 @@
 // Prova di js/ordine.js senza browser: simula il feed e controlla le regole. Nessuna dipendenza.
 // Uso: node scripts/prova-ordine.mjs   (esce con codice 1 se una regola non regge)
+import { cerca, normalizza } from "../js/ricerca.js";
 import { ordina, schedaDelGiorno, ordinaRipasso, ripassoDovuto, dopoRipasso, intervalloDopo, MAX_STESSO_TIPO, MAX_STESSO_TEMA } from "../js/ordine.js";
 
 // Un catalogo finto con più o meno la forma di quello vero.
@@ -110,6 +111,22 @@ const sav = ["a", "b", "c", "d", "e"].map(id => ({ id }));
 const ripasso = { a: [1, 100], b: [2, 90], c: [3, 99], d: [1, 95] };
 const ord = ordinaRipasso(sav, ripasso, 101).map(x => x.id).join("");
 controlla(ord === "ebdac", `prima le mai ripassate, poi le più in ritardo, in fondo le non ancora dovute (${ord})`);
+
+console.log("\nRicerca");
+const piccolo = [
+  { id: "a", tipo: "mondo", testo: "Perché il cielo è blu?", nota: "La luce si diffonde.", stato: "verificata" },
+  { id: "b", tipo: "frase", testo: "Nel mezzo del cammin di nostra vita", nota: "Inizia la Commedia.", autore: "Dante Alighieri", opera: "Divina Commedia", stato: "da_verificare" },
+  { id: "c", tipo: "mito", testo: "I pipistrelli sono ciechi", nota: "Non è vero, vedono benissimo. Perche?", stato: "da_verificare" },
+  { id: "d", tipo: "idea", testo: "Leggerezza", nota: "Lezioni americane.", autore: "Italo Calvino", opera: "Lezioni americane", stato: "da_verificare" },
+];
+controlla(cerca(piccolo, "perche").map(x => x.id).join() === "a,c", "«perche» trova «Perché» (testo prima della nota)");
+controlla(cerca(piccolo, "PERCHÉ").length === 2, "maiuscole e accenti non contano");
+controlla(cerca(piccolo, "dante").map(x => x.id).join() === "b", "trova per autore");
+controlla(cerca(piccolo, "commedia").map(x => x.id).join() === "b", "trova per opera e per nota");
+controlla(cerca(piccolo, "cammin vita").length === 1 && cerca(piccolo, "cammin zebra").length === 0, "più parole: servono tutte");
+controlla(cerca(piccolo, "   ").length === 0, "ricerca vuota: nessun risultato");
+controlla(cerca(catalogo.map(s => ({ ...s, testo: "gatto " + s.id, nota: "" })), "gatto").length === 50, "al massimo 50 risultati");
+controlla(normalizza("È già così, perché") === "e gia cosi, perche", "normalizza toglie gli accenti");
 
 console.log(errori ? `\n${errori} controlli falliti.` : "\nTutti i controlli superati.");
 process.exit(errori ? 1 : 0);

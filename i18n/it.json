@@ -132,7 +132,13 @@
     "n_schede": "{n} schede",
     "indietro": "Tutte le categorie",
     "tutta_categoria": "Tutte le schede di {nome}",
-    "pro": "Pro"
+    "pro": "Pro",
+    "cerca": "Cerca nelle schede",
+    "nessun_risultato": "Nessun risultato per «{domanda}».",
+    "un_risultato": "1 risultato",
+    "n_risultati": "{n} risultati",
+    "primi_risultati": "I primi {n} risultati",
+    "ancora_caricamento": "Sto ancora caricando alcune schede: i risultati possono essere incompleti."
   },
   "onboarding": {
     "salta": "Salta",
@@ -192,7 +198,15 @@
     "per_categoria": "Schede viste per categoria",
     "preferenze": "Le tue categorie",
     "categorie_testo": "Le vedrai più spesso, ma il feed resta vario. Nessuna scelta: vedi un po' di tutto.",
-    "piani": "Vedi i piani"
+    "piani": "Vedi i piani",
+    "tema": "Tema",
+    "tema_sistema": "Come il telefono",
+    "tema_chiaro": "Chiaro",
+    "tema_scuro": "Scuro",
+    "dimensione_testo": "Dimensione del testo",
+    "testo_normale": "Normale",
+    "testo_grande": "Grande",
+    "testo_molto_grande": "Molto grande"
   },
   "aperta": {
     "titolo": "Scheda",

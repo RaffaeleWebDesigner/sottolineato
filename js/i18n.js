@@ -29,7 +29,7 @@ export function t(chiave, valori = {}) {
 // Riempie gli elementi statici di index.html: data-i18n per il testo, data-i18n-<attributo> per gli attributi.
 export function traduciPagina() {
   for (const n of document.querySelectorAll("[data-i18n]")) n.textContent = t(n.dataset.i18n);
-  for (const attr of ["aria-label", "title"]) {
+  for (const attr of ["aria-label", "title", "placeholder"]) {
     for (const n of document.querySelectorAll(`[data-i18n-${attr}]`)) n.setAttribute(attr, t(n.getAttribute(`data-i18n-${attr}`)));
   }
 }

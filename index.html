@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title data-i18n="app.titolo">Sottolineato · Cose intelligenti, una alla volta</title>
+<script>try{var d=document.documentElement,a=JSON.parse(localStorage.getItem("sott-aspetto")),z=JSON.parse(localStorage.getItem("sott-testo"));if(a==="chiaro")d.dataset.theme="light";else if(a==="scuro")d.dataset.theme="dark";if(z>1&&z<4)d.dataset.testo=z}catch(e){}</script>
 <meta name="description" content="Un feed in italiano da scorrere come un social, ma per imparare: frasi dai libri, citazioni storiche vere o false, curiosità su scienza, storia, musica e cinema, e idee da tirare fuori con gli amici.">
 <meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e1217" media="(prefers-color-scheme: dark)">
@@ -27,6 +28,7 @@
 <link rel="modulepreload" href="js/feed.js">
 <link rel="modulepreload" href="js/dom.js">
 <link rel="modulepreload" href="js/tempo.js">
+<link rel="modulepreload" href="js/ricerca.js">
 <link rel="modulepreload" href="js/giorno.js">
 <link rel="modulepreload" href="js/aperta.js">
 <link rel="modulepreload" href="js/onboarding.js">
@@ -58,7 +60,7 @@
   --chip-on: #17202b;
   --chip-on-fg: #ffffff;
   --marker: rgba(255, 206, 26, .55);
-  --ok: #1f7a4d;
+  --ok: #1a6b42;
   --ko: #b3261e;
   --t-vita: #e9e2f8;
   --t-amore: #f9e1e6;
@@ -118,19 +120,21 @@
   color-scheme: dark;
 }
 
-html { height: 100%; box-sizing: border-box; color-scheme: light; padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
+html { --z: 1; font-size: calc(100% * var(--z)); height: 100%; box-sizing: border-box; color-scheme: light; padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
+html[data-testo="2"] { --z: 1.15; }
+html[data-testo="3"] { --z: 1.3; }
 [hidden] { display: none !important; }
 img { max-width: 100%; }
 *, *::before, *::after { box-sizing: inherit; }
 body {
   height: calc(100vh - env(safe-area-inset-top, 0px)); height: calc(100dvh - env(safe-area-inset-top, 0px));
   margin: 0; background: var(--bg); color: var(--fg);
-  font-family: var(--font-ui); font-size: 15px;
+  font-family: var(--font-ui); font-size: .9375rem;
   display: flex; flex-direction: column; overflow: hidden;
 }
 .solo-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 button { font: inherit; color: inherit; cursor: pointer; }
-button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
 /* Le viste (feed, esplora, salvate, profilo) stanno una sopra l'altra; ne è visibile una sola. La barra è sotto. */
 .viste { flex: 1; min-height: 0; display: flex; flex-direction: column; }
@@ -141,7 +145,7 @@ button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .contenuto { max-width: 640px; margin-inline: auto; padding-block: 16px 24px; display: flex; flex-direction: column; gap: 18px; }
 .titolo-vista { font-family: var(--font-quote); font-size: 1.7rem; font-weight: 500; letter-spacing: -.01em; margin: 0; line-height: 1.15; }
 
-.feedbar { display: flex; align-items: center; gap: 8px; padding-block: 8px 2px; max-width: 640px; width: 100%; margin-inline: auto; min-height: 42px; }
+.feedbar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding-block: 8px 2px; max-width: 640px; width: 100%; margin-inline: auto; min-height: 42px; }
 .brand { font-family: var(--font-quote); font-size: 1.25rem; font-weight: 500; letter-spacing: -.01em; margin: 0; line-height: 1.1; }
 .brand span { background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%); padding-inline: 2px; }
 .spazio { flex: 1; }
@@ -178,7 +182,7 @@ dialog.schermo::backdrop { background: var(--bg); }
 .onb-passo { font-size: .8rem; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
 .onb-salta, .onb-indietro { border: 0; background: transparent; padding: 10px 6px; font-weight: 600; color: var(--muted); font-size: .95rem; }
 .onb-contenuto { flex: 1; width: 100%; max-width: 560px; margin-inline: auto; padding: 18px max(20px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; justify-content: center; gap: 18px; }
-.onb-titolo { font-family: var(--font-quote); font-size: clamp(1.9rem, 7vw, 2.6rem); font-weight: 500; letter-spacing: -.02em; line-height: 1.1; margin: 0; }
+.onb-titolo { font-family: var(--font-quote); font-size: clamp(1.9rem, calc(7vw * var(--z)), 2.6rem); font-weight: 500; letter-spacing: -.02em; line-height: 1.1; margin: 0; }
 .onb-titolo:focus { outline: none; }
 .onb-testo { margin: 0; font-size: 1.05rem; line-height: 1.5; color: var(--muted); max-width: 46ch; }
 .onb-marchio { margin: 0; font-family: var(--font-quote); font-size: 1.4rem; }
@@ -196,7 +200,7 @@ dialog.schermo::backdrop { background: var(--bg); }
 
 /* Limite giornaliero (si vede solo con ?limite=1) e pagina dei piani. */
 .card.limite { align-items: stretch; justify-content: center; gap: 14px; }
-.limite-titolo { font-family: var(--font-quote); font-size: clamp(1.8rem, 7vw, 2.4rem); font-weight: 500; letter-spacing: -.02em; margin: 0; line-height: 1.1; }
+.limite-titolo { font-family: var(--font-quote); font-size: clamp(1.8rem, calc(7vw * var(--z)), 2.4rem); font-weight: 500; letter-spacing: -.02em; margin: 0; line-height: 1.1; }
 .limite-tempo { margin: 0; color: var(--muted); line-height: 1.45; }
 .limite-nota { margin: 0; font-size: .85rem; color: var(--muted); }
 .limite-primario, .limite-secondario { border-radius: 14px; padding: 14px 16px; font-weight: 700; font-size: 1rem; border: 1px solid var(--line); background: var(--chip); }
@@ -219,6 +223,15 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 .condividi-corpo { width: 100%; max-width: 520px; margin-inline: auto; padding: max(58px, calc(env(safe-area-inset-top, 0px) + 50px)) max(16px, env(safe-area-inset-left, 0px)) max(18px, env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 14px; }
 .anteprima { width: 100%; max-height: 58vh; object-fit: contain; border-radius: 14px; border: 1px solid var(--line); background: var(--chip); }
 .condividi-azione { margin-left: 0; align-self: stretch; }
+
+/* Ricerca. */
+.cerca input { width: 100%; border: 1px solid var(--line); background: var(--chip); color: var(--fg); border-radius: 14px; padding: 12px 14px; font: inherit; }
+.cerca input::placeholder { color: var(--muted); opacity: 1; }
+#esplora-risultati { display: flex; flex-direction: column; gap: 10px; }
+.riga .sub { display: block; font-size: .78rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Preferenze di aspetto. */
+.scelta-unica { display: flex; flex-wrap: wrap; gap: 6px; }
 
 /* Salvate. */
 .riga-salvata { display: flex; align-items: stretch; gap: 6px; }
@@ -265,18 +278,19 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 }
 .card-head { display: flex; justify-content: space-between; align-items: center; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .kind { color: var(--fg); }
-.count { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.count { font-variant-numeric: tabular-nums; letter-spacing: .02em; white-space: nowrap; }
 .destra { display: inline-flex; align-items: center; gap: 10px; }
 .del-giorno { background: var(--marker); color: var(--fg); border-radius: 6px; padding: 2px 7px; letter-spacing: .06em; }
 .body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
-.body > :first-child { margin-top: auto; }
+/* Il contenuto sta al centro se c'è spazio; se è più alto della scheda si scorre, senza tagliare niente. */
+.esito:not(:empty), .esito:empty + * { margin-top: auto; }
 .body > :last-child { margin-bottom: auto; }
 
-.q { margin: 0; font-family: var(--font-quote); font-size: clamp(1.55rem, 5.6vw, 2.35rem); line-height: 1.28; font-weight: 400; text-wrap: balance; }
-.q.long { font-size: clamp(1.25rem, 4.4vw, 1.8rem); }
-.q.idea { font-family: var(--font-ui); font-weight: 600; letter-spacing: -.015em; line-height: 1.2; font-size: clamp(1.5rem, 5.4vw, 2.2rem); }
-.q.parola { font-family: var(--font-quote); font-style: italic; font-weight: 500; font-size: clamp(2.4rem, 11vw, 4.2rem); line-height: 1.05; letter-spacing: -.02em; overflow-wrap: anywhere; }
-.q.sapevi { font-family: var(--font-ui); font-weight: 500; line-height: 1.3; font-size: clamp(1.3rem, 4.8vw, 1.85rem); }
+.q { margin: 0; font-family: var(--font-quote); font-size: clamp(1.55rem, calc(5.6vw * var(--z)), 2.35rem); line-height: 1.28; font-weight: 400; text-wrap: balance; }
+.q.long { font-size: clamp(1.25rem, calc(4.4vw * var(--z)), 1.8rem); }
+.q.idea { font-family: var(--font-ui); font-weight: 600; letter-spacing: -.015em; line-height: 1.2; font-size: clamp(1.5rem, calc(5.4vw * var(--z)), 2.2rem); }
+.q.parola { font-family: var(--font-quote); font-style: italic; font-weight: 500; font-size: clamp(2.4rem, calc(11vw * var(--z)), 4.2rem); line-height: 1.05; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.q.sapevi { font-family: var(--font-ui); font-weight: 500; line-height: 1.3; font-size: clamp(1.3rem, calc(4.8vw * var(--z)), 1.85rem); }
 .q mark {
   color: inherit; background: linear-gradient(var(--marker), var(--marker)) no-repeat 0 82% / 0% 38%;
   transition: background-size .9s cubic-bezier(.3, .7, .2, 1) .15s; padding-inline: 1px;
@@ -292,7 +306,7 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 
 /* Quiz: la spiegazione non esiste finché non si risponde; poi entra dal basso. */
 .esito:empty { display: none; }
-.esito-testo { display: block; font-family: var(--font-quote); font-size: clamp(2rem, 9vw, 3rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.05; transform-origin: left center; }
+.esito-testo { display: block; font-family: var(--font-quote); font-size: clamp(2rem, calc(9vw * var(--z)), 3rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.05; transform-origin: left center; }
 .esito-testo.giusto { color: var(--ok); }
 .esito-testo.sbagliato { color: var(--ko); }
 .esito-testo.rimbalza { animation: rimbalzo .5s cubic-bezier(.3, 1.7, .5, 1); }
@@ -331,6 +345,7 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 .spunto p { margin: 0; font-family: var(--font-quote); font-style: italic; font-size: 1.12rem; line-height: 1.4; }
 
 @media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .q mark { transition: none; background-size: 100% 38%; }
   .esito-testo.rimbalza, .spiega.entra, .card.scossa { animation: none; }
 }
@@ -356,6 +371,8 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
   <section class="vista vista-scroll" id="vista-esplora" aria-labelledby="titolo-esplora" tabindex="-1" hidden>
     <div class="contenuto">
       <h2 class="titolo-vista" id="titolo-esplora" data-fuoco tabindex="-1" data-i18n="nav.esplora">Esplora</h2>
+      <div class="cerca"><input id="cerca" type="search" enterkeyhint="search" autocomplete="off" spellcheck="false" aria-label="Cerca nelle schede" data-i18n-aria-label="esplora.cerca" placeholder="Cerca nelle schede" data-i18n-placeholder="esplora.cerca"></div>
+      <div id="esplora-risultati" aria-live="polite" hidden></div>
       <div id="esplora-contenuto"></div>
     </div>
   </section>

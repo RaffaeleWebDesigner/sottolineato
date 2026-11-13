@@ -1,7 +1,10 @@
 // Esplora: le 6 macro-categorie con i loro temi e le scorciatoie per tipo. Toccando categoria o tema si apre il feed filtrato.
 import { el } from "./dom.js";
 import { t } from "./i18n.js";
-import { catalogo } from "./dati.js";
+import { catalogo, testoPronto } from "./dati.js";
+import { cerca, MAX_RISULTATI } from "./ricerca.js";
+import { apriScheda } from "./aperta.js";
+import { nomeTipo } from "./scheda.js";
 import { TIPI_FILTRO, nomeTipoFiltro, impostaFiltro, inCategoria } from "./filtri.js";
 import { MOSTRA_PREMIUM } from "./limiti.js";
 import { registraVista, vaiA } from "./nav.js";
@@ -55,6 +58,36 @@ function vistaCategoria(c) {
   return [indietro, el("h3", "sezione", c.nome), tutta, el("h3", "sezione", t("esplora.temi")), righe];
 }
 
+// Ricerca: al posto delle categorie compare l'elenco dei risultati (al massimo 50).
+function rigaRisultato(f) {
+  const b = bottone("riga"); b.style.setProperty("--tint", `var(--t-${f.temaId})`);
+  const testo = el("span", "nome");
+  testo.append(el("small", "data", nomeTipo(f.tipo) + t("scheda.separatore") + f.tema), el("span", "riga-testo", f.testo.split("\n")[0]));
+  const fonte = [f.autore, f.opera].filter(Boolean).join(t("scheda.separatore"));
+  if (fonte) testo.append(el("span", "sub", fonte));
+  b.append(el("span", "pallino"), testo);
+  b.addEventListener("click", () => apriScheda(f));
+  const li = el("li"); li.append(b); return li;
+}
+
+function aggiornaRicerca() {
+  const campo = document.getElementById("cerca"), risultati = document.getElementById("esplora-risultati"), contenuto = document.getElementById("esplora-contenuto");
+  const domanda = campo.value.trim();
+  const attiva = domanda.length >= 2;
+  risultati.hidden = !attiva; contenuto.hidden = attiva;
+  if (!attiva) { risultati.replaceChildren(); return; }
+  const trovate = cerca(catalogo.schede, domanda, MAX_RISULTATI + 1);
+  const parziale = catalogo.schede.some(s => !testoPronto(s));
+  const nodi = [];
+  if (!trovate.length) nodi.push(el("p", "onb-testo", t("esplora.nessun_risultato", { domanda })));
+  else {
+    nodi.push(el("p", "limite-nota", trovate.length > MAX_RISULTATI ? t("esplora.primi_risultati", { n: MAX_RISULTATI }) : (trovate.length === 1 ? t("esplora.un_risultato") : t("esplora.n_risultati", { n: trovate.length }))));
+    const lista = el("ul", "righe"); lista.append(...trovate.slice(0, MAX_RISULTATI).map(rigaRisultato)); nodi.push(lista);
+  }
+  if (parziale) nodi.push(el("p", "limite-nota", t("esplora.ancora_caricamento")));
+  risultati.replaceChildren(...nodi);
+}
+
 function render() {
   const c = catalogo.categorie.find(x => x.id === categoriaAperta);
   if (!c) categoriaAperta = null;
@@ -62,5 +95,8 @@ function render() {
 }
 
 export function inizializzaEsplora() {
-  registraVista("esplora", { mostra: render, nascondi: () => { categoriaAperta = null; } });
+  registraVista("esplora", { mostra: () => { render(); aggiornaRicerca(); }, nascondi: () => { categoriaAperta = null; } });
+  let attesa;
+  document.getElementById("cerca").addEventListener("input", () => { clearTimeout(attesa); attesa = setTimeout(aggiornaRicerca, 120); });
+  document.addEventListener("sott:testi", () => { if (!document.getElementById("vista-esplora").hidden) aggiornaRicerca(); });
 }

@@ -4,7 +4,7 @@ import { t } from "./i18n.js";
 import { catalogo, testoPronto } from "./dati.js";
 import { numeroSalvate, numeroImparate } from "./salvataggi.js";
 import { cronologiaViste, schedeViste, giorniConsecutivi, statisticheQuiz } from "./cronologia.js";
-import { interessi, impostaInteressi } from "./preferenze.js";
+import { interessi, impostaInteressi, aspetto, impostaAspetto, dimensione, impostaDimensione } from "./preferenze.js";
 import { archivioGiorni } from "./giorno.js";
 import { apriScheda } from "./aperta.js";
 import { formattaGiorno } from "./tempo.js";
@@ -79,9 +79,28 @@ function sezionePreferenze() {
   return sezione;
 }
 
+// Tema chiaro, scuro o di sistema; dimensione del testo su tre livelli.
+function gruppoScelta(valori, corrente, scegli) {
+  const g = el("div", "scelta-unica"); g.setAttribute("role", "group");
+  const bottoni = valori.map(([valore, nome]) => {
+    const b = el("button", "chip", nome); b.type = "button"; b.setAttribute("aria-pressed", String(valore === corrente()));
+    b.addEventListener("click", () => { scegli(valore); bottoni.forEach(([v, x]) => x.setAttribute("aria-pressed", String(v === corrente()))); });
+    return [valore, b];
+  });
+  g.append(...bottoni.map(x => x[1])); return g;
+}
+function sezioneAspetto() {
+  const sezione = el("section", "sezione-profilo");
+  const tema = gruppoScelta([["sistema", t("profilo.tema_sistema")], ["chiaro", t("profilo.tema_chiaro")], ["scuro", t("profilo.tema_scuro")]], aspetto, impostaAspetto);
+  const testo = gruppoScelta([[1, t("profilo.testo_normale")], [2, t("profilo.testo_grande")], [3, t("profilo.testo_molto_grande")]], dimensione, impostaDimensione);
+  tema.setAttribute("aria-label", t("profilo.tema")); testo.setAttribute("aria-label", t("profilo.dimensione_testo"));
+  sezione.append(el("h3", "sezione", t("profilo.tema")), tema, el("h3", "sezione", t("profilo.dimensione_testo")), testo);
+  return sezione;
+}
+
 function render() {
   const piani = el("button", "chip", t("profilo.piani")); piani.type = "button"; piani.addEventListener("click", () => vaiA("pro"));
-  document.getElementById("profilo-contenuto").replaceChildren(sezioneProgressi(), sezionePreferenze(), sezioneArchivio(), piani);
+  document.getElementById("profilo-contenuto").replaceChildren(sezioneProgressi(), sezionePreferenze(), sezioneAspetto(), sezioneArchivio(), piani);
 }
 
 export function inizializzaProfilo() {

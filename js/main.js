@@ -13,6 +13,7 @@ import { inizializzaEsplora } from "./esplora.js";
 import { inizializzaSalvate } from "./salvate.js";
 import { inizializzaProfilo } from "./profilo.js";
 import { inizializzaPro } from "./pro.js";
+import { applicaAspetto, applicaDimensione } from "./preferenze.js";
 import { registraVista, avviaNav } from "./nav.js";
 import { serveOnboarding, avviaOnboarding } from "./onboarding.js";
 
@@ -27,6 +28,7 @@ async function avvia() {
     return;
   }
 
+  applicaAspetto(); applicaDimensione();
   const primoAvvio = serveOnboarding(); // prima di qualunque scrittura nel localStorage
   migra({ temi: catalogo.temi }); // prima di leggere i salvataggi
   inizializzaSalvataggi();
