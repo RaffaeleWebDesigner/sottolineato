@@ -50,5 +50,7 @@
   {"id":"calvino-visconte","tipo":"idea","temi":["mente"],"autore":"Italo Calvino","anno":"1952","stato":"da_verificare","aggiunta":"2026-11-11"},
   {"id":"calvino-cavaliere","tipo":"idea","temi":["fantasia"],"autore":"Italo Calvino","anno":"1959","stato":"da_verificare","aggiunta":"2026-11-11"},
   {"id":"n1-amore-simposio","tipo":"idea","temi":["amore","mente"],"autore":"Platone","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.gutenberg.org/cache/epub/1600/pg1600.txt","aggiunta":"2026-11-13"},
-  {"id":"n1-lavoro-spilli","tipo":"idea","temi":["lavoro","economia"],"autore":"Adam Smith","anno":"1776","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.gutenberg.org/cache/epub/3300/pg3300.txt","aggiunta":"2026-11-13"}
+  {"id":"n1-lavoro-spilli","tipo":"idea","temi":["lavoro","economia"],"autore":"Adam Smith","anno":"1776","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.gutenberg.org/cache/epub/3300/pg3300.txt","aggiunta":"2026-11-13"},
+  {"id":"n1-lavoro-germinal","tipo":"idea","temi":["lavoro","societa"],"autore":"Émile Zola","anno":"1885","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.gutenberg.org/cache/epub/56528/pg56528.txt | https://www.treccani.it/enciclopedia/emile-zola/","aggiunta":"2026-11-13"},
+  {"id":"n1-vita-incipit-vita-nova","tipo":"idea","temi":["vita","amore"],"autore":"Dante Alighieri","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.gutenberg.org/cache/epub/71218/pg71218.txt","aggiunta":"2026-11-13"}
 ]
