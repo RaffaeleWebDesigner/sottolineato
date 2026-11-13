@@ -18,19 +18,14 @@ Un feed verticale in italiano per imparare qualcosa di interessante, una scheda 
 ## File
 
 - `index.html`: struttura e stile. Carica `js/main.js` come modulo ES.
-- `js/`: il codice, in moduli ES nativi (nessuna compilazione):
-  - `main.js` avvia tutto;
-  - `dati.js` carica i contenuti;
-  - `i18n.js` gestisce lingua e testi dell'interfaccia;
-  - `store.js` gestisce il `localStorage` e le sue migrazioni;
-  - `salvataggi.js`, `filtri.js`, `quiz.js` e `feed.js` gestiscono le parti dell'app con lo stesso nome;
-  - `dom.js` contiene piccoli aiuti.
+- `js/`: il codice, in moduli ES nativi (nessuna compilazione). `main.js` e `app.js` avviano tutto; ogni vista ha il suo modulo (`feed.js`, `esplora.js`, `salvate.js`, `profilo.js`, `onboarding.js`…); `ordine.js` e `ricerca.js` contengono le regole pure (ordine del feed, scheda del giorno, ripasso, ricerca); `cronologia.js`, `salvataggi.js`, `ripasso.js` e `preferenze.js` tengono i dati dell'utente nel `localStorage`; `scheda.js`, `quiz.js`, `effetti.js` e `condividi.js` costruiscono la scheda. L'elenco completo è in `CLAUDE.md`.
 - `i18n/it.json`: i testi dell'interfaccia (bottoni, filtri, messaggi). Nel codice si usano con `t("gruppo.chiave")`, in `index.html` con `data-i18n`.
 - `data/temi.json`: le 6 macro-categorie e i 24 temi, ognuno in una categoria.
 - `data/schede/<tipo>.json`: i dati comuni a tutte le lingue (id, temi, risposta, autore, stato, date…).
 - `data/testi/it/<tipo>.json`: i testi italiani, indicizzati per id.
 - `data/SCHEMA.md`: lo schema completo della scheda, con un esempio per ogni tipo.
-- `scripts/controlla.mjs`: il controllo dei contenuti e delle chiavi di traduzione.
+- `scripts/controlla.mjs`: il controllo dei contenuti, delle chiavi di traduzione e dei moduli precaricati.
+- `scripts/prova-ordine.mjs`: prova senza browser dell'ordine del feed, della scheda del giorno, del ripasso e della ricerca. `scripts/contrasto.mjs`: contrasto dei colori nei due temi.
 
 ## Avvio in locale
 
@@ -60,6 +55,8 @@ node scripts/controlla.mjs
 ```
 
 Per lavorare su una scheda senza mostrarla, usa `"stato": "bozza"`.
+
+Per provare il limite giornaliero (spento sul sito) apri `http://localhost:8000/?limite=1`.
 
 Tutti i campi e gli esempi sono in `data/SCHEMA.md`.
 

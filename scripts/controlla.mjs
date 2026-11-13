@@ -191,6 +191,17 @@ for (const [chiave, file] of usate) if (!chiaviI18n.has(chiave)) errore(file, `c
 const nonUsate = [...chiaviI18n].filter(k => !usate.has(k));
 if (nonUsate.length) avviso(`${nonUsate.length} chiavi in i18n/${LINGUA_BASE}.json mai usate: ${nonUsate.join(", ")}`);
 
+// ——— Moduli precaricati ———
+// Ogni modulo di js/ deve stare tra i modulepreload di index.html: senza, il browser lo scopre solo dopo aver letto chi lo importa
+// e il primo avvio si allunga di un giro di rete (circa mezzo secondo su Slow 4G).
+{
+  const pagina = fs.readFileSync(path.join(radice, "index.html"), "utf8");
+  const precaricati = new Set([...pagina.matchAll(/<link rel="modulepreload"[^>]*href="js\/([^"]+)"/g)].map(m => m[1]));
+  const presenti = fs.readdirSync(path.join(radice, "js")).filter(n => n.endsWith(".js"));
+  for (const n of presenti) if (!precaricati.has(n)) errore("index.html", `js/${n} non è tra i modulepreload`);
+  for (const n of precaricati) if (!presenti.includes(n)) errore("index.html", `modulepreload di js/${n}, che non esiste`);
+}
+
 // ——— Riepilogo ———
 const conta = (chiave) => { const c = {}; for (const s of schede.values()) { const k = chiave(s); c[k] = (c[k] || 0) + 1; } return c; };
 const stampa = (titolo, oggetto) => {

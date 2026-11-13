@@ -13,24 +13,21 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
 
 ## Com'è fatto oggi
 
-- `index.html`: struttura e stile. Carica solo `js/main.js` come modulo ES (`<script type="module">`). Elenca tutti i moduli di `js/` con `<link rel="modulepreload">`: un modulo nuovo va aggiunto lì, altrimenti funziona lo stesso ma si scarica più tardi.
+- `index.html`: struttura e stile (inline, per non aggiungere richieste). Carica solo `js/main.js` come modulo ES (`<script type="module">`). Elenca tutti i moduli di `js/` con `<link rel="modulepreload">` (`scripts/controlla.mjs` dà errore se ne manca uno: un modulo mancante allunga l'avvio di un giro di rete). Quattro viste (feed, esplora, salvate, profilo) più `#pro`, e la barra in basso.
 - `js/`: moduli ES nativi, senza variabili globali su `window`.
-  - `main.js`: avvio, nell'ordine: traduzioni e indice delle schede, migrazioni, salvataggi, filtri, feed; poi i testi delle schede.
-  - `i18n.js`: `LINGUA` (unico punto in cui si sceglie la lingua), `t(chiave, valori)`, testi statici con `data-i18n`.
-  - `dati.js`: carica i JSON con `fetch` e ricompone le schede. Contiene `VERSIONE_DATI`. Mostra solo le schede con `stato` diverso da `bozza` e con testo nella lingua corrente. Contiene `accessibile(scheda, piano)` (oggi sempre `true`, non ancora usata) e `riservata(scheda)`: una scheda è a pagamento solo se tutti i suoi temi sono `premium`.
-  - `store.js`: lettura e scrittura del localStorage, lista `MIGRAZIONI`.
-  - `salvataggi.js`: schede salvate e imparate, contatore.
-  - `filtri.js`: filtri per tipo e tema.
-  - `quiz.js`: domande a scelta multipla.
-  - `feed.js`: costruzione delle schede, a gruppi di 25 mentre si scorre; Rimescola e tastiera.
-  - `dom.js`: piccoli aiuti per creare elementi.
+  - Avvio: `main.js` fa partire subito il caricamento dei dati e importa `app.js`; `app.js` inizializza tutto, nell'ordine: migrazioni, salvataggi, cronologia, filtri, viste, feed; poi i testi delle schede.
+  - Base: `i18n.js` (`LINGUA` e `LINGUE`, `t(chiave, valori)`, testi statici con `data-i18n`), `dati.js` (carica i JSON, `catalogo`, `VERSIONE_DATI`, `accessibile`, `riservata`), `store.js` (localStorage, `MIGRAZIONI`), `tempo.js` (giorni e date), `dom.js`.
+  - Regole pure, senza browser: `ordine.js` (ordine del feed, scheda del giorno, ripasso) e `ricerca.js`.
+  - Dati dell'utente: `salvataggi.js`, `cronologia.js` (viste, giorni, contatori, esiti dei quiz), `ripasso.js`, `preferenze.js` (categorie, tema, dimensione del testo), `giorno.js` (scheda del giorno e archivio), `limiti.js` (limite giornaliero, piani, `MOSTRA_PREMIUM`).
+  - Viste: `nav.js` (hash), `feed.js`, `esplora.js`, `salvate.js`, `profilo.js`, `pro.js`, `onboarding.js`, `aperta.js` (scheda aperta a tutto schermo), `limiteui.js` (schermata del limite e pubblicità di prova).
+  - Scheda: `scheda.js` (costruzione), `quiz.js`, `effetti.js` (coriandoli, scossone), `feedback.js` (vibrazione: `gioia()` ed `errore()`), `condividi.js` (immagine da condividere), `filtri.js`.
 - `i18n/it.json`: tutti i testi dell'interfaccia, raggruppati per area, con segnaposto `{n}`.
 - `data/temi.json`: le 6 macro-categorie (`categorie`) e i 24 temi (`temi`), con `id` stabile, `nome` per lingua e `premium`. Ogni tema ha una `categoria`. Premium deciso: Mente e vita (solo sulla categoria; i temi restano `false` fino alla fase 7).
 - `data/schede/<tipo>.json`: dati comuni a tutte le lingue. `data/testi/<lingua>/<tipo>.json`: testi, indicizzati per `id`. Oggi c'è solo `it`.
 - `data/SCHEMA.md`: lo schema completo, con un esempio per tipo. È il riferimento per ogni scheda.
 - `data/GUIDA.md`: la guida di stile e le fonti accettate.
 - `data/verifica/REGISTRO.md`: il registro della verifica dei fatti (fase 2). Da lì riparte chi continua il lavoro.
-- `scripts/controlla.mjs`: controllo dei contenuti e delle chiavi di traduzione, nessuna dipendenza.
+- `scripts/controlla.mjs`: controllo dei contenuti, delle chiavi di traduzione e dei `modulepreload`, nessuna dipendenza. `scripts/prova-ordine.mjs`: prova di `ordine.js` e `ricerca.js` senza browser. `scripts/contrasto.mjs`: contrasto dei colori (WCAG AA) nei due temi.
 - 2.001 schede. Stato della verifica (verificate, in bozza, da verificare): vedi `data/verifica/REGISTRO.md`.
 
 **`VERSIONE_DATI`** (in `js/dati.js`) va aumentata di 1 a ogni modifica di `data/` o `i18n/`. Si aggiunge come `?v=` a ogni richiesta JSON, così il browser non usa copie vecchie.
@@ -61,6 +58,16 @@ Chiavi di localStorage (non cambiarle né cambiarne il formato senza una migrazi
 - `sott-tipo`: filtro per tipo (`tutto`, `libri`, `storica`, `mondo`, `mito`, `brillante`, `salvate`). Valori interni, non dipendono dalla lingua.
 - `sott-tema`: id del tema selezionato (es. `storia`) o `null`. Fino alla versione 0 conteneva il nome italiano («Storia»).
 - `sott-versione`: numero dell'ultima migrazione eseguita. Oggi `1`.
+- `sott-categoria`: id della categoria usata come filtro del feed, o `null`.
+- `sott-vista`: `{ id: giorno }`, l'ultimo giorno in cui la scheda è stata vista (a schermo almeno 1,5 s). Solo id e numeri, sotto i 100 KB. Il «giorno» è un intero: i giorni dal 1970 secondo il calendario locale.
+- `sott-giorni`: lista dei giorni con almeno una scheda vista (per i giorni consecutivi).
+- `sott-oggi`: `{ g, nuove, extra, video, giornoVisto }`, i contatori del giorno corrente; si azzerano al cambio di giorno.
+- `sott-quiz`: `{ id: 1 | 0 }`, ultimo esito del quiz di ogni scheda.
+- `sott-ripasso`: `{ id: [passi, ultimoGiorno] }`, il ripasso delle salvate.
+- `sott-del-giorno`: `{ giorno: id }`, le schede del giorno già mostrate (così l'archivio non cambia).
+- `sott-installata`: il giorno del primo avvio con la fase 3 (inizio dell'archivio).
+- `sott-onboarding`: `true` dopo l'onboarding (o per chi era già utente). `sott-interessi`: lista di id di categorie scelte.
+- `sott-aspetto`: `sistema`, `chiaro` o `scuro`. `sott-testo`: dimensione del testo, 1, 2 o 3. `sott-lingua`: lingua scelta (solo se `LINGUE` ne avrà più di una).
 
 Migrazioni: si aggiungono in un unico punto, la lista `MIGRAZIONI`, con versione crescente. All'avvio si eseguono solo quelle con versione maggiore di `sott-versione`. Versione 1: `sott-tema` passa dal nome del tema al suo id; un valore sconosciuto viene rimosso.
 
@@ -102,3 +109,16 @@ Valgono per ogni scheda nuova o modificata.
 8. **Pre-lancio**, poi **pubblicazione**.
 
 Fase attuale: 2, in corso sul branch `fase-2-contenuti`. Lo stato aggiornato è in `data/verifica/REGISTRO.md`.
+
+## Fase 3: l'esperienza da app
+
+Branch `fase-3-esperienza`. Niente pagamenti, pubblicità vere o notifiche: si preparano solo l'interfaccia e la logica.
+
+- **Struttura**: barra in basso con Feed, Esplora, Salvate, Profilo; navigazione con l'hash (`#feed`, `#esplora`, `#salvate`, `#profilo`, più `#ripasso` e `#pro`). All'apertura si va sempre al feed. Il feed usa `100dvh`. Il filtro (tipo, tema, categoria) si sceglie in Esplora e nel feed resta una pillola che lo toglie.
+- **Ordine del feed** (`ordine.js`, funzione pura): prima le mai viste, poi le viste da più tempo; mai più di 2 dello stesso tipo né 3 dello stesso tema di fila, se possibile; circa il 30% fuori dalle categorie preferite; a parità di condizioni prima le `verificata`. Provato da `scripts/prova-ordine.mjs`: va rilanciato dopo ogni modifica a `ordine.js` o `ricerca.js`.
+- **Quiz** (Vero o falso, Miti, Citazioni storiche, «Mettimi alla prova»): prima della risposta il DOM della scheda non contiene nota, bollino né fonte, nemmeno nascosti; si creano dopo la risposta. Nelle citazioni storiche l'autore sta dentro la domanda. «Copia» e «Condividi» prima della risposta non la includono. Con `prefers-reduced-motion` niente coriandoli né scossone. La vibrazione sta solo in `feedback.js` (la fase 6 la collegherà a Capacitor).
+- **Limite giornaliero** (`limiti.js`): `LIMITE_ATTIVO = false`; si accende solo con `?limite=1`. Conta le schede nuove viste nel giorno locale; non contano ripasso, salvate e scheda del giorno. La pubblicità è finta. `piano` è sempre `gratis`: la fase 7 lo collegherà agli acquisti. `MOSTRA_PREMIUM = false`.
+- **Scheda del giorno**: scelta tra le `verificata` dalla data (`schedaDelGiorno` in `ordine.js`), uguale per tutti con lo stesso elenco; se l'elenco cambia, i giorni già mostrati restano quelli ricordati in `sott-del-giorno`.
+- **Avvio veloce**: `main.js` avvia i dati senza aspettare gli altri moduli; solo `main`, `i18n`, `dati` e `store` hanno priorità alta nei `modulepreload`, gli altri `fetchpriority="low"`; i caratteri di Google Fonts non bloccano l'avvio (`media="print"` con `onload`). Un modulo nuovo va aggiunto ai `modulepreload` (con `fetchpriority="low"`, salvo che serva a far partire i dati). La prima scheda visibile deve restare entro +0,3 s rispetto alla misura di fine fase 1.
+- **Accessibilità**: colori controllati con `scripts/contrasto.mjs` (4,5:1 in tutte le coppie, in entrambi i temi); se si cambia un colore in `index.html` va rilanciato. Tema chiaro/scuro/di sistema e testo su tre livelli si applicano da uno script in `<head>` per evitare il lampo del tema sbagliato.
+- **Lingue**: se `LINGUE` in `i18n.js` avrà più di una lingua, l'onboarding mostra da solo la scelta della lingua.
