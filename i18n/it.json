@@ -55,7 +55,8 @@
     "copia": "Copia",
     "copia_frase": "Copia la frase",
     "copiata": "Copiata",
-    "testo_selezionato": "Testo selezionato"
+    "testo_selezionato": "Testo selezionato",
+    "condividi": "Condividi"
   },
   "quiz": {
     "domanda_storica": "{autore}: l'ha detta davvero?",
@@ -190,5 +191,15 @@
   "aperta": {
     "titolo": "Scheda",
     "chiudi": "Chiudi"
+  },
+  "condividi": {
+    "titolo": "Condividi la scheda",
+    "storia": "Storia",
+    "post": "Post",
+    "condividi": "Condividi",
+    "scarica": "Scarica l'immagine",
+    "preparo": "Preparo l'immagine…",
+    "scaricata": "Immagine scaricata.",
+    "cta_quiz": "Scopri la risposta nell'app"
   }
 }

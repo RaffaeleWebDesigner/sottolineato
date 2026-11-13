@@ -39,6 +39,7 @@
 <link rel="modulepreload" href="js/nav.js">
 <link rel="modulepreload" href="js/scheda.js">
 <link rel="modulepreload" href="js/effetti.js">
+<link rel="modulepreload" href="js/condividi.js">
 <link rel="modulepreload" href="js/feedback.js">
 <link rel="modulepreload" href="js/esplora.js">
 <link rel="modulepreload" href="js/salvate.js">
@@ -212,6 +213,12 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 .piano h3 { margin: 0; font-family: var(--font-quote); font-size: 1.5rem; font-weight: 500; }
 .piano p { margin: 0; }
 .piano .prezzo { font-weight: 700; }
+
+/* Condivisione come immagine. */
+.condividi { display: flex; flex-direction: column; }
+.condividi-corpo { width: 100%; max-width: 520px; margin-inline: auto; padding: max(58px, calc(env(safe-area-inset-top, 0px) + 50px)) max(16px, env(safe-area-inset-left, 0px)) max(18px, env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 14px; }
+.anteprima { width: 100%; max-height: 58vh; object-fit: contain; border-radius: 14px; border: 1px solid var(--line); background: var(--chip); }
+.condividi-azione { margin-left: 0; align-self: stretch; }
 
 /* Profilo. */
 .sezione-profilo { display: flex; flex-direction: column; gap: 12px; }

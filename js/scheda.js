@@ -9,11 +9,13 @@ import { LIBRI } from "./dati.js";
 import { creaQuiz, opzioniLibro, rispostaDiSessione } from "./quiz.js";
 import { salvata, alternaSalvata } from "./salvataggi.js";
 import { effettoRisposta, movimentoRidotto } from "./effetti.js";
+import { condividi } from "./condividi.js";
 
 const ICONS = {
   save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
   quiz: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></svg>',
   copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  share: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
 };
 
 // Testi che dipendono dalla lingua: si leggono solo dopo aver caricato le traduzioni.
@@ -193,6 +195,10 @@ export function creaCard(f, idx, tot, { modo = "feed", delGiorno = false } = {})
     setTimeout(() => { bCopy.lastChild.textContent = copyLabel; }, 1800);
   });
   actions.appendChild(bCopy);
+
+  const bShare = bottoneAzione(ICONS.share, t("azioni.condividi"));
+  bShare.addEventListener("click", () => condividi(f));
+  actions.appendChild(bShare);
 
   c.append(head, body, actions);
   return c;
