@@ -3,7 +3,7 @@ export const TIPI_DATI = ["frase", "idea", "parola", "sapevi", "storica", "mondo
 export const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
 
 // Versione dei contenuti: va aumentata a ogni modifica di data/ o i18n/, così il browser non usa copie vecchie.
-export const VERSIONE_DATI = 8;
+export const VERSIONE_DATI = 9;
 
 export const leggiJson = p => fetch(`${p}?v=${VERSIONE_DATI}`).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
 

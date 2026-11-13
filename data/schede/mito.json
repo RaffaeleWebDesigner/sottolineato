@@ -373,5 +373,6 @@
   {"id":"bu-sushi-congelato","tipo":"mito","temi":["cibo"],"vero":true,"stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"bu-casu-marzu","tipo":"mito","temi":["cibo"],"vero":true,"stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"bu-everest-ossigeno","tipo":"mito","temi":["sport"],"vero":false,"stato":"da_verificare","aggiunta":"2026-11-12"},
-  {"id":"bu-sherpa","tipo":"mito","temi":["societa"],"vero":false,"stato":"da_verificare","aggiunta":"2026-11-12"}
+  {"id":"bu-sherpa","tipo":"mito","temi":["societa"],"vero":false,"stato":"da_verificare","aggiunta":"2026-11-12"},
+  {"id":"n1-cinema-sonoro-avversato","tipo":"mito","temi":["cinema","tecnologia"],"vero":false,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/cinema/","aggiunta":"2026-11-13"}
 ]

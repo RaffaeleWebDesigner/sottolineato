@@ -142,5 +142,6 @@
   {"id":"d4-decoy-tempo","tipo":"brillante","temi":["societa"],"autore":"Psicologia della percezione","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"d4-spaziatura","tipo":"brillante","temi":["lavoro"],"autore":"David Allen","anno":"2001","stato":"da_verificare","aggiunta":"2026-11-12"},
   {"id":"n1-tempo-cronostasi","tipo":"brillante","temi":["tempo","mente"],"autore":"Kielan Yarrow","anno":"2001","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.nature.com/articles/35104551","aggiunta":"2026-11-13"},
-  {"id":"n1-amore-cristallizzazione","tipo":"brillante","temi":["amore","mente"],"autore":"Stendhal","anno":"1822","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.gutenberg.org/cache/epub/53720/pg53720.txt","aggiunta":"2026-11-13"}
+  {"id":"n1-amore-cristallizzazione","tipo":"brillante","temi":["amore","mente"],"autore":"Stendhal","anno":"1822","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.gutenberg.org/cache/epub/53720/pg53720.txt","aggiunta":"2026-11-13"},
+  {"id":"n1-cinema-montaggio-alternato","tipo":"brillante","temi":["cinema","arte"],"autore":"D. W. Griffith","anno":"1916","stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/cinema/","aggiunta":"2026-11-13"}
 ]
