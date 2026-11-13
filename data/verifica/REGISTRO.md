@@ -4,17 +4,17 @@ Chi riprende il lavoro parte da qui: legge il riepilogo e continua dal primo pas
 
 ## Riepilogo
 
-*Aggiornato il 12 novembre 2026.*
+*Aggiornato il 13 novembre 2026.*
 
 - **Passo 1, guida di stile**: fatto (`data/GUIDA.md`).
 - **Passo 2, macro-categorie**: approvato il 12 novembre 2026: 6 categorie, premium Mente e vita.
 - **Passo 3, applicare le categorie**: fatto. `data/temi.json` ha `categorie` e un campo `categoria` per ogni tema; `mente-vita` ha `premium: true`, i temi restano `false`.
 - **Passo 4, verifica dei fatti**: blocchi completati 3 su 22. Prossimo blocco: **04 (MONDO 4)**, da `bq-lampadina-secolo`.
-- **Passo 5, temi deboli**: da fare.
+- **Passo 5, temi deboli**: fatto il 13 novembre 2026 (vedi la sezione «Passo 5» in fondo): 131 schede nuove, tutte `verificata`; ogni tema ha almeno 52 schede visibili e il totale visibile è 2.110.
 
 | Verificate | Corrette | In bozza | Da verificare | Totale |
 |---|---|---|---|---|
-| 278 | 138 | 22 | 1701 | 2001 |
+| 409 | 138 | 22 | 1701 | 2132 |
 
 *Corrette* sono le schede verificate dopo una correzione: sono contate anche tra le verificate.
 
@@ -543,3 +543,52 @@ Tipi di scheda dentro ogni categoria («libri» comprende frase, idea, parola e 
 **Duplicati segnalati**
 
 - nessuno
+
+
+## Passo 5: temi deboli e totale delle schede
+
+*13 novembre 2026.* Obiettivo: almeno 50 schede visibili (non `bozza`) per ogni tema principale e almeno 2.100 schede visibili in tutto.
+
+**Risultato**: 131 schede nuove, tutte `verificata` con `verificata_il` 2026-11-13, `aggiunta` 2026-11-13, id con prefisso `n1-`. Visibili: 1.979 prima, 2.110 dopo. Tutte le 131 hanno una `fonte` (URL aperti davvero), controllata con `node scripts/controlla.mjs`.
+
+### Schede visibili per tema principale
+
+| Tema | Prima | Nuove | Dopo | Nuove per tipo |
+|---|---|---|---|---|
+| tempo | 23 | 33 | 56 | brillante 3, frase 7, mito 2, mondo 21 |
+| amore | 27 | 32 | 59 | brillante 1, frase 17, idea 1, mito 1, mondo 11, sapevi 1 |
+| vita | 32 | 26 | 58 | frase 13, idea 3, mondo 9, storica 1 |
+| lavoro | 39 | 17 | 56 | frase 4, idea 2, mondo 8, parola 2, storica 1 |
+| cinema | 49 | 7 | 56 | brillante 1, mito 1, mondo 5 |
+| economia | 51 | 1 | 52 | mondo 1 |
+| coraggio | 51 | 3 | 54 | frase 2, idea 1 |
+| potere | 52 | 2 | 54 | frase 1, mondo 1 |
+| arte | 53 | 3 | 56 | mondo 2, sapevi 1 |
+| musica | 54 | 2 | 56 | frase 1, mondo 1 |
+| fantasia | 58 | 4 | 62 | frase 3, sapevi 1 |
+| natura | 219 | 1 | 220 | frase 1 |
+| sport e gli altri 11 temi | invariati | 0 | invariati | |
+
+Per tipo (nuove): frase 49, mondo 59, idea 7, brillante 5, mito 4, sapevi 3, storica 2, parola 2. Tipi scarsi: `idea` da 50 a 57, `frase` da 62 a 111, `sapevi` da 94 a 97, `parola` da 70 a 72.
+
+### Come sono state verificate
+- **Pagine aperte con `curl`** (testo letto e confrontato): Project Gutenberg (testi di pubblico dominio), Wikisource (Operette morali di Leopardi, Promessi sposi), Treccani (Enciclopedia Italiana, Enciclopedia on line, Vocabolario), NIST, NASA Space Place, Nobel Prize, OMS, Museo Egizio, PLOS (ONE e Medicine), Nature, Harvard Gazette, Quote Investigator.
+- **Studi scientifici**: PubMed e PMC non si aprono da qui (controllo anti-bot). Gli abstract si sono letti da Europe PMC (API pubblica `ebi.ac.uk/europepmc`); come `fonte` c'è la pagina `europepmc.org/article/MED/<id>`, oppure l'articolo su PLOS dove è aperto. Dove l'abstract non dava un numero, il numero non c'è nella scheda.
+- **Diritti**: le `frase` sono solo di autori morti da più di 70 anni (Shakespeare, Austen, Brontë, Wilde, Voltaire, Leopardi, Dante, Manzoni, Carroll, Melville, Whitman, Dickinson e altri), con traduzioni nostre (`trad: true`); i testi italiani sono riportati alla lettera. Nessun testo di canzone, nessuna battuta di film.
+- **Anni**: il campo `anno` c'è solo dove la fonte aperta lo conferma; negli altri casi è stato tolto (dopo una verifica, 21 schede lo hanno perso).
+
+### Doppioni trovati e fatti scartati
+Prima di scrivere si è cercato nei testi esistenti. Scartati perché già presenti: giorno di Venere più lungo dell'anno (`vf2-venere`), 10 giorni tolti nel 1582 (`v3-gregoriano`), anno 46 a.C. di 445 giorni (`bs-cesare-calendario`), il tempo che passa più in fretta in montagna (`rovelli`, quindi niente scheda sull'esperimento NIST dei 33 cm), Cabiria e Torino (`bs-torino-cinema`), Lorenzo il Magnifico, Marx, Smith e il macellaio, Pascoli, D'Annunzio, Manzoni «Ei fu», Sisifo, Tantalo, Odissea e le altre parole letterarie già in archivio.
+Scartati perché non verificabili o non adatti:
+- Samoa che salta il 30 dicembre 2011: nessuna pagina accettata aperta.
+- «La vita è quello che ti accade mentre fai altri progetti» (Lennon): è il verso di una canzone.
+- «Il tempo ferisce tutti i furfanti» (Groucho Marx): è una battuta di film.
+- Data dell'orologio a pendolo di Huygens (1656 o 1657): le fonti Treccani non concordano.
+- I Romani e i numeri dispari: Treccani dice solo «credesi».
+- Torre dell'Orologio di Venezia: l'attribuzione a Pietro Lombardo in Treccani è dubbia.
+- Cifre su 10.000 passi e aspettativa di vita: abstract troncato, numeri non confermati.
+
+### Schede di cui si è meno sicuri
+- `n1-tempo-egitto-anno-vago`: la perdita di un giorno ogni quattro anni è un calcolo, non scritta nella fonte.
+- `n1-tempo-giorni-pianeti`: sintetizza un ragionamento lungo di Treccani (1936).
+- `n1-lavoro-sciopero-legge`: la voce Treccani sullo sciopero è datata; esistono norme successive per i servizi pubblici essenziali, perciò la scheda dice «legge generale».
