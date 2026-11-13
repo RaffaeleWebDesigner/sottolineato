@@ -943,5 +943,7 @@
   {"id":"n1-cinema-griffith-400","tipo":"mondo","temi":["cinema","storia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/cinema/","aggiunta":"2026-11-13"},
   {"id":"n1-cinema-cinetoscopio","tipo":"mondo","temi":["cinema","tecnologia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/cinema/","aggiunta":"2026-11-13"},
   {"id":"n1-vita-harvard-relazioni","tipo":"mondo","temi":["vita","corpo"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://news.harvard.edu/gazette/story/2017/04/over-nearly-80-years-harvard-study-has-been-showing-how-to-live-a-healthy-and-happy-life/","aggiunta":"2026-11-13"},
-  {"id":"n1-amore-cavalier-servente","tipo":"mondo","temi":["amore","italia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/vocabolario/cicisbeo/","aggiunta":"2026-11-13"}
+  {"id":"n1-amore-cavalier-servente","tipo":"mondo","temi":["amore","italia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/vocabolario/cicisbeo/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-mezzogiorno-roma","tipo":"mondo","temi":["tempo","italia"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/orologio_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"},
+  {"id":"n1-tempo-pendolo-equatore","tipo":"mondo","temi":["tempo","scienza"],"vero":true,"stato":"verificata","verificata_il":"2026-11-13","fonte":"https://www.treccani.it/enciclopedia/orologio_(Enciclopedia-Italiana)/","aggiunta":"2026-11-13"}
 ]
