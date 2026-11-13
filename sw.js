@@ -39,6 +39,7 @@ const FILE_APP = [
   "js/filtri.js",
   "js/giorno.js",
   "js/i18n.js",
+  "js/installa.js",
   "js/installazione.js",
   "js/limiteui.js",
   "js/limiti.js",
@@ -57,6 +58,7 @@ const FILE_APP = [
   "js/scheda.js",
   "js/store.js",
   "js/tempo.js",
+  "js/trasferimento.js",
 ];
 
 const BASE = new URL("./", self.location).pathname; // es. /sottolineato/ oppure /

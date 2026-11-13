@@ -16,6 +16,7 @@ import { inizializzaPro } from "./pro.js";
 import { applicaAspetto, applicaDimensione } from "./preferenze.js";
 import { registraVista, avviaNav } from "./nav.js";
 import { serveOnboarding, avviaOnboarding } from "./onboarding.js";
+import { avviaInvitoInstallazione } from "./installa.js";
 import { avviaIndicatoreOffline, registraServiceWorker } from "./installazione.js";
 
 export async function avvia(dati) {
@@ -43,6 +44,7 @@ export async function avvia(dati) {
   if (primoAvvio) sospendiFeed(true);
   avviaNav();
   avviaIndicatoreOffline();
+  avviaInvitoInstallazione();
   if (primoAvvio) avviaOnboarding(() => { sospendiFeed(false); aggiornaFeed(); }); else aggiornaFeed();
 
   try {

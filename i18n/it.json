@@ -227,6 +227,33 @@
     "esci": "Esci dal ripasso",
     "da_rivedere": "Da rivedere: {n}"
   },
+  "installa": {
+    "titolo": "Tienilo sul telefono",
+    "testo": "Aggiungi il sito alla schermata Home: si apre a schermo intero e funziona anche senza rete.",
+    "bottone": "Installa",
+    "come": "Come si fa",
+    "ios_condividi": "Tocca Condividi",
+    "ios_aggiungi": "Poi tocca «Aggiungi alla schermata Home»",
+    "ios_dati": "Le schede salvate qui non passano nell'app installata. Prima di installare, esporta i tuoi dati qui sotto e importali dopo, aprendo l'app.",
+    "invito": "Vuoi tenerlo sul telefono?",
+    "non_ora": "Non ora"
+  },
+  "dati": {
+    "titolo": "I tuoi dati",
+    "testo": "Salvate, imparate e progressi stanno solo su questo dispositivo. Esportali per portarli su un altro o nell'app installata.",
+    "copia": "Copia il codice",
+    "salva_file": "Salva in un file",
+    "nome_file": "sottolineato-dati.txt",
+    "copiato": "Codice copiato.",
+    "copia_fallita": "Non riesco a copiare: il codice è qui sopra, selezionalo a mano.",
+    "salvato": "File salvato.",
+    "incolla": "Incolla qui il codice",
+    "importa": "Importa",
+    "importa_file": "Importa da un file",
+    "conferma": "Conferma: {salvate} salvate, {imparate} imparate",
+    "sostituisce": "Questo sostituisce i dati di questo dispositivo.",
+    "errore": "Il codice non è valido."
+  },
   "installazione": {
     "offline": "Offline",
     "nuova_versione": "Nuova versione disponibile",

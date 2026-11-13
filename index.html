@@ -57,6 +57,8 @@
 <link rel="modulepreload" fetchpriority="low" href="js/salvate.js">
 <link rel="modulepreload" fetchpriority="low" href="js/profilo.js">
 <link rel="modulepreload" fetchpriority="low" href="js/installazione.js">
+<link rel="modulepreload" fetchpriority="low" href="js/installa.js">
+<link rel="modulepreload" fetchpriority="low" href="js/trasferimento.js">
 <!-- Caratteri inclusi nel sito (fonts/, licenza OFL accanto). Si precarica solo quello usato in tutte le schede e nella barra. -->
 <link rel="preload" href="fonts/InstrumentSans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -283,6 +285,13 @@ dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
 .avviso-app { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 32px; padding: 4px max(14px, env(safe-area-inset-left, 0px)); font-size: .78rem; font-weight: 600; color: var(--muted); background: var(--chip); border-top: 1px solid var(--line); }
 .avviso-bottone { min-height: 32px; padding: 0 12px; border: 0; background: none; color: var(--fg); font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .avviso-bottone:disabled { opacity: .5; }
+.avviso-chiudi { min-width: 32px; min-height: 32px; border: 0; background: none; color: var(--muted); font-size: 1.3rem; line-height: 1; cursor: pointer; }
+.passi-installa { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.passo-installa { display: flex; align-items: center; gap: 10px; font-size: .92rem; }
+.passo-icona { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 10px; background: var(--chip); }
+.passo-icona svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.campo-codice { width: 100%; margin: 10px 0 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--chip); color: var(--fg); font: inherit; font-size: .85rem; resize: none; }
+.stato-dati:empty { display: none; }
 
 /* Barra in basso: quattro sezioni, sempre visibile. */
 .tabbar { flex: none; display: flex; justify-content: center; background: var(--bg); border-top: 1px solid var(--line); padding: 0 max(8px, env(safe-area-inset-left, 0px)) env(safe-area-inset-bottom, 0px); }

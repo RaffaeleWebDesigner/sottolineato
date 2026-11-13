@@ -21,6 +21,7 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
   - Dati dell'utente: `salvataggi.js`, `cronologia.js` (viste, giorni, contatori, esiti dei quiz), `ripasso.js`, `preferenze.js` (categorie, tema, dimensione del testo), `giorno.js` (scheda del giorno e archivio), `limiti.js` (limite giornaliero, piani, `MOSTRA_PREMIUM`).
   - Viste: `nav.js` (hash), `feed.js`, `esplora.js`, `salvate.js`, `profilo.js`, `pro.js`, `onboarding.js`, `aperta.js` (scheda aperta a tutto schermo), `limiteui.js` (schermata del limite e pubblicità di prova).
   - Scheda: `scheda.js` (costruzione), `quiz.js`, `effetti.js` (coriandoli, scossone), `feedback.js` (vibrazione: `gioia()` ed `errore()`), `condividi.js` (immagine da condividere), `filtri.js`.
+  - Installazione: `installa.js` (invito del browser su Android, istruzioni su iPhone, invito nel feed dal 3° giorno d'uso), `trasferimento.js` (esporta e importa i dati come codice o file).
   - Installazione e offline: `installazione.js` (registra `sw.js` a feed già in vista, avviso «Nuova versione disponibile», indicatore «Offline»).
 - `i18n/it.json`: tutti i testi dell'interfaccia, raggruppati per area, con segnaposto `{n}`.
 - `data/temi.json`: le 6 macro-categorie (`categorie`) e i 24 temi (`temi`), con `id` stabile, `nome` per lingua e `premium`. Ogni tema ha una `categoria`. Premium deciso: Mente e vita (solo sulla categoria; i temi restano `false` fino alla fase 7).
@@ -70,6 +71,7 @@ Chiavi di localStorage (non cambiarle né cambiarne il formato senza una migrazi
 - `sott-ripasso`: `{ id: [passi, ultimoGiorno] }`, il ripasso delle salvate.
 - `sott-del-giorno`: `{ giorno: id }`, le schede del giorno già mostrate (così l'archivio non cambia).
 - `sott-installata`: il giorno del primo avvio con la fase 3 (inizio dell'archivio).
+- `sott-invito-installa`: `true` quando l'invito a installare nel feed è stato chiuso o usato (non si ripropone). Legato al dispositivo: l'esportazione dei dati non lo include.
 - `sott-onboarding`: `true` dopo l'onboarding (o per chi era già utente). `sott-interessi`: lista di id di categorie scelte.
 - `sott-aspetto`: `sistema`, `chiaro` o `scuro`. `sott-testo`: dimensione del testo, 1, 2 o 3. `sott-lingua`: lingua scelta (solo se `LINGUE` ne avrà più di una).
 
