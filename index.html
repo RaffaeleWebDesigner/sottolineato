@@ -32,6 +32,8 @@
 <link rel="modulepreload" href="js/cronologia.js">
 <link rel="modulepreload" href="js/preferenze.js">
 <link rel="modulepreload" href="js/limiti.js">
+<link rel="modulepreload" href="js/limiteui.js">
+<link rel="modulepreload" href="js/pro.js">
 <link rel="modulepreload" href="js/nav.js">
 <link rel="modulepreload" href="js/scheda.js">
 <link rel="modulepreload" href="js/effetti.js">
@@ -189,6 +191,26 @@ dialog.schermo::backdrop { background: var(--bg); }
 .come svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .scelte { display: flex; flex-direction: column; gap: 10px; }
 
+/* Limite giornaliero (si vede solo con ?limite=1) e pagina dei piani. */
+.card.limite { align-items: stretch; justify-content: center; gap: 14px; }
+.limite-titolo { font-family: var(--font-quote); font-size: clamp(1.8rem, 7vw, 2.4rem); font-weight: 500; letter-spacing: -.02em; margin: 0; line-height: 1.1; }
+.limite-tempo { margin: 0; color: var(--muted); line-height: 1.45; }
+.limite-nota { margin: 0; font-size: .85rem; color: var(--muted); }
+.limite-primario, .limite-secondario { border-radius: 14px; padding: 14px 16px; font-weight: 700; font-size: 1rem; border: 1px solid var(--line); background: var(--chip); }
+.limite-primario { background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); }
+.limite-primario:disabled, .limite-secondario:disabled { opacity: .4; cursor: default; }
+dialog.pubblicita { border: 0; border-radius: 20px; padding: 24px; width: min(86vw, 360px); background: var(--chip); color: var(--fg); text-align: center; }
+dialog.pubblicita::backdrop { background: rgba(0, 0, 0, .55); }
+.pubblicita-etichetta { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.pubblicita-n { display: block; font-family: var(--font-quote); font-size: 3rem; margin: 6px 0 12px; }
+.barra { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.pieno { height: 100%; width: 0; background: var(--marker); }
+.piani { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.piano { border: 1px solid var(--line); background: var(--chip); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.piano h3 { margin: 0; font-family: var(--font-quote); font-size: 1.5rem; font-weight: 500; }
+.piano p { margin: 0; }
+.piano .prezzo { font-weight: 700; }
+
 /* Barra in basso: quattro sezioni, sempre visibile. */
 .tabbar { flex: none; display: flex; justify-content: center; background: var(--bg); border-top: 1px solid var(--line); padding: 0 max(8px, env(safe-area-inset-left, 0px)) env(safe-area-inset-bottom, 0px); }
 .tab { flex: 1; max-width: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; padding-block: 6px; color: var(--muted); text-decoration: none; font-size: .72rem; font-weight: 600; border-radius: 12px; }
@@ -313,6 +335,13 @@ dialog.schermo::backdrop { background: var(--bg); }
     <div class="contenuto">
       <h2 class="titolo-vista" id="titolo-profilo" data-fuoco tabindex="-1" data-i18n="nav.profilo">Profilo</h2>
       <div id="profilo-contenuto"></div>
+    </div>
+  </section>
+
+  <section class="vista vista-scroll" id="vista-pro" aria-labelledby="titolo-pro" tabindex="-1" hidden>
+    <div class="contenuto">
+      <h2 class="titolo-vista" id="titolo-pro" data-fuoco tabindex="-1" data-i18n="pro.titolo">Passa a Pro</h2>
+      <div id="pro-contenuto"></div>
     </div>
   </section>
 </main>

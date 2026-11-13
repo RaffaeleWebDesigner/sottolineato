@@ -147,5 +147,29 @@
   "lingue": {
     "it": "Italiano",
     "en": "English"
+  },
+  "limite": {
+    "titolo": "Schede di oggi finite",
+    "tra_ore": "Ne arrivano altre a mezzanotte: tra {ore} h {minuti} min.",
+    "tra_minuti": "Ne arrivano altre a mezzanotte: tra {minuti} min.",
+    "video": "Guarda un video per altre {n} schede",
+    "video_rimasti": "Video disponibili oggi: {n} su {tot}.",
+    "video_finiti": "Hai guardato tutti i video di oggi.",
+    "pro": "Passa a Pro",
+    "ripassa": "Ripassa le salvate",
+    "rimaste": "Rimaste oggi: {n}",
+    "pubblicita_titolo": "Pubblicità di prova",
+    "pubblicita_testo": "Qui ci sarà un video. Per ora è solo una prova."
+  },
+  "pro": {
+    "titolo": "Passa a Pro",
+    "intro": "I piani arriveranno presto. Ecco come saranno.",
+    "nome_base": "Base",
+    "nome_pro": "Pro",
+    "prezzo_base": "2,99 € al mese",
+    "prezzo_pro": "4,99 € al mese",
+    "schede_al_giorno": "{n} schede al giorno",
+    "presto": "Presto disponibile",
+    "nota": "Per ora tutte le schede sono gratis e non c'è nessun limite."
   }
 }

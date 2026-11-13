@@ -11,6 +11,7 @@ import { inizializzaFeed, aggiornaFeed, mostraFeed, sospendiFeed, tipoInCima, co
 import { inizializzaEsplora } from "./esplora.js";
 import { inizializzaSalvate } from "./salvate.js";
 import { inizializzaProfilo } from "./profilo.js";
+import { inizializzaPro } from "./pro.js";
 import { registraVista, avviaNav } from "./nav.js";
 import { serveOnboarding, avviaOnboarding } from "./onboarding.js";
 
@@ -31,7 +32,7 @@ async function avvia() {
   inizializzaCronologia();
   inizializzaFiltri();
   inizializzaFeed();
-  inizializzaEsplora(); inizializzaSalvate(); inizializzaProfilo();
+  inizializzaEsplora(); inizializzaSalvate(); inizializzaProfilo(); inizializzaPro();
   registraVista("feed", { mostra: mostraFeed });
   document.getElementById("stato-caricamento")?.remove();
   document.getElementById("stato-errore")?.remove();
