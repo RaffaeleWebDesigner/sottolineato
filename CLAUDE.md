@@ -21,16 +21,21 @@ Oggi è un sito statico su GitHub Pages. L'obiettivo è trasformarlo in un'app p
   - Dati dell'utente: `salvataggi.js`, `cronologia.js` (viste, giorni, contatori, esiti dei quiz), `ripasso.js`, `preferenze.js` (categorie, tema, dimensione del testo), `giorno.js` (scheda del giorno e archivio), `limiti.js` (limite giornaliero, piani, `MOSTRA_PREMIUM`).
   - Viste: `nav.js` (hash), `feed.js`, `esplora.js`, `salvate.js`, `profilo.js`, `pro.js`, `onboarding.js`, `aperta.js` (scheda aperta a tutto schermo), `limiteui.js` (schermata del limite e pubblicità di prova).
   - Scheda: `scheda.js` (costruzione), `quiz.js`, `effetti.js` (coriandoli, scossone), `feedback.js` (vibrazione: `gioia()` ed `errore()`), `condividi.js` (immagine da condividere), `filtri.js`.
+  - Installazione: `installa.js` (invito del browser su Android, istruzioni su iPhone, invito nel feed dal 3° giorno d'uso), `trasferimento.js` (esporta e importa i dati come codice o file).
+  - Installazione e offline: `installazione.js` (registra `sw.js` a feed già in vista, avviso «Nuova versione disponibile», indicatore «Offline»).
 - `i18n/it.json`: tutti i testi dell'interfaccia, raggruppati per area, con segnaposto `{n}`.
 - `data/temi.json`: le 6 macro-categorie (`categorie`) e i 24 temi (`temi`), con `id` stabile, `nome` per lingua e `premium`. Ogni tema ha una `categoria`. Premium deciso: Mente e vita (solo sulla categoria; i temi restano `false` fino alla fase 7).
 - `data/schede/<tipo>.json`: dati comuni a tutte le lingue. `data/testi/<lingua>/<tipo>.json`: testi, indicizzati per `id`. Oggi c'è solo `it`.
 - `data/SCHEMA.md`: lo schema completo, con un esempio per tipo. È il riferimento per ogni scheda.
 - `data/GUIDA.md`: la guida di stile e le fonti accettate.
 - `data/verifica/REGISTRO.md`: il registro della verifica dei fatti (fase 2). Da lì riparte chi continua il lavoro.
+- `sw.js` (radice): service worker; `manifest.webmanifest`; `fonts/` (woff2 e licenze OFL); `icone/` (PNG generate da `scripts/icone.mjs`). Vedi la sezione «Fase 4».
 - `scripts/controlla.mjs`: controllo dei contenuti, delle chiavi di traduzione e dei `modulepreload`, nessuna dipendenza. `scripts/prova-ordine.mjs`: prova di `ordine.js` e `ricerca.js` senza browser. `scripts/contrasto.mjs`: contrasto dei colori (WCAG AA) nei due temi.
 - 2.001 schede. Stato della verifica (verificate, in bozza, da verificare): vedi `data/verifica/REGISTRO.md`.
 
 **`VERSIONE_DATI`** (in `js/dati.js`) va aumentata di 1 a ogni modifica di `data/` o `i18n/`. Si aggiunge come `?v=` a ogni richiesta JSON, così il browser non usa copie vecchie.
+
+**`VERSIONE_APP`** (in `sw.js`) va aumentata di 1 a ogni modifica di `index.html`, `js/`, `fonts/`, `icone/` o `manifest.webmanifest`. Quindi **anche quando si aumenta `VERSIONE_DATI`** (sta in `js/dati.js`): le due righe vanno sempre insieme. Senza questo, chi ha già il sito installato continua a vedere i file vecchi.
 
 Caricamento, in due passi:
 1. Traduzioni, `data/temi.json` e tutti i `data/schede/<tipo>.json`: bastano per conteggi, filtri e ordine del feed.
@@ -66,6 +71,7 @@ Chiavi di localStorage (non cambiarle né cambiarne il formato senza una migrazi
 - `sott-ripasso`: `{ id: [passi, ultimoGiorno] }`, il ripasso delle salvate.
 - `sott-del-giorno`: `{ giorno: id }`, le schede del giorno già mostrate (così l'archivio non cambia).
 - `sott-installata`: il giorno del primo avvio con la fase 3 (inizio dell'archivio).
+- `sott-invito-installa`: `true` quando l'invito a installare nel feed è stato chiuso o usato (non si ripropone). Legato al dispositivo: l'esportazione dei dati non lo include.
 - `sott-onboarding`: `true` dopo l'onboarding (o per chi era già utente). `sott-interessi`: lista di id di categorie scelte.
 - `sott-aspetto`: `sistema`, `chiaro` o `scuro`. `sott-testo`: dimensione del testo, 1, 2 o 3. `sott-lingua`: lingua scelta (solo se `LINGUE` ne avrà più di una).
 
@@ -122,3 +128,24 @@ Branch `fase-3-esperienza`. Niente pagamenti, pubblicità vere o notifiche: si p
 - **Avvio veloce**: `main.js` avvia i dati senza aspettare gli altri moduli; solo `main`, `i18n`, `dati` e `store` hanno priorità alta nei `modulepreload`, gli altri `fetchpriority="low"`; i caratteri di Google Fonts non bloccano l'avvio (`media="print"` con `onload`). Un modulo nuovo va aggiunto ai `modulepreload` (con `fetchpriority="low"`, salvo che serva a far partire i dati). La prima scheda visibile deve restare entro +0,3 s rispetto alla misura di fine fase 1.
 - **Accessibilità**: colori controllati con `scripts/contrasto.mjs` (4,5:1 in tutte le coppie, in entrambi i temi); se si cambia un colore in `index.html` va rilanciato. Tema chiaro/scuro/di sistema e testo su tre livelli si applicano da uno script in `<head>` per evitare il lampo del tema sbagliato.
 - **Lingue**: se `LINGUE` in `i18n.js` avrà più di una lingua, l'onboarding mostra da solo la scelta della lingua.
+
+## Fase 4 — sito installabile e offline (fatta, branch `fase-4-installabile`, da unire dopo la prova sul telefono)
+
+- **Caratteri**: in `fonts/` (woff2 + licenza OFL accanto), con `@font-face` in `index.html`. Nessuna richiesta a Google. Si precarica solo Instrument Sans.
+- **Manifest e icone**: `manifest.webmanifest`, icone PNG in `icone/` (generate da `scripts/icone.mjs`, che usa Playwright e non fa parte del sito). **Nome provvisorio**: quando ci sarà il nome definitivo va cambiato in `manifest.webmanifest` (`name`, `short_name`, `shortcuts`) e in `index.html` (`apple-mobile-web-app-title`).
+- Le scorciatoie del manifest aprono `./?apri=feed` (la scheda del giorno è la prima del feed) e `./?apri=salvate`; `nav.js` legge `?apri=` all'avvio e ripulisce l'indirizzo.
+- **Offline** (`sw.js`, `js/installazione.js`): il worker si registra a feed già in vista e testi arrivati. Cache `sott-app-<VERSIONE_APP>`: file dell'app, prima la cache; cache `sott-dati`: JSON per indirizzo esatto (con `?v=`), puliti quando `VERSIONE_DATI` cambia (la pagina manda l'elenco degli indirizzi correnti; i testi si scaricano in sottofondo solo se `navigator.connection.saveData` è falso). Navigazione sempre da `index.html` in cache. Solo GET dello stesso sito; il resto (es. `og.png`) passa dalla rete. Offline, un file di testi non in cache dà una risposta vuota: le schede di quel tipo si tolgono dal feed senza errori.
+- **Aggiornamenti**: la versione nuova resta in attesa; compare «Nuova versione disponibile · Aggiorna»; la pagina si ricarica solo dopo il tocco, altrimenti la versione nuova parte alla riapertura. Per ogni cambio di file dell'app: aumentare `VERSIONE_APP` (vedi sopra e README).
+- **Installazione**: vedi `installa.js`. Su Android/Chrome «Installa» in Profilo e invito nel feed dal 3° giorno d'uso (`sott-invito-installa`); su iPhone/iPad Safari istruzioni in Profilo. Su iOS il sito installato ha un archivio separato da Safari (bug WebKit 181849, comportamento noto da anni; non verificabile senza un iPhone): per questo Profilo ha «I tuoi dati» con esporta e importa (codice `SOTT1:…` o file, nessun server). Nei testi si dice «sito» finché non è installato, «app» solo per quello installato.
+- **Misure del 13 novembre 2026** (stesso metodo di sopra, server locale HTTP/2 con gzip e `max-age=600`, utente esistente, mediana di 5; la base è `main` senza Google Fonts, bloccato nel sandbox):
+
+| | Fast 4G | Slow 4G |
+|---|---|---|
+| `main` prima della Fase 4, prima visita | 0,89 s | 3,15 s |
+| Fase 4, prima visita, cache vuota | 0,91 s | 3,33 s |
+| Fase 4, seconda visita (sito caricato) | 0,14 s | 0,12 s |
+| Fase 4, offline | 0,16 s | 0,16 s |
+
+Seconda visita e offline sono misurate su HTTP locale (non HTTP/2): il certificato di prova non è accettato dal browser per i service worker; contano poco, perché tutto viene dalla cache.
+- **Noto**: con il service worker attivo Chrome può avvisare in console «A preload … cross-world service worker resource mismatch» per qualche `modulepreload` (solo un avviso, a volte; il file si legge due volte dalla cache). Dopo un'importazione dei dati la pagina si ricarica da sola.
+- **Da fare al momento di unire**: `VERSIONE_DATI` va aumentata (sono state aggiunte chiavi a `i18n/it.json` senza toccarla, come richiesto) insieme a `VERSIONE_APP`. Il nome «Sottolineato» è provvisorio: vedi `manifest.webmanifest` e `apple-mobile-web-app-title`.

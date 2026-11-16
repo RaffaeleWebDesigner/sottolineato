@@ -26,6 +26,7 @@ export function inizializzaCronologia() {
 
 export const cronologiaViste = () => vista;
 export const schedeViste = () => Object.keys(vista).length;
+export const giorniDiUso = () => giorni.length;
 export const giornoInstallazione = () => store.get("sott-installata", oggi());
 
 function salvaVista() {

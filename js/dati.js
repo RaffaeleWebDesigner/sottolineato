@@ -3,7 +3,7 @@ export const TIPI_DATI = ["frase", "idea", "parola", "sapevi", "storica", "mondo
 export const LIBRI = new Set(["frase", "idea", "parola", "sapevi"]);
 
 // Versione dei contenuti: va aumentata a ogni modifica di data/ o i18n/, così il browser non usa copie vecchie.
-export const VERSIONE_DATI = 15;
+export const VERSIONE_DATI = 16;
 
 export const leggiJson = p => fetch(`${p}?v=${VERSIONE_DATI}`).then(r => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
 
@@ -47,7 +47,14 @@ export const testoPronto = scheda => tipiConTesti.has(scheda.tipo);
 // arrivato(tipo, senzaTesto): senzaTesto sono le schede di quel tipo che non hanno testo in questa lingua.
 export async function caricaTesti(lingua, schede, primoTipo, arrivato) {
   const carica = async tipo => {
-    const testi = await leggiJson(`data/testi/${lingua}/${tipo}.json`);
+    let testi;
+    try { testi = await leggiJson(`data/testi/${lingua}/${tipo}.json`); }
+    catch (err) {
+      // Senza rete (fetch fallisce con TypeError) un file di testi che non è in cache non è un errore: le schede di quel
+      // tipo si tolgono dal feed. Un errore del server (404, 500...) resta un errore.
+      if (!(err instanceof TypeError)) throw err;
+      testi = {};
+    }
     const senzaTesto = [];
     for (const s of schede) if (s.tipo === tipo) { if (testi[s.id]) Object.assign(s, testi[s.id]); else senzaTesto.push(s.id); }
     tipiConTesti.add(tipo);

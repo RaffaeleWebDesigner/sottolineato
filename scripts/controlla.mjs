@@ -202,6 +202,25 @@ if (nonUsate.length) avviso(`${nonUsate.length} chiavi in i18n/${LINGUA_BASE}.js
   for (const n of precaricati) if (!presenti.includes(n)) errore("index.html", `modulepreload di js/${n}, che non esiste`);
 }
 
+// ——— File messi in cache da sw.js ———
+// Ogni file di js/ e ogni woff2 di fonts/ deve stare nell'elenco FILE_APP di sw.js: senza, offline manca.
+// (Le licenze .txt in fonts/ non servono all'app e restano fuori.) Vale anche al contrario: niente voci per file che non esistono.
+{
+  const sw = fs.readFileSync(path.join(radice, "sw.js"), "utf8");
+  const blocco = sw.match(/const FILE_APP = \[([\s\S]*?)\n\];/);
+  if (!blocco) errore("sw.js", "non trovo l'elenco FILE_APP");
+  else {
+    const elencati = new Set([...blocco[1].matchAll(/"([^"]+)"/g)].map(m => m[1]));
+    const richiesti = [
+      ...fs.readdirSync(path.join(radice, "js")).filter(n => n.endsWith(".js")).map(n => `js/${n}`),
+      ...fs.readdirSync(path.join(radice, "fonts")).filter(n => n.endsWith(".woff2")).map(n => `fonts/${n}`),
+    ];
+    for (const f of richiesti) if (!elencati.has(f)) errore("sw.js", `${f} non è nell'elenco FILE_APP (offline mancherebbe)`);
+    for (const f of elencati) if (!fs.existsSync(path.join(radice, f))) errore("sw.js", `FILE_APP elenca ${f}, che non esiste`);
+    if (!/^const VERSIONE_APP = \d+;/m.test(sw)) errore("sw.js", "manca la riga «const VERSIONE_APP = <numero>;»");
+  }
+}
+
 // ——— Riepilogo ———
 const conta = (chiave) => { const c = {}; for (const s of schede.values()) { const k = chiave(s); c[k] = (c[k] || 0) + 1; } return c; };
 const stampa = (titolo, oggetto) => {

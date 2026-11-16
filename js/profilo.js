@@ -9,6 +9,7 @@ import { archivioGiorni } from "./giorno.js";
 import { apriScheda } from "./aperta.js";
 import { formattaGiorno } from "./tempo.js";
 import { registraVista, vaiA } from "./nav.js";
+import { sezioneInstallazione, sezioneDati } from "./installa.js";
 
 // L'archivio delle schede del giorno passate, dalla data di installazione.
 function sezioneArchivio() {
@@ -100,10 +101,11 @@ function sezioneAspetto() {
 
 function render() {
   const piani = el("button", "chip", t("profilo.piani")); piani.type = "button"; piani.addEventListener("click", () => vaiA("pro"));
-  document.getElementById("profilo-contenuto").replaceChildren(sezioneProgressi(), sezionePreferenze(), sezioneAspetto(), sezioneArchivio(), piani);
+  document.getElementById("profilo-contenuto").replaceChildren(...[sezioneProgressi(), sezionePreferenze(), sezioneAspetto(), sezioneInstallazione(), sezioneArchivio(), sezioneDati(), piani].filter(Boolean));
 }
 
 export function inizializzaProfilo() {
   registraVista("profilo", { mostra: render });
+  document.addEventListener("sott:installabile", () => { if (!document.getElementById("vista-profilo").hidden) render(); });
   document.addEventListener("sott:testi", () => { if (!document.getElementById("vista-profilo").hidden) render(); });
 }
