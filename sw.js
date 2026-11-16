@@ -5,7 +5,7 @@
 // (quindi anche quando si aumenta VERSIONE_DATI, che sta in js/dati.js). Dà il nome alla cache dell'app:
 // con un numero nuovo il browser vede un sw.js diverso, scarica i file nuovi e li tiene in attesa
 // finché l'utente tocca «Aggiorna» o riapre il sito.
-const VERSIONE_APP = 2;
+const VERSIONE_APP = 3;
 
 const CACHE_APP = `sott-app-${VERSIONE_APP}`;
 const CACHE_DATI = "sott-dati"; // JSON dei contenuti e delle traduzioni, per indirizzo esatto (con ?v=VERSIONE_DATI)

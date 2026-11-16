@@ -14,13 +14,13 @@ Chi riprende il lavoro parte da qui: legge il riepilogo e continua dal primo pas
 
 | Verificate | Corrette | In bozza | Da verificare | Totale |
 |---|---|---|---|---|
-| 409 | 138 | 22 | 1701 | 2132 |
+| 408 | 138 | 23 | 1701 | 2132 |
 
 *Corrette* sono le schede verificate dopo una correzione: sono contate anche tra le verificate.
 
-**Ultimo merge su main**: nessuno. Il merge si fa ogni 300 schede verificate: il prossimo dopo il blocco 04 (oggi 278 verificate).
+**Ultimo merge su main**: 16 novembre 2026, con il passo 5. Il merge si fa ogni 300 schede verificate in più.
 
-**Duplicati segnalati**: nessuno finora.
+**Duplicati segnalati**: `n1-vita-candide-giardino` ripete `c6-giardino` (stessa frase del Candide): messa in `bozza` il 16 novembre 2026.
 
 ## Come si lavora
 
